@@ -11,7 +11,7 @@ export default function IgttpbDesc() {
                   <span className='ml-1'>→</span>
                 </p>
               </div>
-              <h1 className='text-5xl sm:text-6xl lg:text-7xl font-extrabold '>
+              <h1 className='text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#686232]'>
                 Selamat datang di <br />
                 IGTTPB
               </h1>
@@ -45,38 +45,38 @@ export default function IgttpbDesc() {
               About IGTTPB
             </p>
           </div>
-          <h1 className='text-3xl lg:text-5xl font-extrabold text-center text-black'>
+          <h1 className='text-3xl lg:text-5xl font-extrabold text-center text-[#686232]'>
             Apa itu IGTTPB?
           </h1>
-          <p className='text-md lg:text-xl text-center max-w-4xl mx-auto mt-6'>
-          Mewujudkan Informatics Goes To TPB (IGTTPB) 2025 sebagai wadah pengenalan, pembinaan dan
-          penguatan fondasi mahasiswa baru Teknik Informatika Itera,
-          yang dikelola secara profesional, komunikatif dan berdampak positif seluruh pihak yang terlibat.
+          <p className='text-md lg:text-xl text-center max-w-4xl mx-auto mt-6 text-[#686232]'>
+            IGTTPB (Informatics Goes to TPB) merupakan Acara First Gathering
+            Mahasiswa Baru Teknik Informatika di Institut Teknologi Sumatera.
+            IGTTPB berperan sebagai wadah perkenalan diri untuk mengakrabkan
+            diri dan saling mengenal satu sama lain.
           </p>
           <div className='max-w-7xl mx-auto bg-[#F7F1E7] mt-10 rounded-2xl'>
             <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-6 p-8'>
               <div>
                 <h1 className='font-bold text-2xl mb-3'>Visi Kami</h1>
                 <p className='text-lg'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nesciunt, hic, minus vitae atque tempore mollitia autem, sit
-                  saepe id consequatur nisi itaque numquam necessitatibus
-                  doloremque?
+          Mewujudkan Informatics Goes To TPB (IGTTPB) 2025 sebagai wadah pengenalan, pembinaan dan
+          penguatan fondasi mahasiswa baru Teknik Informatika Itera,
+          yang dikelola secara profesional, komunikatif dan berdampak positif seluruh pihak yang terlibat.
                 </p>
               </div>
               <div>
                 <h1 className='font-bold text-2xl mb-3'>Misi Kami</h1>
                 <p className='text-lg'>
           1.Menyelenggarakan kegiatan pengenalan akademik dan sosial yang mendukung
-          adaptasi mahasiswa baru di TPB.
+          adaptasi mahasiswa baru di TPB.<br></br>
           2.Memberikan pembekalan akademik (materi dasar Informatika, problem-solving,
-          komunikasi efektif) yang relevan dengan kebutuhan mahasiswa baru.
+          komunikasi efektif) yang relevan dengan kebutuhan mahasiswa baru.<br></br>
           3.Membantu mahasiswa baru membangun motivasi, karakter tangguh, serta
-          kesiapan menghadapi dunia perkuliahan.
+          kesiapan menghadapi dunia perkuliahan.<br></br>
           4.Memperkenalkan HMIF sebagai organisasi mahasiswa yang aktif mendampingi
-          proses pembinaan dan pengembangan diri.
+          proses pembinaan dan pengembangan diri.<br></br>
           5.Membangun hubungan harmonis antara mahasiswa baru dengan kakak tingkat,
-          civitas akademika, serta lingkungan kampus
+          civitas akademika, serta lingkungan kampus.
                 </p>
               </div>
             </div>
