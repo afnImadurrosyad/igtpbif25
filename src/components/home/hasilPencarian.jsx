@@ -1,7 +1,8 @@
 'use client';
 
-export default function HasilPencarian() {
+const HasilPencarian = ({ data }) => {
   return (
+    // Wadah utama: Hijau Zaitun (Saguaro)
     <div className='bg-[#686232] text-white p-6 sm:p-8 rounded-2xl w-full max-w-4xl mx-auto shadow-xl'>
       <h2 className='text-center text-lg font-medium text-white mb-8'>
         Data ditemukan
@@ -75,4 +76,6 @@ export default function HasilPencarian() {
       </div>
     </div>
   );
-}
+};
+
+export default HasilPencarian;

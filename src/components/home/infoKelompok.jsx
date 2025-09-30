@@ -1,17 +1,17 @@
-"use client";
+'use client';
 import { useState } from 'react';
-import { findPesertaByNim } from '../api/pesertaApi'; // Impor fungsi API (sesuaikan path)
+import { findPesertaByNim } from '../../api/pesertaApi.jsx'; // Impor fungsi API (sesuaikan path)
 import HasilPencarian from './HasilPencarian'; // Impor komponen hasil (sesuaikan path)
 
 function InfoKelompok() {
-  const [nimInput, setNimInput] = useState("");
+  const [nimInput, setNimInput] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSearch = async () => {
     if (nimInput.length !== 9 || !/^\d+$/.test(nimInput)) {
-      setError("NIM harus terdiri dari 9 angka.");
+      setError('NIM harus terdiri dari 9 angka.');
       return;
     }
     setIsLoading(true);
@@ -29,41 +29,49 @@ function InfoKelompok() {
 
   return (
     // Latar belakang utama diubah menjadi White Flour
-    <section className="min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans rounded-lg ">
-      
-      {/* Bagian Input Pencarian */}
-      <div className="w-full max-w-lg mb-8">
-        {/* Warna teks header diubah menjadi Tricorn Black */}
-        {/* <h1 className="text-3xl font-bold text-center mb-4 text-[#2F2F30]">Cari Data Kelompok Peserta</h1> */}
-        <div className="flex gap-2">
-          {/* Styling input diubah kembali ke putih dengan teks hitam */}
-          <input
-            type="text"
-            value={nimInput}
-            onChange={(e) => setNimInput(e.target.value)}
-            className="flex-1 max-w- px-4 py-3 border border-gray-300 bg-white text-black placeholder-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Masukkan 9 digit NIM"
-            maxLength={9}
-          />
-          {/* Styling tombol diubah menjadi Saguaro dengan teks putih */}
-          <button
-            onClick={handleSearch}
-            disabled={isLoading}
-            className="px-6 py-3 bg-[#ffffff] text-[#7A7449] font-semibold rounded-md hover:bg-[#b7b7af] transition-colors duration-200 disabled:bg-gray-400"
-          >
-            {isLoading ? 'Mencari...' : 'Cari'}
-          </button>
+    <section
+      className='min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans rounded-lg'
+      id='cariKelompok'>
+      <div className='mt-44'>
+        <h1 className='text-3xl lg:text-5xl font-bold text-center text-black mb-9'>
+          Cari Kelompokmu Disini
+        </h1>
+        {/* Bagian Input Pencarian */}
+        <div className='w-full max-w-lg mb-8'>
+          {/* Warna teks header diubah menjadi Tricorn Black */}
+          {/* <h1 className="text-3xl font-bold text-center mb-4 text-[#2F2F30]">Cari Data Kelompok Peserta</h1> */}
+          <div className='flex gap-2'>
+            {/* Styling input diubah kembali ke putih dengan teks hitam */}
+            <input
+              type='text'
+              value={nimInput}
+              onChange={(e) => setNimInput(e.target.value)}
+              className='flex-1 max-w- px-4 py-3 border border-gray-300 bg-white text-black placeholder-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+              placeholder='Masukkan 9 digit NIM'
+              maxLength={9}
+            />
+            {/* Styling tombol diubah menjadi Saguaro dengan teks putih */}
+            <button
+              onClick={handleSearch}
+              disabled={isLoading}
+              className='px-6 py-3 bg-[#ffffff] text-[#7A7449] font-semibold rounded-md hover:bg-[#b7b7af] transition-colors duration-200 disabled:bg-gray-400'>
+              {isLoading ? 'Mencari...' : 'Cari'}
+            </button>
+          </div>
+        </div>
+
+        {/* Area untuk menampilkan hasil, error, atau loading */}
+        <div className='w-full'>
+          {/* Warna teks loading & error disesuaikan */}
+          {isLoading && (
+            <p className='text-center text-[#2F2F30]'>Loading...</p>
+          )}
+          {error && (
+            <p className='text-center text-red-600 font-semibold'>{error}</p>
+          )}
+          {searchResult && <HasilPencarian data={searchResult} />}
         </div>
       </div>
-
-      {/* Area untuk menampilkan hasil, error, atau loading */}
-      <div className="w-full">
-        {/* Warna teks loading & error disesuaikan */}
-        {isLoading && <p className="text-center text-[#2F2F30]">Loading...</p>}
-        {error && <p className="text-center text-red-600 font-semibold">{error}</p>}
-        {searchResult && <HasilPencarian data={searchResult} />}
-      </div>
-      
     </section>
   );
 }
