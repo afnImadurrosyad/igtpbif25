@@ -2,6 +2,7 @@ import IgttpbDesc from '../components/home/welcomeMessage';
 import InfoKelompok from '../components/home/infoKelompok';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
+import Image from 'next/image';
 
 export default function HomePage() {
   return (
@@ -36,8 +37,8 @@ export default function HomePage() {
             {/* Kolom Kanan Atas: Lingkaran Logo/Gambar */}
             <div className='flex justify-center lg:justify-center'>
               <div className='flex items-center justify-center text-center  '>
-                <image
-                  src='/igttpb.jpg'
+                <img
+                  src='igttpb.jpg'
                   alt='Logo IGTTPB'
                   className='mb-6 rounded-full h-[250px] w-[250px] sm:h-[360px] sm:w-[360px]'
                 />
