@@ -8,6 +8,7 @@ export default function HomePage() {
   return (
     <div>
       <Navbar />
+<<<<<<< HEAD
       <div className='min-h-screen bg-[#DCE2B7] p-4 sm:p-8 lg:p-12 font-poppins pb-13'>
         <div className='max-w-7xl mx-auto'>
           <div className='grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 items-center mt-20'>
@@ -86,6 +87,9 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+=======
+      <IgttpbDesc />
+>>>>>>> 6fddac6db210473be57fc1cd4af43a996b198b45
       <InfoKelompok />
       <Footer />
     </div>

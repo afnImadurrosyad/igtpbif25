@@ -29,7 +29,15 @@ function InfoKelompok() {
 
   return (
     // Latar belakang utama diubah menjadi White Flour
+<<<<<<< HEAD
     <section className='min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans rounded-lg '>
+=======
+    <section className="min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans rounded-lg" id='cariKelompok'>
+      <div className="mt-44" >
+          <h1 className='text-3xl lg:text-5xl font-bold text-center text-black mb-9'>
+            Cari Kelompokmu Disini
+          </h1>
+>>>>>>> 6fddac6db210473be57fc1cd4af43a996b198b45
       {/* Bagian Input Pencarian */}
       <div className='w-full max-w-lg mb-8'>
         {/* Warna teks header diubah menjadi Tricorn Black */}
@@ -63,6 +71,10 @@ function InfoKelompok() {
         )}
         {searchResult && <HasilPencarian data={searchResult} />}
       </div>
+<<<<<<< HEAD
+=======
+      </div>
+>>>>>>> 6fddac6db210473be57fc1cd4af43a996b198b45
     </section>
   );
 }

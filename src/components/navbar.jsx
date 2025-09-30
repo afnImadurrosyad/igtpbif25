@@ -25,23 +25,23 @@ export default function Navbar() {
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
               <div className="text-white text-xl font-semibold">
-                IGTTPB
+              <a href="#">IGTTPB</a>
               </div>
 
               {/* Menu Items - Centered */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-8">
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                <a href="#aboutIGTTPB" className="text-white hover:text-gray-300 transition">
                   Mengenal IGTTPB
                 </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                {/* <a href="#" className="text-white hover:text-gray-300 transition">
                   Dress Code
+                </a> */}
+                <a href="#cariKelompok" className="text-white hover:text-gray-300 transition">
+                  Pengumuman Kelompok
                 </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
-                  Pengumuman
-                </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                {/* <a href="#" className="text-white hover:text-gray-300 transition">
                   FAQ
-                </a>
+                </a> */}
               </div>
 
               {/* Login Button */}
@@ -90,29 +90,29 @@ export default function Navbar() {
                   isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
                 }`}>
                   <a
-                    href="#"
+                    href="#aboutIGTTPB"
                     className="text-white hover:text-gray-300 transition py-2"
                   >
                     Mengenal IGTTPB
                   </a>
-                  <a
+                  {/* <a
                     href="#"
                     className="text-white hover:text-gray-300 transition py-2"
                   >
                     Dress Code
-                  </a>
+                  </a> */}
                   <a
-                    href="#"
+                    href="#cariKelompok"
                     className="text-white hover:text-gray-300 transition py-2"
                   >
-                    Pengumuman
+                    Pengumuman Kelompok
                   </a>
-                  <a
+                  {/* <a
                     href="#"
                     className="text-white hover:text-gray-300 transition py-2"
                   >
                     FAQ
-                  </a>
+                  </a> */}
                   <button className="bg-gray-600 bg-opacity-50 hover:bg-opacity-70 text-white py-2 rounded-full transition mt-2">
                     Login
                   </button>
