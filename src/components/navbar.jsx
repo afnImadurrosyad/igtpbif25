@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -24,30 +23,30 @@ export default function Navbar() {
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
-              <div className="text-white text-xl font-semibold">
+              <div className="text-[#686232] text-xl font-semibold">
                 IGTTPB
               </div>
 
-              {/* Menu Items - Centered */}
+              {/* Menu Items */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-8">
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
                   Mengenal IGTTPB
-                </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                </a>{/*
+                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
                   Dress Code
-                </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                </a>*/}
+                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
                   Pengumuman
-                </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                </a>{/*
+                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
                   FAQ
-                </a>
+                </a>*/}
               </div>
 
               {/* Login Button */}
-              <button className="bg-gray-600 bg-opacity-50 hover:bg-opacity-70 text-white px-6 py-2 rounded-full transition">
+              {/*<button className="bg-gray-600 bg-opacity-50 hover:bg-opacity-70 text-white px-6 py-2 rounded-full transition">
                 Login
-              </button>
+              </button>*/}
             </div>
           </div>
         </div>
@@ -56,23 +55,23 @@ export default function Navbar() {
         <div className="md:hidden">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between px-4 py-3">
-              <span className="text-white text-lg font-semibold">IGTTPB</span>
+              <span className="text-[#686232] text-lg font-semibold">IGTTPB</span>
               <button
                 onClick={toggleMenu}
                 className="text-white focus:outline-none w-10 h-10 flex flex-col justify-center items-center gap-1.5"
               >
                 <span
-                  className={`block w-5 h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out ${
+                  className={`block w-5 h-0.5 bg-[#686232] rounded-full transition-all duration-300 ease-in-out ${
                     isOpen ? 'rotate-45 translate-y-2.5' : ''
                   }`}
                 ></span>
                 <span
-                  className={`block w-5 h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out ${
+                  className={`block w-5 h-0.5 bg-[#686232] rounded-full transition-all duration-300 ease-in-out ${
                     isOpen ? 'opacity-0' : 'opacity-100'
                   }`}
                 ></span>
                 <span
-                  className={`block w-5 h-0.5 bg-white rounded-full transition-all duration-300 ease-in-out ${
+                  className={`block w-5 h-0.5 bg-[#686232] rounded-full transition-all duration-300 ease-in-out ${
                     isOpen ? '-rotate-45 -translate-y-2.5' : ''
                   }`}
                 ></span>
@@ -91,31 +90,32 @@ export default function Navbar() {
                 }`}>
                   <a
                     href="#"
-                    className="text-white hover:text-gray-300 transition py-2"
+                    className="text-[#686232] hover:text-gray-300 transition py-2"
                   >
                     Mengenal IGTTPB
-                  </a>
+                  </a>{/*
                   <a
                     href="#"
-                    className="text-white hover:text-gray-300 transition py-2"
+                    className="text-[#686232] hover:text-gray-300 transition py-2"
                   >
                     Dress Code
-                  </a>
+                  </a>*/}
                   <a
                     href="#"
-                    className="text-white hover:text-gray-300 transition py-2"
+                    className="text-[#686232] hover:text-gray-300 transition py-2"
                   >
                     Pengumuman
-                  </a>
+                  </a>{/*
                   <a
                     href="#"
-                    className="text-white hover:text-gray-300 transition py-2"
+                    className="text-[#686232] hover:text-gray-300 transition py-2"
                   >
                     FAQ
-                  </a>
+                  </a> 
+                  {/*
                   <button className="bg-gray-600 bg-opacity-50 hover:bg-opacity-70 text-white py-2 rounded-full transition mt-2">
                     Login
-                  </button>
+                  </button>*/}
                 </div>
               </div>
             </div>
