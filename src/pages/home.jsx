@@ -86,6 +86,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <InfoKelompok />
       <Footer />
     </div>
   );
