@@ -31,7 +31,7 @@ function InfoKelompok() {
     // Latar belakang utama diubah menjadi White Flour
     <section className="min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans rounded-lg" id='cariKelompok'>
       <div className="mt-44" >
-          <h1 className='text-3xl lg:text-5xl font-extrabold text-center text-black mb-9'>
+          <h1 className='text-3xl lg:text-5xl font-bold text-center text-black mb-9'>
             Cari Kelompokmu Disini
           </h1>
       {/* Bagian Input Pencarian */}

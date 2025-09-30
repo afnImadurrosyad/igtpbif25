@@ -13,6 +13,7 @@ export default function IgttpbDesc() {
               </div>
               <h1 className='text-5xl sm:text-6xl lg:text-7xl font-extrabold '>
                 Selamat datang di <br />
+                IGTTPB
               </h1>
 
               <div className='flex space-x-4 pt-5 lg:mb-20'>
@@ -48,15 +49,14 @@ export default function IgttpbDesc() {
             Apa itu IGTTPB?
           </h1>
           <p className='text-md lg:text-xl text-center max-w-4xl mx-auto mt-6'>
-            IGTTPB (Informatics Goes to TPB) merupakan Acara First Gathering
-            Mahasiswa Baru Teknik Informatika di Institut Teknologi Sumatera.
-            IGTTPB berperan sebagai wadah perkenalan diri untuk mengakrabkan
-            diri dan saling mengenal satu sama lain.
+          Mewujudkan Informatics Goes To TPB (IGTTPB) 2025 sebagai wadah pengenalan, pembinaan dan
+          penguatan fondasi mahasiswa baru Teknik Informatika Itera,
+          yang dikelola secara profesional, komunikatif dan berdampak positif seluruh pihak yang terlibat.
           </p>
           <div className='max-w-7xl mx-auto bg-[#F7F1E7] mt-10 rounded-2xl'>
             <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-6 p-8'>
               <div>
-                <h1 className='font-bold text-2xl mb-3'>Misi Kami</h1>
+                <h1 className='font-bold text-2xl mb-3'>Visi Kami</h1>
                 <p className='text-lg'>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Nesciunt, hic, minus vitae atque tempore mollitia autem, sit
@@ -65,12 +65,18 @@ export default function IgttpbDesc() {
                 </p>
               </div>
               <div>
-                <h1 className='font-bold text-2xl mb-3'>Visi Kami</h1>
+                <h1 className='font-bold text-2xl mb-3'>Misi Kami</h1>
                 <p className='text-lg'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nesciunt, hic, minus vitae atque tempore mollitia autem, sit
-                  saepe id consequatur nisi itaque numquam necessitatibus
-                  doloremque?
+          1.Menyelenggarakan kegiatan pengenalan akademik dan sosial yang mendukung
+          adaptasi mahasiswa baru di TPB.
+          2.Memberikan pembekalan akademik (materi dasar Informatika, problem-solving,
+          komunikasi efektif) yang relevan dengan kebutuhan mahasiswa baru.
+          3.Membantu mahasiswa baru membangun motivasi, karakter tangguh, serta
+          kesiapan menghadapi dunia perkuliahan.
+          4.Memperkenalkan HMIF sebagai organisasi mahasiswa yang aktif mendampingi
+          proses pembinaan dan pengembangan diri.
+          5.Membangun hubungan harmonis antara mahasiswa baru dengan kakak tingkat,
+          civitas akademika, serta lingkungan kampus
                 </p>
               </div>
             </div>
