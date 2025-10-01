@@ -3,7 +3,7 @@ import InfoKelompok from '../components/home/infoKelompok';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Image from 'next/image';
-import FAQComponent from '@/components/faq.jsgit ';
+import FAQComponent from '@/components/faq.jsx';
 
 export default function HomePage() {
   return (
