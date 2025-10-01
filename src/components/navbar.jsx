@@ -10,14 +10,14 @@ export default function Navbar() {
 
   return (
     <>
-      <style jsx global>{`
+      <style jsx global strategy="lazyOnload">{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
           font-family: 'Inter', sans-serif;
         }
       `}</style>
 
-      <nav className="fixed top-0 left-0 right-0 z-50 font-['Inter']">
+      <nav className="fixed top-0 left-0 right-0 z-50 font-['Inter'] bg-white/10 backdrop-blur-md border-b border-white/20">
         {/* Desktop Navbar */}
         <div className="hidden md:block">
           <div className="max-w-7xl mx-auto px-4">
@@ -29,24 +29,13 @@ export default function Navbar() {
 
               {/* Menu Items */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-8">
-                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
+                <a href="#" className="text-[#686232] hover:text-[#F7F1E7] transition">
                   Mengenal IGTTPB
-                </a>{/*
-                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
-                  Dress Code
-                </a>*/}
-                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
+                </a>
+                <a href="#" className="text-[#686232] hover:text-[#F7F1E7] transition">
                   Pengumuman
-                </a>{/*
-                <a href="#" className="text-[#686232] hover:text-gray-300 transition">
-                  FAQ
-                </a>*/}
+                </a>
               </div>
-
-              {/* Login Button */}
-              {/*<button className="bg-gray-600 bg-opacity-50 hover:bg-opacity-70 text-white px-6 py-2 rounded-full transition">
-                Login
-              </button>*/}
             </div>
           </div>
         </div>
@@ -93,29 +82,13 @@ export default function Navbar() {
                     className="text-[#686232] hover:text-gray-300 transition py-2"
                   >
                     Mengenal IGTTPB
-                  </a>{/*
-                  <a
-                    href="#"
-                    className="text-[#686232] hover:text-gray-300 transition py-2"
-                  >
-                    Dress Code
-                  </a>*/}
+                  </a>
                   <a
                     href="#"
                     className="text-[#686232] hover:text-gray-300 transition py-2"
                   >
                     Pengumuman
-                  </a>{/*
-                  <a
-                    href="#"
-                    className="text-[#686232] hover:text-gray-300 transition py-2"
-                  >
-                    FAQ
-                  </a> 
-                  {/*
-                  <button className="bg-gray-600 bg-opacity-50 hover:bg-opacity-70 text-white py-2 rounded-full transition mt-2">
-                    Login
-                  </button>*/}
+                  </a>
                 </div>
               </div>
             </div>

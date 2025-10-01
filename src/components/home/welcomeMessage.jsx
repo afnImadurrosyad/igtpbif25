@@ -1,26 +1,26 @@
 export default function IgttpbDesc() {
   return (
-      <div className='min-h-screen bg-[#DCE2B7] p-4 sm:p-8 lg:p-12 font-poppins pb-13'>
+      <div className='min-h-screen bg-[#DCE2B7] p-4 sm:p-8 lg:p-48 font-poppins pb-13'>
         <div className='max-w-7xl mx-auto'>
-          <div className='grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 items-center mt-20'>
+          <div className='grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 lg:gap-20 items-center mt-20'>
             {/* Kolom Kiri: Judul dan Tombol */}
             <div>
               <div className='mb-5'>
-                <p className='inline-flex items-center text-lg font-semibold tracking-wider uppercase bg-[#686232] px-3 py-1 rounded-full text-white'>
+                <p className='inline-flex items-center text-sm font-semibold tracking-wider uppercase bg-[#686232] px-6 py-2 rounded-full text-white'>
                   Welcome to IGTTPB
                   <span className='ml-1'>→</span>
                 </p>
               </div>
-              <h1 className='text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#686232]'>
+              <h1 className='text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#5a5a3d] mb-8'>
                 Selamat datang di <br />
                 IGTTPB
               </h1>
 
-              <div className='flex space-x-4 pt-5 lg:mb-20'>
-                <button className='bg-[#686232] text-[#F7F1E7] px-6 py-3 font-bold rounded-lg hover:bg-[#F7F1E7] hover:text-[#686232] transition'>
+              <div className='flex space-x-4 lg:mb-20'>
+                <button className='bg-[#5a5a3d] text-[#F7F1E7] px-6 py-3 font-bold rounded-lg hover:bg-[#F7F1E7] hover:text-[#5a5a3d] transition'>
                 <a href="#aboutIGTTPB">Apa itu IGTTPB?</a>
                 </button>
-                <button className='bg-[#F7F1E7] text-[#686232] px-6 py-3 font-bold rounded-lg hover:bg-[#DCE2B7] hover:text-[#686232] border hover:border-[#686232] transition'>
+                <button className='bg-[#F7F1E7] text-[#5a5a3d] px-6 py-3 font-bold rounded-lg hover:bg-[#5a5a3d] hover:text-[#F7F1E7] border hover:border-[#686232] transition'>
                 <a href="#cariKelompok">Cari Kelompok</a>
                 </button>
               </div>
@@ -40,7 +40,7 @@ export default function IgttpbDesc() {
         </div>
 
         <div id="aboutIGTTPB">
-          <div className='flex justify-center mt-48' >
+          <div className='flex justify-center mt-32 lg:mt-48' >
             <p className='bg-[#686232] rounded-full px-4 py-2 text-[#F7F1E7] font-bold text-md mb-3' >
               About IGTTPB
             </p>
@@ -55,7 +55,7 @@ export default function IgttpbDesc() {
             diri dan saling mengenal satu sama lain.
           </p>
           <div className='max-w-7xl mx-auto bg-[#F7F1E7] mt-10 rounded-2xl'>
-            <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-6 p-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-6 p-8 text-[#686232]'>
               <div>
                 <h1 className='font-bold text-2xl mb-3'>Visi Kami</h1>
                 <p className='text-lg'>
@@ -67,15 +67,15 @@ export default function IgttpbDesc() {
               <div>
                 <h1 className='font-bold text-2xl mb-3'>Misi Kami</h1>
                 <p className='text-lg'>
-          1.Menyelenggarakan kegiatan pengenalan akademik dan sosial yang mendukung
+          1. Menyelenggarakan kegiatan pengenalan akademik dan sosial yang mendukung
           adaptasi mahasiswa baru di TPB.<br></br>
-          2.Memberikan pembekalan akademik (materi dasar Informatika, problem-solving,
+          2. Memberikan pembekalan akademik (materi dasar Informatika, problem-solving,
           komunikasi efektif) yang relevan dengan kebutuhan mahasiswa baru.<br></br>
-          3.Membantu mahasiswa baru membangun motivasi, karakter tangguh, serta
+          3. Membantu mahasiswa baru membangun motivasi, karakter tangguh, serta
           kesiapan menghadapi dunia perkuliahan.<br></br>
-          4.Memperkenalkan HMIF sebagai organisasi mahasiswa yang aktif mendampingi
+          4. Memperkenalkan HMIF sebagai organisasi mahasiswa yang aktif mendampingi
           proses pembinaan dan pengembangan diri.<br></br>
-          5.Membangun hubungan harmonis antara mahasiswa baru dengan kakak tingkat,
+          5. Membangun hubungan harmonis antara mahasiswa baru dengan kakak tingkat,
           civitas akademika, serta lingkungan kampus.
                 </p>
               </div>
