@@ -73,7 +73,13 @@ const HasilPencarian = ({ data }) => {
       </div>
 
       <div className='text-center mb-10'>
-        <button className='bg-white text-[#686232] font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-200'>
+        <button
+          className='bg-white text-[#686232] font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-200'
+          onClick={() => {
+            if (data.nomerDpl) {
+              window.open(`https://wa.me/${data.nomerDpl}`, '_blank');
+            }
+          }}>
           Hubungi Daplok
         </button>
       </div>

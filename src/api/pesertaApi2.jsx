@@ -27,6 +27,7 @@ export async function findPesertaByNim(nim) {
       nim: peserta.nim,
       kelompok: peserta.kelompok,
       daplok: peserta.daplok,
+      nomerDpl: peserta.no_dpl,
       anggotaLainnya: anggota.map((a) => ({
         nama: a.nama,
         nim: a.nim,
