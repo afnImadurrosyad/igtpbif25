@@ -1,13 +1,50 @@
 'use client';
+import { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 import Image from 'next/image';
 
 export default function IgttpbDesc() {
+  const sectionRef = useRef(null);
+  const welcomeText = useRef(null);
+  const imgLogo = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const refs = [
+        { el: welcomeText.current, anim: { opacity: 0, y: 100 }, opts: { opacity: 1, y: 0, duration: 1 } },
+        { el: imgLogo.current, anim: { opacity: 0, scale: 0.5 }, opts: { opacity: 1, scale: 1, duration: 1.2 } },
+      ];
+
+      refs.forEach(({ el, anim, opts }) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          anim,
+          {
+            ...opts,
+            ease: opts.ease || "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
       <div className='min-h-screen bg-gradient-to-br from-[#DCE2B7] via-[#E8EDCC] to-[#DCE2B7] p-4 sm:p-8 lg:p-48 font-poppins pb-13'>
         <div className='max-w-7xl mx-auto'>
           <div className='grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 lg:gap-20 items-center mt-20'>
             {/* Kolom Kiri: Judul dan Tombol */}
-            <div className='animate-fade-in'>
+            <div ref={welcomeText} className='animate-fade-in'>
               <div className='mb-5'>
                 <p className='inline-flex items-center text-sm font-semibold tracking-wider uppercase bg-gradient-to-r from-[#5a5a3d] to-[#7a7447] px-6 py-2 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105'>
                   Welcome to IGTTPB
@@ -34,7 +71,7 @@ export default function IgttpbDesc() {
             </div>
 
             {/* Kolom Kanan Atas: Lingkaran Logo/Gambar */}
-            <div className='flex justify-center lg:justify-center'>
+            <div ref={imgLogo} className='flex justify-center lg:justify-center'>
               <div className='relative flex items-center justify-center text-center'>
                 <div className='absolute inset-0 bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] rounded-full blur-2xl opacity-30 animate-pulse'></div>
                 <img

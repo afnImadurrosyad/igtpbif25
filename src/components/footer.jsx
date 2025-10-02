@@ -7,13 +7,13 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row md:items-start items-start justify-between gap-10 px-6 py-10 max-w-6xl mx-auto">
         {/* logo */}
         <div className="flex justify-center md:justify-start w-full md:w-auto order-1">
-          <img
-          src="https://raw.githubusercontent.com/afnImadurrosyad/igtpbif25/refs/heads/master/Public/Images/igttpb2025logo.webp"
-          alt="Logo"
-          width={120}
-          height={120}
-          className="rounded-full object-cover"
-        />
+          <Image
+            src="https://raw.githubusercontent.com/afnImadurrosyad/igtpbif25/refs/heads/master/Public/Images/igttpb2025logo.webp"
+            alt="Logo"
+            width={120}
+            height={120}
+            className="rounded-full object-cover"
+          />
         </div>
 
         {/* contact */}
@@ -26,11 +26,11 @@ export default function Footer() {
           <p className="mt-1.5 text-sm flex items-center">
             <Mail className="mr-2 shrink-0" size={21} />
             informaticsitera24@gmail.com
-          </p>{/*
+          </p>
           <p className="mt-1.5 text-sm flex items-center">
             <Phone className="mr-2 shrink-0" size={21} />
-            +1 (123) 456-7890
-          </p>*/}
+            +62 812-9891-1597
+          </p>
           <p className="mt-1.5 text-sm flex items-center">
             <Instagram className="mr-2 shrink-0" size={21} />
             @informatics.goestpb
@@ -41,7 +41,7 @@ export default function Footer() {
         <div className="text-[#5a5a3d] space-y-2.5 w-full md:w-auto order-1 md:order-3 text-center md:text-start">
           <h2 className="text-xl font-bold">Pages</h2>
           <ul className="flex flex-wrap justify-center md:block gap-x-4 gap-y-2 mt-2 font-medium">
-            <li><a href="#aboutIGTTPB" className="text-sm">Home</a></li>
+            <li><a href="/" className="text-sm">Home</a></li>
             <li><a href="#cariKelompok" className="text-sm">Pengumuman</a></li>
             <li><a href="#faq" className="text-sm">FAQ</a></li>
           </ul>
