@@ -97,7 +97,7 @@ export default function IgttpbDesc() {
             <div className="relative flex items-center justify-center text-center">
               <div className="absolute inset-0 bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] rounded-full blur-2xl opacity-30 animate-pulse"></div>
               <Images
-                src="https://res.cloudinary.com/ddzjskfyn/image/upload/v1759398310/igttpb25_logo_fzskzu.png"
+                src="https://raw.githubusercontent.com/afnImadurrosyad/igtpbif25/refs/heads/master/Public/Images/igttpb2025logo.webp"
                 alt="Logo IGTTPB"
                 width={250}
                 height={250}
