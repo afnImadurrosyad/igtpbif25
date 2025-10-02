@@ -16,7 +16,7 @@ export const metadata = {
   title: "IGTTPB 2025",
   description: "Informatics Goes To TPB 2025 - Institut Teknologi Sumatera",
   icons: {
-    icon: "Images/igttpb25_logo.png",
+    icon: "https://res.cloudinary.com/ddzjskfyn/image/upload/v1759423035/igttpb2025logo_lfcrjn.webp",
   }
 };
 
