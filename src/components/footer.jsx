@@ -7,13 +7,13 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row md:items-start items-start justify-between gap-10 px-6 py-10 max-w-6xl mx-auto">
         {/* logo */}
         <div className="flex justify-center md:justify-start w-full md:w-auto order-1">
-          <Image
-            src="/Images/igttpb2025-logo.avif"
-            alt="Logo"
-            width={120}
-            height={120}
-            className="rounded-full object-cover"
-          />
+          <img
+          src="/Images/igttpb2025-logo.avif"
+          alt="Logo"
+          width={120}
+          height={120}
+          className="rounded-full object-cover"
+        />
         </div>
 
         {/* contact */}

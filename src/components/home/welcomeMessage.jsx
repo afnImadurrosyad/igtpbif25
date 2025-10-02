@@ -37,13 +37,13 @@ export default function IgttpbDesc() {
             <div className='flex justify-center lg:justify-center'>
               <div className='relative flex items-center justify-center text-center'>
                 <div className='absolute inset-0 bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] rounded-full blur-2xl opacity-30 animate-pulse'></div>
-                <Image
-                                  src="/Images/igttpb2025-logo.avif"
-                                  alt="Logo IGTTPB2025"
-                                  width={250}
-                                  height={250}
-                                  className="relative mb-6 rounded-full sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
-                                />
+                <img
+                    src="/Images/igttpb2025-logo.avif"
+                    alt="Logo IGTTPB2025"
+                    width={250}
+                    height={250}
+                    className="relative mb-6 rounded-full sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
+                  />
               </div>
             </div>
           </div>
