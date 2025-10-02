@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply overflow-x-hidden;
+  }
+  
+  html {
+    @apply overflow-x-hidden;
+  }
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;

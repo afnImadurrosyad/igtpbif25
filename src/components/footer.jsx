@@ -21,11 +21,11 @@ export default function Footer() {
           <h2 className="text-xl font-bold text-center md:text-start">Contact Us</h2>
           <p className="mt-2 text-sm flex items-center">
             <MapPin className="mr-2 shrink-0" size={21} />
-            Jl. Terusan Ryacudu · (0721) 8030188
+            Jl. Terusan Ryacudu, Kec. Jati Agung
           </p>
           <p className="mt-1.5 text-sm flex items-center">
             <Mail className="mr-2 shrink-0" size={21} />
-            algovistaitera@gmail.com
+            informaticsitera24@gmail.com
           </p>
           <p className="mt-1.5 text-sm flex items-center">
             <Phone className="mr-2 shrink-0" size={21} />

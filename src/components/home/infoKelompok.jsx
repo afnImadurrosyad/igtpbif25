@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { findPesertaByNim } from "../../api/pesertaApi2.jsx"; // Impor fungsi API (sesuaikan path)
-import HasilPencarian from "./HasilPencarian"; // Impor komponen hasil (sesuaikan path)
+import { findPesertaByNim } from "../../api/pesertaApi2.jsx";
+import HasilPencarian from "./hasilPencarian.jsx";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -66,7 +66,7 @@ function InfoKelompok() {
   return (
     // Latar belakang utama diubah menjadi White Flour
     <section
-      className="min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans"
+      className="min-h-screen bg-gradient-to-br from-[#E8EDCC] via-[#DCE2B7] to-[#E8EDCC] flex flex-col items-center p-4 pt-12 font-sans"
       id="cariKelompok"
     >
       <div ref={containerRef} className="mt-44 flex flex-col items-center w-full">

@@ -58,59 +58,34 @@ export default function FAQComponent() {
   };
 
   return (
-    <div ref={containerFAQ} className="min-h-screen p-8" style={{ backgroundColor: '#DCE2B7' }}>
-      <div className="max-w-6xl mx-auto mt-24">
-        <div className="grid md:grid-cols-[350px,1fr] gap-8">
-          {/* Sidebar */}
-          <div ref={containerLeft} className="flex items-center">
-            <h1 className="text-5xl font-bold mb-8" style={{ 
+    <div ref={containerFAQ} className="w-full min-h-screen bg-gradient-to-br from-[#DCE2B7] via-[#E8EDCC] to-[#DCE2B7] px-4 py-12 md:py-16">
+      <div className="container mx-auto max-w-7xl">
+        <div className="flex flex-col lg:flex-row lg:gap-12 xl:gap-16">
+          {/* Header */}
+          <div ref={containerLeft} className="mb-12 lg:mb-0 lg:w-2/5 lg:flex-shrink-0">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold" style={{ 
               color: '#5a5a3d',
               fontFamily: 'serif',
-              letterSpacing: '2px'
+              letterSpacing: '2px',
+              lineHeight: '1.2'
             }}>
               FREQUENTLY<br />ASKED<br />QUESTIONS
             </h1>
-            {/*
-            <div className="space-y-4">
-              <button 
-                className="w-full text-left px-6 py-4 rounded-lg flex items-center justify-between transition-all hover:opacity-80"
-                style={{ backgroundColor: '#e8dcc8' }}
-              >
-                <span style={{ color: '#5a5a3d', fontWeight: '500' }}>Visit FAQ</span>
-                <span style={{ color: '#5a5a3d' }}>→</span>
-              </button>
-              
-              <button 
-                className="w-full text-left px-6 py-4 rounded-lg flex items-center justify-between transition-all hover:opacity-80"
-                style={{ backgroundColor: '#e8dcc8' }}
-              >
-                <span style={{ color: '#5a5a3d', fontWeight: '500' }}>Visit Dokumentasi</span>
-                <span style={{ color: '#5a5a3d' }}>→</span>
-              </button>
-              
-              <button 
-                className="w-full text-left px-6 py-4 rounded-lg flex items-center justify-between transition-all hover:opacity-80"
-                style={{ backgroundColor: '#e8dcc8' }}
-              >
-                <span style={{ color: '#5a5a3d', fontWeight: '500' }}>Visit Ketentuan Atribut</span>
-                <span style={{ color: '#5a5a3d' }}>→</span>
-              </button>
-            </div>*/}
           </div>
 
           {/* FAQ Accordion */}
-          <div ref={containerRight} className="space-y-4 lg:space-base" id='faq' style={{ scrollMarginTop: '300px' }}>
+          <div ref={containerRight} className="space-y-4 lg:flex-1" id='faq' style={{ scrollMarginTop: '300px' }}>
             {faqs.map((faq, index) => (
               <div 
                 key={index}
-                className="rounded-lg overflow-hidden transition-all"
+                className="rounded-lg overflow-hidden transition-all shadow-md"
                 style={{ backgroundColor: '#5a5a3d' }}
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full text-left px-6 py-5 flex items-center justify-between hover:opacity-90 transition-opacity"
+                  className="w-full text-left px-4 md:px-6 py-4 md:py-5 flex items-center justify-between hover:opacity-90 transition-opacity"
                 >
-                  <span className="text-white font-medium text-lg pr-4">
+                  <span className="text-white font-medium text-base md:text-lg pr-4">
                     {faq.question}
                   </span>
                   <ChevronDown 
@@ -129,11 +104,11 @@ export default function FAQComponent() {
                     maxHeight: openIndex === index ? '500px' : '0'
                   }}
                 >
-                  <div className="px-6 py-5 border-t" style={{ 
+                  <div className="px-4 md:px-6 py-4 md:py-5 border-t" style={{ 
                     backgroundColor: '#6b6b4d',
                     borderColor: '#7a7a5a'
                   }}>
-                    <p className="text-white leading-relaxed">
+                    <p className="text-white leading-relaxed text-sm md:text-base">
                       {faq.answer}
                     </p>
                   </div>
