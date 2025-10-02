@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['igttpb.site'], // Ganti dengan domain gambar Anda
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'igttpb.site', // Ganti dengan domain gambar Anda
+        // Anda juga bisa menambahkan port dan pathname jika perlu
+      },
+    ],
   },
 };
 
