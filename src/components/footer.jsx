@@ -8,7 +8,7 @@ export default function Footer() {
         {/* logo */}
         <div className="flex justify-center md:justify-start w-full md:w-auto order-1">
           <img
-          src="/Images/igttpb2025-logo.avif"
+          src="https://i.postimg.cc/CKt3k833/igttpb2025-logo.avif"
           alt="Logo"
           width={120}
           height={120}
