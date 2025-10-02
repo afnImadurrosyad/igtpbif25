@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { findPesertaByNim } from '../../api/pesertaApi2.jsx'; // Impor fungsi API (sesuaikan path)
-import HasilPencarian from './HasilPencarian'; // Impor komponen hasil (sesuaikan path)
+import HasilPencarian from '@components/home/HasilPencarian'; // Impor komponen hasil (sesuaikan path)
 
 function InfoKelompok() {
   const [nimInput, setNimInput] = useState('');
