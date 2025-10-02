@@ -1,10 +1,43 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
-
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 export default function FAQComponent() {
   const [openIndex, setOpenIndex] = useState(null);
+  const containerFAQ = React.useRef(null);
+  const containerLeft = React.useRef(null);
+  const containerRight = React.useRef(null);
 
+  React.useEffect(() => {
+    const ctx = gsap.context(() => {
+      const refs = [
+        { el: containerLeft.current, anim: { opacity: 0, x: -100 }, opts: { opacity: 1, x: 0, duration: 1 } },
+        { el: containerRight.current, anim: { opacity: 0, x: 100 }, opts: { opacity: 1, x: 0, duration: 1 } },
+      ];
+
+      refs.forEach(({ el, anim, opts }) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          anim,
+          {
+            ...opts,
+            ease: opts.ease || "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 80%",
+              end: "bottom 20%", 
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+    }, containerFAQ);
+
+    return () => ctx.revert();
+  }, []);
   const faqs = [
     {
       question: "Apa itu IGTTPB?",
@@ -25,11 +58,11 @@ export default function FAQComponent() {
   };
 
   return (
-    <div className="min-h-screen p-8" style={{ backgroundColor: '#DCE2B7' }}>
+    <div ref={containerFAQ} className="min-h-screen p-8" style={{ backgroundColor: '#DCE2B7' }}>
       <div className="max-w-6xl mx-auto mt-24">
         <div className="grid md:grid-cols-[350px,1fr] gap-8">
           {/* Sidebar */}
-          <div className="flex items-center">
+          <div ref={containerLeft} className="flex items-center">
             <h1 className="text-5xl font-bold mb-8" style={{ 
               color: '#5a5a3d',
               fontFamily: 'serif',
@@ -66,7 +99,7 @@ export default function FAQComponent() {
           </div>
 
           {/* FAQ Accordion */}
-          <div className="space-y-4 lg:space-base" id='faq' style={{ scrollMarginTop: '300px' }}>
+          <div ref={containerRight} className="space-y-4 lg:space-base" id='faq' style={{ scrollMarginTop: '300px' }}>
             {faqs.map((faq, index) => (
               <div 
                 key={index}

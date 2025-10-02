@@ -1,5 +1,5 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +11,9 @@ export default function Navbar() {
   return (
     <>
       <style jsx global strategy="lazyOnload">{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
         body {
-          font-family: 'Inter', sans-serif;
+          font-family: "Inter", sans-serif;
         }
       `}</style>
 
@@ -24,18 +24,27 @@ export default function Navbar() {
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
               <div className="text-[#5a5a3d] text-xl font-semibold">
-                IGTTPB
+                <a href="/">IGTTPB</a>
               </div>
 
               {/* Menu Items */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-8">
-                <a href="#aboutIGTTPB" className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300">
+                <a
+                  href="#aboutIGTTPB"
+                  className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300"
+                >
                   Mengenal IGTTPB
                 </a>
-                <a href="#cariKelompok" className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300">
+                <a
+                  href="#cariKelompok"
+                  className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300"
+                >
                   Pengumuman
                 </a>
-                <a href="#faq" className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300">
+                <a
+                  href="#faq"
+                  className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300"
+                >
                   FAQ
                 </a>
               </div>
@@ -47,24 +56,26 @@ export default function Navbar() {
         <div className="md:hidden">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between">
-              <span className="text-[#5a5a3d] text-lg font-semibold">IGTTPB</span>
+              <span className="text-[#5a5a3d] text-lg font-semibold">
+                IGTTPB
+              </span>
               <button
                 onClick={toggleMenu}
                 className="text-white focus:outline-none w-10 h-10 flex flex-col justify-center items-center gap-1.5"
               >
                 <span
                   className={`block w-5 h-0.5 bg-[#5a5a3d] rounded-full transition-all duration-300 ease-in-out ${
-                    isOpen ? 'rotate-45 translate-y-2.5' : ''
+                    isOpen ? "rotate-45 translate-y-2.5" : ""
                   }`}
                 ></span>
                 <span
                   className={`block w-5 h-0.5 bg-[#5a5a3d] rounded-full transition-all duration-300 ease-in-out ${
-                    isOpen ? 'opacity-0' : 'opacity-100'
+                    isOpen ? "opacity-0" : "opacity-100"
                   }`}
                 ></span>
                 <span
                   className={`block w-5 h-0.5 bg-[#5a5a3d] rounded-full transition-all duration-300 ease-in-out ${
-                    isOpen ? '-rotate-45 -translate-y-2.5' : ''
+                    isOpen ? "-rotate-45 -translate-y-2.5" : ""
                   }`}
                 ></span>
               </button>
@@ -73,13 +84,17 @@ export default function Navbar() {
             {/* Mobile Menu with Animation */}
             <div
               className={`overflow-hidden transition-all duration-500 ease-out ${
-                isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
               }`}
             >
               <div className="mt-4 bg-[#5a5a3d]/5 backdrop-blur-sm rounded-xl border border-[#5a5a3d]/10">
-                <div className={`flex flex-col p-4 space-y-1 transition-all duration-500 ease-out ${
-                  isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
-                }`}>
+                <div
+                  className={`flex flex-col p-4 space-y-1 transition-all duration-500 ease-out ${
+                    isOpen
+                      ? "translate-y-0 opacity-100"
+                      : "-translate-y-4 opacity-0"
+                  }`}
+                >
                   <a
                     href="#aboutIGTTPB"
                     className="text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300 py-3 px-4 rounded-lg font-medium"
