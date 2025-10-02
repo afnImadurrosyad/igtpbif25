@@ -40,9 +40,9 @@ export default function IgttpbDesc() {
                 <Image
                                   src="/Images/igttpb2025-logo.avif"
                                   alt="Logo IGTTPB2025"
-                                  width={120}
-                                  height={120}
-                                  className="relative mb-6 rounded-full h-[250px] w-[250px] sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
+                                  width={250}
+                                  height={250}
+                                  className="relative mb-6 rounded-full sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
                                 />
               </div>
             </div>
