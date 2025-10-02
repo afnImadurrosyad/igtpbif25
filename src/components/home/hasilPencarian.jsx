@@ -6,15 +6,15 @@ const getStyleByIndex = (index, isMobile) => {
     const useLight = index % 2 === 0;
     return {
       container: useLight
-        ? 'bg-[#DCE2B7] text-[#686232]'
-        : 'bg-[#686232] text-[#DCE2B7]',
+        ? 'bg-[#DCE2B7] text-[#5a5a3d]'
+        : 'bg-[#5a5a3d] text-[#DCE2B7]',
       textColor: useLight ? 'text-[#2F2F30]' : 'text-white',
     };
   }
 
   if (index === 0) {
     return {
-      container: 'bg-[#DCE2B7] text-[#686232]',
+      container: 'bg-[#DCE2B7] text-[#5a5a3d]',
       textColor: 'text-[#2F2F30]',
     };
   }
@@ -23,8 +23,8 @@ const getStyleByIndex = (index, isMobile) => {
   const useDark = block % 2 === 0;
   return {
     container: useDark
-      ? 'bg-[#686232] text-[#DCE2B7]'
-      : 'bg-[#DCE2B7] text-[#686232]',
+      ? 'bg-[#5a5a3d] text-[#DCE2B7]'
+      : 'bg-[#DCE2B7] text-[#5a5a3d]',
     textColor: useDark ? 'text-white' : 'text-[#2F2F30]',
   };
 };
@@ -42,7 +42,7 @@ const HasilPencarian = ({ data }) => {
   if (!data) return null;
 
   return (
-    <div className='bg-[#686232] text-white p-6 sm:p-8 rounded-2xl max-w-5xl mx-auto shadow-xl'>
+    <div className='bg-[#5a5a3d] text-white p-6 sm:p-8 rounded-2xl max-w-5xl mx-auto shadow-xl'>
       <h2 className='text-center text-lg font-medium text-white mb-8'>
         Data ditemukan
       </h2>
@@ -74,7 +74,7 @@ const HasilPencarian = ({ data }) => {
 
       <div className='text-center mb-10'>
         <button
-          className='bg-white text-[#686232] font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-200'
+          className='bg-white text-[#5a5a3d] font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-200 transition-colors duration-200'
           onClick={() => {
             if (data.nomerDpl) {
               window.open(`https://wa.me/${data.nomerDpl}`, '_blank');
@@ -86,7 +86,7 @@ const HasilPencarian = ({ data }) => {
 
       {/* Daftar Anggota Lainnya */}
       <div className='bg-[#F7F1E7] p-6 rounded-lg text-[#2F2F30]'>
-        <h3 className='text-lg font-medium text-[#686232] mb-4'>
+        <h3 className='text-lg font-medium text-[#5a5a3d] mb-4'>
           Anggota Lainnya
         </h3>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>

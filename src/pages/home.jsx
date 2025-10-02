@@ -3,6 +3,7 @@ import InfoKelompok from '../components/home/infoKelompok';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Image from 'next/image';
+import FAQComponent from '../components/faq';
 
 export default function HomePage() {
   return (
@@ -10,6 +11,7 @@ export default function HomePage() {
       <Navbar />
       <IgttpbDesc />
       <InfoKelompok />
+      <FAQComponent />
       <Footer />
     </div>
   );

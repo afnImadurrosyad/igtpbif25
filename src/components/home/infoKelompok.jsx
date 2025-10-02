@@ -33,7 +33,7 @@ function InfoKelompok() {
       className='min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans'
       id='cariKelompok'>
       <div className='mt-44 flex flex-col items-center w-full'>
-        <h1 className='text-3xl lg:text-5xl font-bold text-center text-black mb-9'>
+        <h1 className='text-3xl lg:text-5xl font-bold text-center text-[#5a5a3d] mb-9'>
           Cari Kelompokmu Disini
         </h1>
         {/* Bagian Input Pencarian */}
@@ -46,7 +46,7 @@ function InfoKelompok() {
               type='text'
               value={nimInput}
               onChange={(e) => setNimInput(e.target.value)}
-              className='flex-1 max-w- px-4 py-3 border border-gray-300 bg-white text-black placeholder-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='flex-1 max-w- px-4 py-3 border border-gray-300 bg-[#F7F1E7] text-[#5a5a3d] placeholder-[#5a5a3d] rounded-md focus:outline-none focus:ring-2 focus:ring-[#5a5a3d]'
               placeholder='Masukkan 9 digit NIM'
               maxLength={9}
             />
@@ -54,7 +54,7 @@ function InfoKelompok() {
             <button
               onClick={handleSearch}
               disabled={isLoading}
-              className='px-6 py-3 bg-[#ffffff] text-[#7A7449] font-semibold rounded-md hover:bg-[#b7b7af] transition-colors duration-200 disabled:bg-gray-400'>
+              className='px-6 py-3 bg-[#F7F1E7] text-[#7A7449] font-semibold rounded-md hover:bg-[#5a5a3d] hover:text-[#F7F1E7] transition-colors duration-200 disabled:bg-gray-400'>
               {isLoading ? 'Mencari...' : 'Cari'}
             </button>
           </div>
@@ -64,7 +64,7 @@ function InfoKelompok() {
         <div className='w-full'>
           {/* Warna teks loading & error disesuaikan */}
           {isLoading && (
-            <p className='text-center text-[#2F2F30]'>Loading...</p>
+            <p className='text-center text-[#5a5a3d]'>Loading...</p>
           )}
           {error && (
             <p className='text-center text-red-600 font-semibold'>{error}</p>
