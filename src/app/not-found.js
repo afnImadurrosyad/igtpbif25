@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-
+import Image from 'next/image';
 export default function NotFound() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -115,11 +115,14 @@ export default function NotFound() {
                   {/* Glass circle */}
                   <div className="absolute inset-8 rounded-full bg-gradient-to-br from-white/60 to-white/30 backdrop-blur-xl border border-white/40 shadow-2xl flex items-center justify-center">
                     {/* Logo Image */}
-                    <div className="relative w-48 h-48 flex items-center justify-center">
-                      <img 
-                        src="https://via.placeholder.com/200x200/1e3a5f/ffffff?text=IGTTPB+LOGO" 
+                    <div className="relative w-72 h-72 flex items-center justify-center">
+                      <Image 
+                        src="https://res.cloudinary.com/ddzjskfyn/image/upload/v1759423035/igttpb2025logo_lfcrjn.webp" 
                         alt="IGTTPB Logo" 
-                        className="w-full h-full object-contain p-4"
+                        width={1024}
+                        height={1024}
+                        className="w-full h-full object-fill"
+                        style={{ animation: 'float2 6s ease-in-out infinite', animationDelay: '1s' }}
                       />
                     </div>
                   </div>
@@ -151,6 +154,13 @@ export default function NotFound() {
           66% { transform: translate(-20px, 20px) scale(0.9); }
         }
         
+        @keyframes float2 {
+          0%, 100% { transform: translateY(0) rotate(0); }
+          25% { transform: translateY(-20px) rotate(4deg); }
+          50% { transform: translateY(0px) rotate(0deg); }
+          75% { transform: translateY(-20px) rotate(-4deg); }
+        }
+
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(5deg); }
