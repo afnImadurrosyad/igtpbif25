@@ -7,24 +7,16 @@ export default function FAQComponent() {
 
   const faqs = [
     {
-      question: "Apa itu PPLK?",
-      answer: "PPLK (Praktik Pengenalan Lapangan Kependidikan) adalah program mata kuliah yang memberikan kesempatan kepada mahasiswa untuk mengenal, mengamati, dan memahami berbagai aspek pendidikan di lapangan secara langsung."
+      question: "Apa itu IGTTPB?",
+      answer: "IGTTPB merupakan First Gathering Mahasiswa Teknik Informatika di Institut Teknologi Sumatera."
     },
     {
-      question: "Apa tujuan dari diadakannya PPLK?",
-      answer: "Tujuan PPLK adalah untuk memberikan pengalaman praktis kepada mahasiswa dalam memahami lingkungan pendidikan, mengembangkan kompetensi profesional, dan mempersiapkan diri sebagai calon pendidik yang berkualitas."
+      question: "Apa tujuan dari diadakannya IGTTPB?",
+      answer: " IGTTPB berperan sebagai wadah perkenalan diri untuk saling mengenal satu sama lain."
     },
     {
-      question: "Bagaimana cara mengedit informasi media sosial di profil saya?",
-      answer: "Anda dapat mengedit informasi media sosial dengan masuk ke pengaturan profil, pilih bagian 'Media Sosial', kemudian tambahkan atau ubah link akun media sosial Anda seperti Instagram, Twitter, atau LinkedIn."
-    },
-    {
-      question: "Apa fungsi dari QR Code di halaman profil?",
-      answer: "QR Code di halaman profil berfungsi untuk memudahkan orang lain mengakses profil Anda dengan cepat. Cukup pindai QR Code tersebut menggunakan kamera smartphone untuk langsung membuka halaman profil Anda."
-    },
-    {
-      question: "Apa bentuk dukungan fakultas terhadap mahasiswa yang ingin meneliti dan membuat inovasi baru?",
-      answer: "Fakultas menyediakan berbagai dukungan seperti pendanaan penelitian, akses laboratorium, bimbingan dosen pembimbing, workshop pengembangan riset, serta kesempatan untuk mempresentasikan hasil penelitian dalam seminar dan konferensi."
+      question: "Siapa saja yang bisa mengikuti IGTTPB?",
+      answer: "IGTTPB ditujukan untuk mahasiswa TPB Teknik Informatika di Institut Teknologi Sumatera."
     }
   ];
 
@@ -33,11 +25,11 @@ export default function FAQComponent() {
   };
 
   return (
-    <div className="min-h-screen p-8" style={{ backgroundColor: '#5a5a3d' }}>
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen p-8" style={{ backgroundColor: '#DCE2B7' }}>
+      <div className="max-w-6xl mx-auto mt-24">
         <div className="grid md:grid-cols-[350px,1fr] gap-8">
           {/* Sidebar */}
-          <div>
+          <div className="flex items-center">
             <h1 className="text-5xl font-bold mb-8" style={{ 
               color: '#5a5a3d',
               fontFamily: 'serif',
@@ -45,7 +37,7 @@ export default function FAQComponent() {
             }}>
               FREQUENTLY<br />ASKED<br />QUESTIONS
             </h1>
-            
+            {/*
             <div className="space-y-4">
               <button 
                 className="w-full text-left px-6 py-4 rounded-lg flex items-center justify-between transition-all hover:opacity-80"
@@ -70,11 +62,11 @@ export default function FAQComponent() {
                 <span style={{ color: '#5a5a3d', fontWeight: '500' }}>Visit Ketentuan Atribut</span>
                 <span style={{ color: '#5a5a3d' }}>→</span>
               </button>
-            </div>
+            </div>*/}
           </div>
 
           {/* FAQ Accordion */}
-          <div className="space-y-4" lg:space-base>
+          <div className="space-y-4 lg:space-base" id='faq' style={{ scrollMarginTop: '300px' }}>
             {faqs.map((faq, index) => (
               <div 
                 key={index}
