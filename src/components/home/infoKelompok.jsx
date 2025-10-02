@@ -30,7 +30,7 @@ function InfoKelompok() {
   return (
     // Latar belakang utama diubah menjadi White Flour
     <section
-      className='min-h-screen bg-[#DCE2B7] flex flex-col items-center p-4 pt-12 font-sans'
+      className='min-h-screen bg-gradient-to-br from-[#E8EDCC] via-[#DCE2B7] to-[#E8EDCC] flex flex-col items-center p-4 pt-12 font-sans'
       id='cariKelompok'>
       <div className='mt-44 flex flex-col items-center w-full'>
         <h1 className='text-3xl lg:text-5xl font-bold text-center text-[#5a5a3d] mb-9'>

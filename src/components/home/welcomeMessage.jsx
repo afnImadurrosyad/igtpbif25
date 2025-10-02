@@ -1,4 +1,6 @@
 'use client';
+import Image from 'next/image';
+
 export default function IgttpbDesc() {
   return (
       <div className='min-h-screen bg-gradient-to-br from-[#DCE2B7] via-[#E8EDCC] to-[#DCE2B7] p-4 sm:p-8 lg:p-48 font-poppins pb-13'>
@@ -17,17 +19,15 @@ export default function IgttpbDesc() {
                 <span className='bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] bg-clip-text text-transparent'>IGTTPB</span>
               </h1>
 
-              <div className='flex space-x-4 lg:mb-20'>
-                <button className='group bg-[#5a5a3d] text-[#F7F1E7] px-6 py-3 font-bold rounded-lg hover:bg-[#F7F1E7] hover:text-[#5a5a3d] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 border-2 border-transparent hover:border-[#5a5a3d]'>
-                  <a href="#aboutIGTTPB" className='flex items-center'>
-                    Apa itu IGTTPB?
-                    <span className='ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>→</span>
+              <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 lg:mb-20'>
+                <button className='group bg-[#5a5a3d] text-[#F7F1E7] text-sm sm:text-base lg:text-lg px-6 py-3 lg:py-4 font-bold rounded-lg hover:bg-[#F7F1E7] hover:text-[#5a5a3d] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 border-2 border-transparent hover:border-[#5a5a3d] w-full sm:w-auto'>
+                  <a href="#aboutIGTTPB" className='flex items-center justify-center'>
+                    <span className='whitespace-nowrap'>Apa itu IGTTPB?</span>
                   </a>
                 </button>
-                <button className='group bg-[#F7F1E7] text-[#5a5a3d] px-6 py-3 font-bold rounded-lg hover:bg-[#5a5a3d] hover:text-[#F7F1E7] border-2 border-[#5a5a3d] hover:border-[#5a5a3d] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105'>
-                  <a href="#cariKelompok" className='flex items-center'>
-                    Cari Kelompok
-                    <span className='ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>→</span>
+                <button className='group bg-[#F7F1E7] text-[#5a5a3d] text-sm sm:text-base lg:text-lg px-6 py-3 lg:py-4 font-bold rounded-lg hover:bg-[#5a5a3d] hover:text-[#F7F1E7] border-2 border-[#5a5a3d] hover:border-[#5a5a3d] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 w-full sm:w-auto'>
+                  <a href="#cariKelompok" className='flex items-center justify-center'>
+                    <span className='whitespace-nowrap'>Cari Kelompok</span>
                   </a>
                 </button>
               </div>
@@ -37,11 +37,13 @@ export default function IgttpbDesc() {
             <div className='flex justify-center lg:justify-center'>
               <div className='relative flex items-center justify-center text-center'>
                 <div className='absolute inset-0 bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] rounded-full blur-2xl opacity-30 animate-pulse'></div>
-                <img
-                  src='igttpb.jpg'
-                  alt='Logo IGTTPB'
-                  className='relative mb-6 rounded-full h-[250px] w-[250px] sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]'
-                />
+                <Image
+                                  src="/Images/igttpb2025-logo.avif"
+                                  alt="Logo IGTTPB2025"
+                                  width={120}
+                                  height={120}
+                                  className="relative mb-6 rounded-full h-[250px] w-[250px] sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
+                                />
               </div>
             </div>
           </div>

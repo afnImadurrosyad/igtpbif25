@@ -8,7 +8,7 @@ export default function Footer() {
         {/* logo */}
         <div className="flex justify-center md:justify-start w-full md:w-auto order-1">
           <Image
-            src="/Images/igttpb_logo.jpg"
+            src="/Images/igttpb2025-logo.avif"
             alt="Logo"
             width={120}
             height={120}
@@ -21,16 +21,16 @@ export default function Footer() {
           <h2 className="text-xl font-bold text-center md:text-start">Contact Us</h2>
           <p className="mt-2 text-sm flex items-center">
             <MapPin className="mr-2 shrink-0" size={21} />
-            Jl. Terusan Ryacudu · (0721) 8030188
+            Jl. Terusan Ryacudu, Kec. Jati Agung
           </p>
           <p className="mt-1.5 text-sm flex items-center">
             <Mail className="mr-2 shrink-0" size={21} />
-            emailexample@example.com
-          </p>
+            informaticsitera24@gmail.com
+          </p>{/*
           <p className="mt-1.5 text-sm flex items-center">
             <Phone className="mr-2 shrink-0" size={21} />
             +1 (123) 456-7890
-          </p>
+          </p>*/}
           <p className="mt-1.5 text-sm flex items-center">
             <Instagram className="mr-2 shrink-0" size={21} />
             @informatics.goestpb
