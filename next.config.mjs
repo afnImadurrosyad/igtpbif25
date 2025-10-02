@@ -4,8 +4,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'igttpb.site', // Ganti dengan domain gambar Anda
-        // Anda juga bisa menambahkan port dan pathname jika perlu
+        hostname: 'res.cloudinary.com', // Ganti dengan domain gambar Anda
+        pathname: '/ddzjskfyn/image/upload/**' // Anda juga bisa menambahkan port dan pathname jika perlu
       },
     ],
   },
