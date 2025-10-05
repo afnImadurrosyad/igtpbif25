@@ -15,10 +15,44 @@ export default function FAQ() {
 
   // Fetch FAQ data from public folder
   useEffect(() => {
-    fetch('/faq.json')
-      .then(response => response.json())
-      .then(data => setFaqData(data))
-      .catch(error => console.error('Error loading FAQ data:', error));
+    const loadFAQ = async () => {
+      try {
+        const response = await fetch('/faq.json', {
+          cache: 'no-cache',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setFaqData(data);
+      } catch (error) {
+        console.error('Error loading FAQ data:', error);
+        // Fallback data jika fetch gagal
+        setFaqData({
+          faqs: [
+            {
+              question: "Apa itu IGTTPB?",
+              answer: "IGTTPB merupakan First Gathering Mahasiswa Teknik Informatika di Institut Teknologi Sumatera."
+            },
+            {
+              question: "Apa tujuan dari diadakannya IGTTPB?",
+              answer: "IGTTPB berperan sebagai wadah perkenalan diri untuk saling mengenal satu sama lain."
+            },
+            {
+              question: "Siapa saja yang bisa mengikuti IGTTPB?",
+              answer: "IGTTPB ditujukan untuk mahasiswa TPB Teknik Informatika di Institut Teknologi Sumatera."
+            }
+          ]
+        });
+      }
+    };
+    
+    loadFAQ();
   }, []);
 
   React.useEffect(() => {
