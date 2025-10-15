@@ -1,14 +1,59 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 gsap.registerPlugin(ScrollTrigger);
-export default function FAQComponent() {
+
+export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
+  const [faqData, setFaqData] = useState({ faqs: [] });
   const containerFAQ = React.useRef(null);
   const containerLeft = React.useRef(null);
   const containerRight = React.useRef(null);
+
+  // Fetch FAQ data from public folder
+  useEffect(() => {
+    const loadFAQ = async () => {
+      try {
+        const response = await fetch('/faq.json', {
+          cache: 'no-cache',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setFaqData(data);
+      } catch (error) {
+        console.error('Error loading FAQ data:', error);
+        // Fallback data jika fetch gagal
+        setFaqData({
+          faqs: [
+            {
+              question: "Apa itu IGTTPB?",
+              answer: "IGTTPB merupakan First Gathering Mahasiswa Teknik Informatika di Institut Teknologi Sumatera."
+            },
+            {
+              question: "Apa tujuan dari diadakannya IGTTPB?",
+              answer: "IGTTPB berperan sebagai wadah perkenalan diri untuk saling mengenal satu sama lain."
+            },
+            {
+              question: "Siapa saja yang bisa mengikuti IGTTPB?",
+              answer: "IGTTPB ditujukan untuk mahasiswa TPB Teknik Informatika di Institut Teknologi Sumatera."
+            }
+          ]
+        });
+      }
+    };
+    
+    loadFAQ();
+  }, []);
 
   React.useEffect(() => {
     const ctx = gsap.context(() => {
@@ -38,20 +83,6 @@ export default function FAQComponent() {
 
     return () => ctx.revert();
   }, []);
-  const faqs = [
-    {
-      question: "Apa itu IGTTPB?",
-      answer: "IGTTPB merupakan First Gathering Mahasiswa Teknik Informatika di Institut Teknologi Sumatera."
-    },
-    {
-      question: "Apa tujuan dari diadakannya IGTTPB?",
-      answer: " IGTTPB berperan sebagai wadah perkenalan diri untuk saling mengenal satu sama lain."
-    },
-    {
-      question: "Siapa saja yang bisa mengikuti IGTTPB?",
-      answer: "IGTTPB ditujukan untuk mahasiswa TPB Teknik Informatika di Institut Teknologi Sumatera."
-    }
-  ];
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -75,7 +106,7 @@ export default function FAQComponent() {
 
           {/* FAQ Accordion */}
           <div ref={containerRight} className="space-y-4 lg:flex-1" id='faq' style={{ scrollMarginTop: '300px' }}>
-            {faqs.map((faq, index) => (
+            {faqData.faqs && faqData.faqs.length > 0 ? faqData.faqs.map((faq, index) => (
               <div 
                 key={index}
                 className="rounded-lg overflow-hidden transition-all shadow-md"
@@ -114,7 +145,11 @@ export default function FAQComponent() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="text-center py-8">
+                <p className="text-gray-600">Loading FAQ...</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
