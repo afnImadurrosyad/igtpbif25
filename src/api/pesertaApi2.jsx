@@ -39,3 +39,21 @@ export async function findPesertaByNim(nim) {
     throw err;
   }
 }
+
+export async function getAllPeserta() {
+  try {
+    const { data, error } = await supabase
+      .from('dataif25')
+      .select('*')
+      .order('kelompok', { ascending: true }); // Urut berdasarkan kelompok
+
+    if (error) {
+      throw error; 
+    }
+    
+    return data;
+  } catch (err) {
+    console.error("Error fetching all peserta:", err);
+    throw err;
+  }
+}
