@@ -143,7 +143,7 @@ const DashPeserta = () => {
                 );
                 })
             ) : (
-                <p className="text-center p-4 text-sm sm:text-base text-gray-600">Tidak ada data yang cocok dengan pencarian Anda.</p>
+                <p className="text-center p-4 text-sm sm:text-base text-gray-600">Tidak ada data yang cocok dengan pencarian Anda..</p>
             )}
           </div>
         </div>

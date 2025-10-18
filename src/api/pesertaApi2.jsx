@@ -45,7 +45,7 @@ export async function getAllPeserta() {
     const { data, error } = await supabase
       .from('dataif25')
       .select('*')
-      .order('kelompok', { ascending: true }); // Urut berdasarkan kelompok
+      .order('kelompok', { ascending: true }); // Urut berdasarkan kelompok.
 
     if (error) {
       throw error; 
