@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, Search } from 'lucide-react';
+<<<<<<< HEAD:src/components/dashPeserta.jsx
 import { getAllPeserta } from '@/api/pesertaApi2';
+=======
+import { getAllPeserta } from '../../api/pesertaApi2';
+>>>>>>> origin/progres1:src/components/dashboard/dashPeserta.jsx
 
 const getStyleByIndex = (index) => {
   const isEven = index % 2 === 0;

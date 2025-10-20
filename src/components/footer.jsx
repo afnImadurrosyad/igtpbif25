@@ -19,22 +19,38 @@ export default function Footer() {
         {/* contact */}
         <div className="text-[#5a5a3d] space-y-2.5 w-full md:w-auto order-4 md:order-2 ">
           <h2 className="text-xl font-bold text-center md:text-start">Contact Us</h2>
-          <p className="mt-2 text-sm flex items-center">
+          <a 
+            href="https://maps.app.goo.gl/4amx5Xcr1BpcVHVD8" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="mt-2 text-sm flex items-center hover:underline"
+          >
             <MapPin className="mr-2 shrink-0" size={21} />
             Jl. Terusan Ryacudu, Kec. Jati Agung
-          </p>
-          <p className="mt-1.5 text-sm flex items-center">
+          </a>
+          <a 
+            href="mailto:informaticsitera24@gmail.com"
+            className="mt-1.5 text-sm flex items-center hover:underline"
+          >
             <Mail className="mr-2 shrink-0" size={21} />
             informaticsitera24@gmail.com
-          </p>
-          <p className="mt-1.5 text-sm flex items-center">
+          </a>
+          <a 
+            href="tel:+6281298911597"
+            className="mt-1.5 text-sm flex items-center hover:underline"
+          >
             <Phone className="mr-2 shrink-0" size={21} />
             +62 812-9891-1597
-          </p>
-          <p className="mt-1.5 text-sm flex items-center">
+          </a>
+          <a 
+            href="https://instagram.com/informatics.goestpb" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="mt-1.5 text-sm flex items-center hover:underline"
+          >
             <Instagram className="mr-2 shrink-0" size={21} />
             @informatics.goestpb
-          </p>
+          </a>
         </div>
 
         {/* pages */}
