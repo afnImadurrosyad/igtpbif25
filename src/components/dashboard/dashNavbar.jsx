@@ -79,7 +79,7 @@ export default function NavbarDash({
     <>
       {/* Mobile Top Navbar */}
       {isMobile && (
-        <div className='fixed top-0 left-0 right-0 h-16 bg-[#F7F1E7] border-b border-[#5a5a3d]/20 shadow-sm flex items-center justify-between px-4'>
+        <div className='fixed top-0 left-0 right-0 h-16 bg-[#F7F1E7] border-b border-[#5a5a3d]/20 shadow-sm z-50 flex items-center justify-between px-4'>
           <div className='flex items-center gap-2'>
             <span className='text-lg font-bold text-[#5a5a3d] font-poppins'>
               IGTTPB
@@ -109,7 +109,7 @@ export default function NavbarDash({
       {/* Sidebar */}
       <div
         className={`
-        bg-[#F7F1E7] fixed h-full z-50 transition-all duration-300 overflow-hidden shadow-sm
+        bg-[#F7F1E7] h-full transition-all duration-300 overflow-hidden shadow-sm
         ${
           isMobile
             ? `border-l border-[#5a5a3d]/20 right-0 w-64 top-0 ${

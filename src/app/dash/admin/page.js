@@ -4,12 +4,12 @@ import DashPeserta from '@/components/dashboard/dashPeserta';
 
 export default function Page() {
   return (
-    <div className='m-0'>
-      <div>
+    <div className='m-0 '>
+      <div className='flex'>
         <div>
           <NavbarDash />
         </div>
-        <div>
+        <div className='w-full'>
           <DashboardKehadiran />
           <DashPeserta />
         </div>

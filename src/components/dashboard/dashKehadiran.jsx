@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -30,7 +30,7 @@ const DashboardKehadiran = () => {
       {
         label: 'Peserta Hadir',
         data: [180, 210], // Data untuk Day 1 dan Day 2
-        backgroundColor: 'rgb(220, 226, 183)', 
+        backgroundColor: 'rgb(220, 226, 183)',
         borderColor: 'rgb(220, 226, 183)',
         borderWidth: 1,
       },
@@ -49,7 +49,7 @@ const DashboardKehadiran = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top', 
+        position: 'top',
       },
       title: {
         display: true,
@@ -63,41 +63,50 @@ const DashboardKehadiran = () => {
       y: {
         beginAtZero: true, // Sumbu Y dimulai dari 0
         title: {
-            display: true,
-            text: 'Jumlah Peserta'
-        }
+          display: true,
+          text: 'Jumlah Peserta',
+        },
       },
     },
   };
-  
+
   // --- DATA DUMMY  TOTAL PESERTA ---
-  const totalPesertaHadir = 210; 
+  const totalPesertaHadir = 210;
   const totalPeserta = 250;
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4 sm:p-8 font-sans">
-      <div className="max-w-7xl mx-auto">
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+    <div className='bg-[#F7F1E7] h-fit p-4 sm:p-8 font-sans'>
+      <div className='max-w-7xl mx-auto'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Kartu Jumlah Peserta */}
-          <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-md flex flex-col justify-center items-center">
-            <h2 className="text-lg font-semibold text-gray-600 mb-4">Total Peserta Hadir (Day 2)</h2>
-            <div className="flex items-end gap-2">
-                <span className="text-5xl font-bold text-gray-800">{totalPesertaHadir}</span>
-                <span className="text-xl text-gray-500 mb-1">/ {totalPeserta}</span>
+          <div className='lg:col-span-1 bg-white p-6 rounded-lg shadow-md flex flex-col justify-center items-center'>
+            <h2 className='text-lg font-semibold text-gray-600 mb-4'>
+              Total Peserta Hadir (Day 2)
+            </h2>
+            <div className='flex items-end gap-2'>
+              <span className='text-5xl font-bold text-gray-800'>
+                {totalPesertaHadir}
+              </span>
+              <span className='text-xl text-gray-500 mb-1'>
+                / {totalPeserta}
+              </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-4">
-              <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${(totalPesertaHadir / totalPeserta) * 100}%` }}></div>
+            <div className='w-full bg-gray-200 rounded-full h-2.5 mt-4'>
+              <div
+                className='bg-blue-600 h-2.5 rounded-full'
+                style={{
+                  width: `${(totalPesertaHadir / totalPeserta) * 100}%`,
+                }}></div>
             </div>
-            <p className="text-sm text-gray-500 mt-2">{((totalPesertaHadir / totalPeserta) * 100).toFixed(1)}% Kehadiran</p>
+            <p className='text-sm text-gray-500 mt-2'>
+              {((totalPesertaHadir / totalPeserta) * 100).toFixed(1)}% Kehadiran
+            </p>
           </div>
 
           {/* Kartu Grafik */}
-          <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+          <div className='lg:col-span-2 bg-white p-6 rounded-lg shadow-md'>
             <Bar options={opsiGrafik} data={dataGrafik} />
           </div>
-
         </div>
       </div>
     </div>
