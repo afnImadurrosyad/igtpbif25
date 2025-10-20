@@ -1,11 +1,24 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
+import { User, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulasi status login
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setShowProfileDropdown(false);
   };
 
   return (
@@ -23,8 +36,15 @@ export default function Navbar() {
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
-              <div className="text-[#5a5a3d] text-xl font-semibold">
-                <a href="/">IGTTPB</a>
+              <div className="flex items-center gap-3">
+                <Image
+                  src="https://res.cloudinary.com/ddzjskfyn/image/upload/v1759423035/igttpb2025logo_lfcrjn.webp"
+                  alt="Logo IGTTPB"
+                  width={48}
+                  height={48}
+                  className="object-cover"
+                />
+                <span className="text-xl font-bold text-[#5a5a3d]">IGTTPB</span>
               </div>
 
               {/* Menu Items */}
@@ -42,11 +62,60 @@ export default function Navbar() {
                   Pengumuman
                 </a>
                 <a
+                  href="#dresscode"
+                  className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300"
+                >
+                  Dress Code
+                </a>
+                <a
                   href="#faq"
                   className="text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300"
                 >
                   FAQ
                 </a>
+              </div>
+
+              {/* Login/Profile Button */}
+              <div className="relative">
+                {!isLoggedIn ? (
+                  <button
+                    onClick={handleLogin}
+                    className="px-6 py-2 bg-[#5a5a3d] text-[#F7F1E7] rounded-lg hover:bg-[#5a5a3d]/80 transition-all duration-300 font-medium"
+                  >
+                    Login
+                  </button>
+                ) : (
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                      className="flex items-center gap-2 px-4 py-2 bg-[#5a5a3d] text-[#F7F1E7] rounded-lg hover:bg-[#5a5a3d]/80 transition-all duration-300"
+                    >
+                      <User size={20} />
+                      <span className="font-medium">Profile</span>
+                      <ChevronDown size={16} className={`transition-transform duration-300 ${showProfileDropdown ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {showProfileDropdown && (
+                      <div className="absolute right-0 mt-2 w-48 bg-[#F7F1E7] border border-[#5a5a3d]/20 rounded-lg shadow-lg overflow-hidden">
+                        <a
+                          href="/dashboard"
+                          className="flex items-center gap-3 px-4 py-3 text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300"
+                        >
+                          <LayoutDashboard size={18} />
+                          <span>Dashboard</span>
+                        </a>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300 border-t border-[#5a5a3d]/10"
+                        >
+                          <LogOut size={18} />
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -55,10 +124,21 @@ export default function Navbar() {
         {/* Mobile Navbar */}
         <div className="md:hidden">
           <div className="px-4 py-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[#5a5a3d] text-lg font-semibold">
-                IGTTPB
-              </span>
+            <div className="flex items-center justify-between relative">
+              <div className="flex items-center gap-3">
+                <Image
+                  src="https://res.cloudinary.com/ddzjskfyn/image/upload/v1759423035/igttpb2025logo_lfcrjn.webp"
+                  alt="Logo IGTTPB"
+                  width={48}
+                  height={48}
+                  className="object-cover"
+                />
+              </div>
+              
+              <div className="absolute left-1/2 transform -translate-x-1/2">
+                <span className="text-xl font-bold text-[#5a5a3d]">IGTTPB</span>
+              </div>
+              
               <button
                 onClick={toggleMenu}
                 className="text-white focus:outline-none w-10 h-10 flex flex-col justify-center items-center gap-1.5"
@@ -84,7 +164,7 @@ export default function Navbar() {
             {/* Mobile Menu with Animation */}
             <div
               className={`overflow-hidden transition-all duration-500 ease-out ${
-                isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
               }`}
             >
               <div className="mt-4 bg-[#5a5a3d]/5 backdrop-blur-sm rounded-xl border border-[#5a5a3d]/10">
@@ -110,12 +190,55 @@ export default function Navbar() {
                     Pengumuman
                   </a>
                   <a
+                    href="#dresscode"
+                    className="text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300 py-3 px-4 rounded-lg font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Dress Code
+                  </a>
+                  <a
                     href="#faq"
                     className="text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300 py-3 px-4 rounded-lg font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     FAQ
                   </a>
+
+                  {/* Mobile Login/Profile */}
+                  <div className="pt-2 border-t border-[#5a5a3d]/10">
+                    {!isLoggedIn ? (
+                      <button
+                        onClick={() => {
+                          handleLogin();
+                          setIsOpen(false);
+                        }}
+                        className="w-full px-4 py-3 bg-[#5a5a3d] text-[#F7F1E7] rounded-lg hover:bg-[#5a5a3d]/80 transition-all duration-300 font-medium"
+                      >
+                        Login
+                      </button>
+                    ) : (
+                      <div className="space-y-1">
+                        <a
+                          href="/dashboard"
+                          className="flex items-center gap-3 text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300 py-3 px-4 rounded-lg font-medium"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <LayoutDashboard size={18} />
+                          <span>Dashboard</span>
+                        </a>
+                        <button
+                          onClick={() => {
+                            handleLogout();
+                            setIsOpen(false);
+                          }}
+                          className="w-full flex items-center gap-3 text-[#5a5a3d] hover:bg-[#5a5a3d]/10 transition-all duration-300 py-3 px-4 rounded-lg font-medium"
+                        >
+                          <LogOut size={18} />
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
