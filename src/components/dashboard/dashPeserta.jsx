@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, Search } from 'lucide-react';
-import { getAllPeserta } from '../api/pesertaApi2';
+import { getAllPeserta } from '../../api/pesertaApi2';
 
 const getStyleByIndex = (index) => {
   const isEven = index % 2 === 0;
