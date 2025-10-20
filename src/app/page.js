@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import HomePage from '../components/home';
-=======
-import HomePage from '../pages/home';
+import HomePage from '@/components/home';
 
->>>>>>> origin/progres1
 export default function Page() {
   return (
     <div>
