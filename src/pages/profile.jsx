@@ -21,53 +21,40 @@ export default function UserProfile() {
   }
   )
 
-  useEffect(() => {
-    const setupAuth = async () => {
-      try {
-        // Log 1: Cek localStorage
-        const keys = Object.keys(localStorage)
-        const authKeys = keys.filter(k => k.includes('auth') || k.includes('sb-'))
-        console.log('LocalStorage auth keys:', authKeys)
-        setDebug(prev => prev + `\nLocalStorage keys: ${authKeys.join(', ')}`)
+useEffect(() => {
+  const setupAuth = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log('Session:', session)
 
-        // Log 2: Refresh session dari cookie
-        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession()
-        console.log('Refresh session result:', refreshData, refreshError)
-        setDebug(prev => prev + `\nRefresh session: ${refreshData?.session ? 'Berhasil' : 'Gagal'}`)
-
-        // Log 3: Cek session saat page load
-        const { data: { session: initialSession } } = await supabase.auth.getSession()
-        console.log('Initial session:', initialSession)
-        setDebug(prev => prev + `\nInitial session: ${initialSession ? 'Ada' : 'Kosong'}`)
-
-        if (initialSession?.user?.email) {
-          setEmail(initialSession.user.email)
-        }
-      } catch (err) {
-        console.error('Setup error:', err)
-        setDebug(prev => prev + `\nSetup error: ${err.message}`)
+      if (session?.user?.email) {
+        setEmail(session.user.email)
       }
-
-      // Log 4: Listen untuk auth state change
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        (event, session) => {
-          console.log('Auth event:', event)
-          console.log('Session from event:', session)
-          setDebug(prev => prev + `\nEvent: ${event}, Session: ${session ? 'Ada' : 'Kosong'}`)
-
-          if (session?.user?.email) {
-            console.log('Email ditemukan:', session.user.email)
-            setEmail(session.user.email)
-          }
-          setLoading(false)
-        }
-      )
-
-      return () => subscription?.unsubscribe()
+    } catch (err) {
+      console.error('Setup error:', err)
+      setDebug(prev => prev + `\nSetup error: ${err.message}`)
     }
 
-    setupAuth()
-  }, [])
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log('Auth event:', event)
+        console.log('Session from event:', session)
+
+        if (session?.user?.email) {
+          setEmail(session.user.email)
+        } else {
+          setEmail(null)
+        }
+        setLoading(false)
+      }
+    )
+
+    return () => subscription?.unsubscribe()
+  }
+
+  setupAuth()
+}, [])
+
 
   const handleGoogleLogin = async () => {
     try {
