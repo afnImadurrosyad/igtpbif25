@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image'; 
+import { supabase } from '../../utils/supabaseClient';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,8 +10,9 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      // Redirect ke endpoint Google OAuth
-      window.location.href = '/api/auth/google';
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
     } catch (error) {
       console.error('Error:', error);
       alert('Terjadi kesalahan saat login dengan Google');
