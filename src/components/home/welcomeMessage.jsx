@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import Images from "next/image";
+
 export default function IgttpbDesc() {
   const sectionRef = useRef(null);
   const welcomeText = useRef(null);
@@ -14,39 +15,41 @@ export default function IgttpbDesc() {
   const whatIgttpb = useRef(null);
   const igtTpbDesc = useRef(null);
   const visiIgttpb = useRef(null);
-  const misiIgttpb = useRef(null);  
+  const misiIgttpb = useRef(null);
+  
   useEffect(() => {
-  const refs = [
-    { el: sectionRef.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
-    { el: welcomeText.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
-    { el: btnAbout.current, anim: { opacity: 0, x: -50 }, opts: { opacity: 1, x: 0, duration: 1 } },
-    { el: btnFindGroup.current, anim: { opacity: 0, y: 100, scale: 0.8 }, opts: { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "back.out(1.7)", delay: 0.3 } },
-    { el: imgLogo.current, anim: { opacity: 0, scale: 0, rotation: 360 }, opts: { opacity: 1, scale: 1, rotation: 0, duration: 1.8, ease: "elastic.out(1, 0.6)", delay: 0.6 } },
-    { el: aboutRef.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
-    { el: whatIgttpb.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
-    { el: igtTpbDesc.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1, delay: 0.2 } },
-    { el: visiIgttpb.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1, delay: 0.4 } },
-    { el: misiIgttpb.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1, delay: 0.6 } },
-  ];
+    const refs = [
+      { el: sectionRef.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
+      { el: welcomeText.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
+      { el: btnAbout.current, anim: { opacity: 0, x: -50 }, opts: { opacity: 1, x: 0, duration: 1 } },
+      { el: btnFindGroup.current, anim: { opacity: 0, y: 100, scale: 0.8 }, opts: { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "back.out(1.7)", delay: 0.3 } },
+      { el: imgLogo.current, anim: { opacity: 0, scale: 0, rotation: 360 }, opts: { opacity: 1, scale: 1, rotation: 0, duration: 1.8, ease: "elastic.out(1, 0.6)", delay: 0.6 } },
+      { el: aboutRef.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
+      { el: whatIgttpb.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1 } },
+      { el: igtTpbDesc.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1, delay: 0.2 } },
+      { el: visiIgttpb.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1, delay: 0.4 } },
+      { el: misiIgttpb.current, anim: { opacity: 0, y: 50 }, opts: { opacity: 1, y: 0, duration: 1, delay: 0.6 } },
+    ];
 
-  refs.forEach(({ el, anim, opts }) => {
-    if (!el) return;
-    gsap.fromTo(
-      el,
-      anim,
-      {
-        ...opts,
-        ease: opts.ease || "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
-  });
-}, []);
+    refs.forEach(({ el, anim, opts }) => {
+      if (!el) return;
+      gsap.fromTo(
+        el,
+        anim,
+        {
+          ...opts,
+          ease: opts.ease || "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#DCE2B7] via-[#E8EDCC] to-[#DCE2B7] p-4 sm:p-8 lg:p-48 font-poppins pb-13">
       <div className="max-w-7xl mx-auto">
@@ -94,15 +97,17 @@ export default function IgttpbDesc() {
 
           {/* Kolom Kanan Atas: Lingkaran Logo/Gambar */}
           <div ref={imgLogo} className="flex justify-center lg:justify-center">
-            <div className="relative flex items-center justify-center text-center">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] rounded-full blur-2xl opacity-30 animate-pulse"></div>
-              <Images
-                src="https://res.cloudinary.com/ddzjskfyn/image/upload/v1759423035/igttpb2025logo_lfcrjn.webp"
-                alt="Logo IGTTPB"
-                width={250}
-                height={250}
-                className="relative mb-6 rounded-full h-[250px] w-[250px] sm:h-[360px] sm:w-[360px] shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
-              />
+            <div className="relative flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#5a5a3d] to-[#5a5a3d] rounded-full blur-2xl opacity-30 animate-pulse aspect-square"></div>
+              <div className="relative w-[250px] h-[250px] sm:w-[360px] sm:h-[360px]">
+                <Images
+                  src="https://res.cloudinary.com/ddzjskfyn/image/upload/c_fill,w_500,h_500,g_center/v1759423035/igttpb2025logo_lfcrjn.webp"
+                  alt="Logo IGTTPB"
+                  width={360}
+                  height={360}
+                  className="rounded-full w-full h-full object-cover shadow-2xl hover:scale-105 transition-transform duration-500 ring-4 ring-[#F7F1E7] ring-offset-4 ring-offset-[#DCE2B7]"
+                />
+              </div>
             </div>
           </div>
         </div>
