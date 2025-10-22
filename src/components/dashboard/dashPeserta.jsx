@@ -12,7 +12,7 @@ export default function Page() {
           <NavbarDash />
         </div>
         <div className='w-full'>
-          <DashPeserta />
+          <DashboardProfil />
         </div>
       </div>
     </div>
