@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
+  const [nim, setNim] = useState(null);
 
   const checkRole = async (email) => {
     if (!email) return null;
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const nim = match[1];
+    setNim(nim);
     const { data, error } = await supabase
       .from('dataif25')
       .select('nama')
@@ -88,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, role }}>
+    <AuthContext.Provider value={{ isLogin, user, role, nim }}>
       {children}
     </AuthContext.Provider>
   );
