@@ -4,7 +4,7 @@ import DashPeserta from '@/components/dashboard/dashPeserta';
 
 export default function Page() {
   return (
-    <div className='m-0 '>
+    <div className='m-0'>
       <div className='flex'>
         <div>
           <NavbarDash />

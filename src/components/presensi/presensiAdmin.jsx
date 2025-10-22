@@ -1,1 +1,7 @@
-export default function PresensiAdmin() {}
+export default function PresensiAdmin() {
+    return(
+        <>
+        
+        </>
+    )
+}

@@ -49,7 +49,7 @@ export default function NavbarDash({
     { title: 'Peserta', icon: 'fileText', href: '/dashboard/peserta' },
     { title: 'Kelompok', icon: 'users', href: '/dashboard/kelompok' },
     { title: 'Tugas', icon: 'fileText', href: '/dashboard/tugas' },
-    { title: 'Presensi', icon: 'fileText', href: '/dashboard/presensi' },
+    { title: 'Presensi', icon: 'fileText', href: '/presensi/admin' },
   ];
 
   const handleNavClick = (href) => {
