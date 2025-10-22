@@ -1,22 +1,14 @@
-// file: components/dashboard/admin/dashTugasAdmin.jsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
 
-/**
- * UI-only Admin Dashboard (twibbon) — no supabase here (safe from hook errors).
- * - Replace later with real API calls (supabase) when ready.
- */
-
 export default function DashTugasAdmin() {
-  // theme colors (from kamu)
   const theme = {
     primary: '#DCE2B7', 
     bg: '#F7F1E7',  
     accent: '#686232', 
   };
 
-  // local UI state only
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [taskEnabled, setTaskEnabled] = useState(true);
