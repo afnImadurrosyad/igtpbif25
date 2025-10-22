@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function Navbar() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const { isLogin, user } = useAuth();
+  const { isLogin, user, role } = useAuth();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   const toggleMenu = () => {

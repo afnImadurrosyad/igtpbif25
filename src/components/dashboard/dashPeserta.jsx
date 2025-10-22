@@ -12,10 +12,7 @@ export default function Page() {
           <NavbarDash />
         </div>
         <div className='w-full'>
-          <DashboardKehadiran />
           <DashPeserta />
-          <DashboardProfil />
-          <DashTugas />
         </div>
       </div>
     </div>
