@@ -32,6 +32,8 @@ export default function Navbar() {
     setShowProfileDropdown(false);
   };
 
+  // console.log('AuthContext saat ini:', { isLogin, user });
+
   return (
     <>
       <style jsx global strategy='lazyOnload'>{`
