@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Home, Users, Settings, FileText, Menu, X } from 'lucide-react';
+import { Home, Users, Settings, FileText, Menu, X, LogOut } from 'lucide-react';
 
 const Icons = {
   home: Home,
@@ -75,6 +75,17 @@ export default function NavbarDash({
     }
   };
 
+  const handleLogout = () => {
+    try {
+      if (isMobile && typeof setIsMobileMenuOpen === 'function') {
+        setIsMobileMenuOpen(false);
+      }
+      router.push('/logout');
+    } catch (error) {
+      console.error('Logout navigation error:', error);
+    }
+  };
+
   return (
     <>
       {/* Mobile Top Navbar */}
@@ -109,7 +120,7 @@ export default function NavbarDash({
       {/* Sidebar */}
       <div
         className={`
-        bg-[#F7F1E7] h-full transition-all duration-300 overflow-hidden shadow-sm
+        relative bg-[#F7F1E7] h-full transition-all duration-300 overflow-hidden shadow-sm
         ${
           isMobile
             ? `border-l border-[#5a5a3d]/20 right-0 w-64 top-0 ${
@@ -214,9 +225,9 @@ export default function NavbarDash({
 
         {/* Navigation */}
         <div
-          className='py-4 px-2 overflow-y-auto scrollbar-hide'
+          className='py-4 px-2 overflow-y-auto scrollbar-hide pb-20'
           style={{
-            height: isMobile ? 'calc(100vh - 128px)' : 'calc(100vh - 128px)',
+            height: isMobile ? 'calc(100vh - 128px)' : 'calc(100vh - 196px)',
           }}>
           <nav className='space-y-1'>
             {navItems.map((item, index) => {
@@ -266,6 +277,35 @@ export default function NavbarDash({
               );
             })}
           </nav>
+        </div>
+
+        {/* Logout (sticky bottom) */}
+        <div className='absolute left-0 bottom-0 w-full px-2'>
+          <div className='relative group'>
+            <button
+              onClick={handleLogout}
+              className={`
+                w-full flex items-center gap-3 rounded-lg py-3 px-4 text-sm font-medium transition-all duration-300
+                ${isMinimized && !isMobile ? 'justify-center' : 'justify-start'}
+                text-[#5a5a3d] hover:bg-[#5a5a3d]/10
+              `}
+              type='button'
+              aria-label='Logout'>
+              <LogOut
+                className={`w-5 h-5 flex-shrink-0 ${'text-[#5a5a3d]'}`}
+              />
+              {(!isMinimized || isMobile) && (
+                <span className='truncate font-medium font-poppins'>Logout</span>
+              )}
+            </button>
+
+            {/* Tooltip for minimized state - desktop only */}
+            {isMinimized && !isMobile && (
+              <div className='absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-[#5a5a3d] text-white text-sm rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 font-poppins shadow-lg'>
+                Logout
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
