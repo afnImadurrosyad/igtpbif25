@@ -1,9 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { addTugas } from '../../../api/tugasApi'; // sesuaikan path jika beda
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function PesertaTwibbonForm() {
   const STORAGE_KEY = 'twibbon_submission_v1';
+
+  // Auth/context
+  const { isLogin, user, nim } = useAuth();
+
+  // UI state
   const [link, setLink] = useState('');
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
   const [message, setMessage] = useState('');
@@ -16,7 +23,7 @@ export default function PesertaTwibbonForm() {
   };
 
   useEffect(() => {
-    localStorage.removeItem(STORAGE_KEY);
+    // baca localStorage saat mount — tapi jangan auto-remove
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -31,6 +38,7 @@ export default function PesertaTwibbonForm() {
     }
   }, []);
 
+  // clear transient message when status changes from error
   useEffect(() => {
     if (status === 'error') {
       const t = setTimeout(() => setMessage(''), 4000);
@@ -38,10 +46,18 @@ export default function PesertaTwibbonForm() {
     }
   }, [status]);
 
+  // Improved Instagram URL validator:
   const isInstagramUrl = (value) => {
+    if (!value || typeof value !== 'string') return false;
+    const trimmed = value.trim();
     try {
-      const u = new URL(value);
-      return u.hostname.includes('instagram.com') && value.trim().length > 0;
+      const u = new URL(trimmed);
+      const host = u.hostname.replace('www.', '').toLowerCase();
+      // Accept instagram.com or www.instagram.com, also allow shortlinks like ig.me or instagram.app.goo.gl if needed
+      if (!host.includes('instagram.com') && !host.includes('instagr.am')) return false;
+      // check for typical post/reel/story paths
+      const okPath = /\/(p|reel|tv|stories)\//i.test(u.pathname) || /^\/[A-Za-z0-9_.-]+\/?$/.test(u.pathname);
+      return okPath && trimmed.length > 10;
     } catch (e) {
       return false;
     }
@@ -50,7 +66,7 @@ export default function PesertaTwibbonForm() {
   const saveToLocalSingle = (submission) => {
     try {
       const existing = localStorage.getItem(STORAGE_KEY);
-      if (existing) return false;
+      if (existing) return false; // only one submission allowed per client
       localStorage.setItem(STORAGE_KEY, JSON.stringify(submission));
       return true;
     } catch (e) {
@@ -59,9 +75,9 @@ export default function PesertaTwibbonForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (status === 'success') return;
+    if (status === 'submitting' || status === 'success') return;
 
     const trimmed = link.trim();
     if (!trimmed) {
@@ -72,33 +88,44 @@ export default function PesertaTwibbonForm() {
 
     if (!isInstagramUrl(trimmed)) {
       setStatus('error');
-      setMessage('Tolong masukkan URL Instagram yang valid.');
+      setMessage('Tolong masukkan URL Instagram yang valid (contoh: https://www.instagram.com/p/XXXXXXXX/).');
+      return;
+    }
+
+    if (!nim) {
+      setStatus('error');
+      setMessage('NIM tidak tersedia. Pastikan kamu sudah login.');
       return;
     }
 
     setStatus('submitting');
-    const submission = { link: trimmed, submittedAt: new Date().toISOString() };
-    const ok = saveToLocalSingle(submission);
+    setMessage('');
 
-    if (ok) {
+    // payload sesuai API kamu: (nim, link) — meniru pola addTugas(nim, url)
+    try {
+      const res = await addTugas(nim, trimmed);
+      // asumsi addTugas melempar error pada non-2xx atau mengembalikan objek hasil
+      // Periksa struktur respon sesuai implementasi addTugas
+      if (res && (res.ok === false || res.error)) {
+        // handle known error shape
+        const errMsg = res.error?.message || res.message || 'Gagal menyimpan ke server.';
+        throw new Error(errMsg);
+      }
+
+      // Simpan ke local only if server sukses
+      const submission = { link: trimmed, submittedAt: new Date().toISOString() };
+      saveToLocalSingle(submission);
+
       setStatus('success');
-      setMessage('');
       setSavedLink(trimmed);
       setLink('');
-    } else {
-      try {
-        const existing = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (existing && existing.link) {
-          setSavedLink(existing.link);
-          setStatus('success');
-          setMessage('Kamu sudah pernah mengirim link.');
-          return;
-        }
-      } catch (e) {
-        console.error(e);
-      }
+      setMessage('Link berhasil dikirim.');
+    } catch (err) {
+      console.error('submit error', err);
+      // If server returns 403 (forbidden), give actionable hint
+      const text = (err && err.message) ? err.message : 'Terjadi kesalahan saat mengirim. Cek konsol.';
       setStatus('error');
-      setMessage('Gagal menyimpan. Mungkin kamu sudah pernah mengirim.');
+      setMessage(text);
     }
   };
 
@@ -144,7 +171,6 @@ export default function PesertaTwibbonForm() {
                   borderColor: theme.accent,
                   backgroundColor: theme.bg,
                   color: '#333',
-                  focusRing: theme.accent,
                 }}
               />
             </label>
