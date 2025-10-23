@@ -1,197 +1,248 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { getSupabaseClient } from '@/utils/supabaseClient';
 
 export default function DashTugasAdmin() {
+  const supabase = getSupabaseClient();
   const theme = {
-    primary: '#DCE2B7', 
-    bg: '#F7F1E7',  
-    accent: '#686232', 
+    primary: '#DCE2B7',
+    bg: '#F7F1E7',
+    accent: '#686232',
   };
 
-  const [submissions, setSubmissions] = useState([]);
+  const [presensi, setPresensi] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [taskEnabled, setTaskEnabled] = useState(true);
   const [busyId, setBusyId] = useState(null);
   const [error, setError] = useState(null);
 
-  // sample data (mock)
-  useEffect(() => {
-    const mock = [
-      { id: 'a1', link: 'https://www.instagram.com/p/bos1/', submitted_at: new Date().toISOString(), valid: true, name: 'Admin', nim: '125140001' },
-      { id: 'a2', link: 'https://www.instagram.com/p/bos2/', submitted_at: new Date().toISOString(), valid: true, name: 'Ahmad Syahrono', nim: '125140002' },
-      { id: 'a3', link: 'https://www.instagram.com/p/bos9/', submitted_at: new Date().toISOString(), valid: false, name: 'Ahmad', nim: '125140003' },
-    ];
-
-  
-    setTimeout(() => {
-      setSubmissions(mock);
-      setLoading(false);
-    }, 300);
-  }, []);
-
-  const toggleTask = () => {
-    setBusyId('task');
-    setTimeout(() => {
-      setTaskEnabled((s) => !s);
-      setBusyId(null);
-    }, 250);
-  };
-
-  const markInvalidLocal = (id, makeInvalid = true) => {
-    setBusyId(id);
-    setTimeout(() => {
-      setSubmissions((prev) => prev.map((p) => (p.id === id ? { ...p, valid: !makeInvalid } : p)));
-      setBusyId(null);
-    }, 200);
-  };
-
-  const removeLocal = (id) => {
-    if (!confirm('Yakin hapus submission ini?')) return;
-    setBusyId(id);
-    setTimeout(() => {
-      setSubmissions((prev) => prev.filter((p) => p.id !== id));
-      setBusyId(null);
-    }, 200);
-  };
-
-  const copyLink = async (link) => {
+  const getPresensi = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
-      await navigator.clipboard.writeText(link);
-      alert('Link disalin ke clipboard');
-    } catch {
-      alert('Gagal menyalin link');
+      const { data, error: err } = await supabase
+        .from('presensi')
+        .select('nim, nama, kelompok, tugas_1, submitted_at, valid')
+        .order('kelompok', { ascending: true })
+        .order('nama', { ascending: true });
+
+      if (err) throw err;
+
+      const sorted = data.sort((a, b) => {
+        if (a.tugas_1 && !b.tugas_1) return -1;
+        if (!a.tugas_1 && b.tugas_1) return 1;
+        return 0;
+      });
+
+      setPresensi(sorted || []);
+    } catch (err) {
+      console.error('getPresensi error', err);
+      setError('Gagal memuat data dari Supabase');
+    } finally {
+      setLoading(false);
+    }
+  }, [supabase]);
+
+  const setValidStatus = async (nim, valid) => {
+    setBusyId(nim);
+    try {
+      const { error } = await supabase
+        .from('presensi')
+        .update({ valid })
+        .eq('nim', nim);
+
+      if (error) throw error;
+
+      alert('Status validasi berhasil diperbarui!');
+      // window.location.reload();
+    } catch (err) {
+      console.error('setValidStatus error', err);
+      alert('Gagal memperbarui status validasi.');
+    } finally {
+      setBusyId(null);
     }
   };
 
+  useEffect(() => {
+    getPresensi();
+  }, [getPresensi]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('presensi-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'presensi' },
+        (payload) => {
+          const { eventType, new: newRow, old: oldRow } = payload;
+          setPresensi((prev) => {
+            if (eventType === 'INSERT') return [newRow, ...prev];
+            if (eventType === 'UPDATE')
+              return prev.map((p) => (p.nim === newRow.nim ? newRow : p));
+            if (eventType === 'DELETE')
+              return prev.filter((p) => p.nim !== oldRow.nim);
+            return prev;
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase]);
+
+  const totalPeserta = presensi.length;
+  const sudahKumpul = presensi.filter((p) => p.tugas_1).length;
+  const belumKumpul = totalPeserta - sudahKumpul;
+
   return (
-    <div style={{ background: theme.bg }} className="min-h-screen p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* header */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 style={{ color: theme.accent }} className="text-2xl font-semibold">Tugas Twibbon</h1>
+    <div style={{ background: theme.bg }} className='min-h-screen p-6'>
+      <div className='max-w-6xl mx-auto'>
+        {/* Header */}
+        <h1
+          style={{ color: theme.accent }}
+          className='text-2xl font-semibold mb-4'>
+          Dashboard Presensi Tugas 1
+        </h1>
 
-          <div className="flex items-center gap-3">
-            <div style={{ color: theme.accent }} className="text-sm">Status pengumpulan:</div>
-            <button
-              onClick={toggleTask}
-              disabled={busyId === 'task'}
-              style={{
-                background: taskEnabled ? theme.accent : '#b91c1c',
-                color: '#fff'
-              }}
-              className="px-3 py-2 rounded-md font-medium shadow-sm">
-              {busyId === 'task' ? 'Memproses...' : taskEnabled ? 'Aktif' : 'Dinonaktifkan'}
-            </button>
-          </div>
-        </div>
-
-        {/* top cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="col-span-1 md:col-span-2 bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div style={{ color: theme.accent }} className="text-sm font-medium">Total Peserta Kumpul</div>
-                <div className="mt-3 text-4xl font-bold" style={{ color: theme.accent }}>
-                  {submissions.filter(s => s.valid !== false).length}
-                  <span className="text-xl font-normal"> / {submissions.length}</span>
-                </div>
-                <div className="mt-2 text-sm text-gray-500">Jumlah peserta yang mengumpulkan</div>
-              </div>
-              <div style={{ background: theme.primary, color: theme.accent }} className="rounded-full px-4 py-3 shadow">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill={theme.accent}></path></svg>
-              </div>
+        {/* Statistik */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-6'>
+          <div className='bg-white p-5 rounded-lg shadow'>
+            <div
+              style={{ color: theme.accent }}
+              className='text-sm font-medium'>
+              Total Peserta
+            </div>
+            <div className='mt-2 text-3xl  text-green-700 font-bold'>
+              {totalPeserta}
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="text-sm font-medium mb-2" style={{ color: theme.accent }}>Status</div>
-            <div className="flex items-center gap-4">
-              <div>
-                <div style={{ color: theme.accent }} className="text-lg font-semibold">{submissions.filter(s => s.valid !== false).length}</div>
-                <div className="text-xs text-gray-500">Valid</div>
-              </div>
-              <div>
-                <div style={{ color: '#b91c1c' }} className="text-lg font-semibold">{submissions.filter(s => s.valid === false).length}</div>
-                <div className="text-xs text-gray-500">Tidak valid</div>
-              </div>
+          <div className='bg-white p-5 rounded-lg shadow'>
+            <div
+              style={{ color: theme.accent }}
+              className='text-sm font-medium'>
+              Sudah Mengumpulkan
+            </div>
+            <div className='mt-2 text-3xl font-bold text-green-700'>
+              {sudahKumpul}
+            </div>
+          </div>
+
+          <div className='bg-white p-5 rounded-lg shadow'>
+            <div
+              style={{ color: theme.accent }}
+              className='text-sm font-medium'>
+              Belum Mengumpulkan
+            </div>
+            <div className='mt-2 text-3xl font-bold text-red-600'>
+              {belumKumpul}
             </div>
           </div>
         </div>
 
-        {/* search (visual only) */}
-        <div className="mb-4">
-          <input
-            placeholder="Cari NIM peserta..."
-            className="w-full p-3 rounded-lg border border-gray-200 shadow-sm"
-            style={{ background: '#fff' }}
-            disabled
-          />
-          <div className="text-xs text-gray-400 mt-1">Jangan cari pake nama</div>
-        </div>
-
-        {/* submissions table */}
-        <div className="bg-white rounded-lg shadow overflow-x-auto">
-          <table className="w-full table-auto">
+        {/* Tabel */}
+        <div className='bg-white rounded-lg shadow overflow-x-auto'>
+          <table className='w-full table-auto'>
             <thead>
               <tr style={{ background: theme.primary }}>
-                <th className="p-4 text-left" style={{ color: theme.accent }}>No.</th>
-                <th className="p-4 text-left" style={{ color: theme.accent }}>Nama (NIM)</th>
-                <th className="p-4 text-left" style={{ color: theme.accent }}>Link</th>
-                <th className="p-4 text-left" style={{ color: theme.accent }}>Waktu</th>
-                <th className="p-4 text-left" style={{ color: theme.accent }}>Valid</th>
-                <th className="p-4 text-left" style={{ color: theme.accent }}>Ubah</th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  No
+                </th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  Nama
+                </th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  NIM
+                </th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  Kelompok
+                </th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  Link Tugas
+                </th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  Status
+                </th>
+                <th className='p-3 text-left' style={{ color: theme.accent }}>
+                  Aksi
+                </th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} className="p-6 text-center text-gray-500">Memuat...</td></tr>
-              ) : submissions.length === 0 ? (
-                <tr><td colSpan={6} className="p-6 text-center text-gray-500">Belum ada submission.</td></tr>
+                <tr>
+                  <td colSpan='7' className='text-center p-6 text-gray-500'>
+                    Memuat data...
+                  </td>
+                </tr>
+              ) : presensi.length === 0 ? (
+                <tr>
+                  <td colSpan='7' className='text-center p-6 text-gray-500'>
+                    Tidak ada data peserta.
+                  </td>
+                </tr>
               ) : (
-                submissions.map((s, idx) => (
-                  <tr key={s.id} className="border-t last:border-b">
-                    <td className="p-3 align-top text-sm">{idx + 1}</td>
-                    <td className="p-3 align-top text-sm">
-                      <div style={{ color: theme.accent, fontWeight: 600 }}>{s.name}</div>
-                      <div className="text-xs text-gray-500">{s.nim}</div>
+                presensi.map((p, i) => (
+                  <tr key={p.nim} className='border-t'>
+                    <td className='p-3  text-gray-600 text-sm'>{i + 1}</td>
+                    <td className='p-3  text-gray-600 text-sm font-medium'>
+                      {p.nama}
                     </td>
-                    <td className="p-3 align-top text-sm break-words max-w-xs">
-                      <a href={s.link} target="_blank" rel="noreferrer" style={{ color: theme.accent }} className="underline">{s.link}</a>
+                    <td className='p-3  text-gray-600 text-sm'>{p.nim}</td>
+                    <td className='p-3  text-gray-600 text-sm'>{p.kelompok}</td>
+                    <td className='p-3  text-gray-600 text-sm break-words max-w-xs'>
+                      {p.tugas_1 ? (
+                        <a
+                          href={p.tugas_1}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='text-blue-600 underline'>
+                          Lihat Tugas
+                        </a>
+                      ) : (
+                        <span className='text-gray-400 italic'>
+                          Belum upload
+                        </span>
+                      )}
                     </td>
-                    <td className="p-3 align-top text-sm">{new Date(s.submitted_at).toLocaleString()}</td>
-                    <td className="p-3 align-top text-sm">{s.valid === false ? <span style={{ color: '#b91c1c' }}>Tidak valid</span> : <span style={{ color: theme.accent }}>Valid</span>}</td>
-                    <td className="p-3 align-top text-sm">
-                      <div className="flex flex-wrap gap-2">
-                        <button onClick={() => copyLink(s.link)} className="px-2 py-1 rounded border text-xs">Salin</button>
-
-                        <button
-                          onClick={() => markInvalidLocal(s.id, true)}
-                          disabled={busyId === s.id}
-                          className="px-2 py-1 rounded border text-xs"
-                          style={{ background: '#fef3c7' }}>
-                          Tandai Salah
-                        </button>
-
-                        <button
-                          onClick={() => markInvalidLocal(s.id, false)}
-                          disabled={busyId === s.id}
-                          className="px-2 py-1 rounded border text-xs"
-                          style={{ background: '#ecfdf5' }}>
-                          Tandai Benar
-                        </button>
-
-                      {/* pake ga ya? */}
-                        {/* <button
-                          onClick={() => removeLocal(s.id)}
-                          disabled={busyId === s.id}
-                          className="px-2 py-1 rounded border text-xs"
-                          style={{ color: '#b91c1c' }}>
-                          Hapus
-                        </button> */} 
-
-
-                      </div>
+                    <td className='p-3 text-sm'>
+                      {p.tugas_1 ? (
+                        p.valid ? (
+                          <span className='text-green-700 font-medium'>
+                            ✅ Sudah Benar
+                          </span>
+                        ) : (
+                          <span className='text-yellow-600 font-medium'>
+                            ⚠️ Belum Benar
+                          </span>
+                        )
+                      ) : (
+                        <span className='text-gray-400 italic'>
+                          Belum upload
+                        </span>
+                      )}
+                    </td>
+                    <td className='p-3 text-sm'>
+                      {p.tugas_1 && (
+                        <div className='flex gap-2 flex-wrap'>
+                          <button
+                            onClick={() => setValidStatus(p.nim, true)}
+                            disabled={busyId === p.nim}
+                            className='px-2 py-1 text-xs rounded bg-green-100 border border-green-500 text-green-800 hover:bg-green-200'>
+                            {busyId === p.nim ? '⏳ Memproses...' : 'Benar'}
+                          </button>
+                          <button
+                            onClick={() => setValidStatus(p.nim, false)}
+                            disabled={busyId === p.nim}
+                            className='px-2 py-1 text-xs rounded bg-yellow-100 border border-yellow-500 text-yellow-800 hover:bg-yellow-200'>
+                            {busyId === p.nim
+                              ? '⏳ Memproses...'
+                              : 'Belum Benar'}
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -200,10 +251,9 @@ export default function DashTugasAdmin() {
           </table>
         </div>
 
-        <div className="mt-4 text-xs text-gray-500">
-          Catatan: <br></br>
-          1. Dimohon kepada Dapmen untuk memantau tugas peserta sesuai kelompok secara berkala<br></br>
-          2. Klik `Tandai Salah`` jika terdapat kesalahan dalam pengumpulan tugas<br></br></div>
+        {error && (
+          <div className='mt-4 text-sm text-red-600'>Error: {error}</div>
+        )}
       </div>
     </div>
   );

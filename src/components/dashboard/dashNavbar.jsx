@@ -50,7 +50,7 @@ export default function NavbarDash({
   // Set initial activeId berdasarkan pathname
   useEffect(() => {
     if (pathname && navItems.length > 0) {
-      const initialItem = navItems.find(item => item.href === pathname);
+      const initialItem = navItems.find((item) => item.href === pathname);
       if (initialItem) {
         setActiveId(initialItem.id);
       }
@@ -59,74 +59,76 @@ export default function NavbarDash({
 
   // Define all navigation items with role-based access
   const allNavItems = [
-    { 
+    {
       id: 'dashboard',
-      title: 'Dashboard', 
-      icon: 'home', 
+      title: 'Dashboard',
+      icon: 'home',
       href: '/dashboard',
-      roles: ['daplok', 'mentor', 'admin'] // Semua role bisa akses
+      roles: ['daplok', 'mentor', 'admin'], // Semua role bisa akses
     },
-    { 
+    {
       id: 'profile',
-      title: 'Profile', 
-      icon: 'users', 
+      title: 'Profile',
+      icon: 'users',
       href: '/dashboard/profile',
-      roles: ['user', 'daplok', 'mentor', 'admin'] // Semua role bisa akses
+      roles: ['user', 'daplok', 'mentor', 'admin'], // Semua role bisa akses
     },
-    { 
+    {
       id: 'peserta',
-      title: 'Peserta', 
-      icon: 'fileText', 
+      title: 'Peserta',
+      icon: 'fileText',
       href: '/dashboard/peserta',
-      roles: ['daplok', 'mentor', 'admin'] // Hanya daplok, mentor, dan admin
+      roles: ['daplok', 'mentor', 'admin'], // Hanya daplok, mentor, dan admin
     },
-    { 
+    {
       id: 'kelompok',
-      title: 'Kelompok', 
-      icon: 'users', 
+      title: 'Kelompok',
+      icon: 'users',
       href: '/dashboard/kelompok',
-      roles: ['daplok', 'mentor', 'admin'] // Hanya daplok, mentor, dan admin
+      roles: ['daplok', 'mentor', 'admin'], // Hanya daplok, mentor, dan admin
     },
-    { 
+    {
       id: 'tugas',
-      title: 'Tugas', 
-      icon: 'fileText', 
+      title: 'Tugas',
+      icon: 'fileText',
       href: '/dashboard/tugas',
-      roles: ['user', 'mentor', 'admin'] // User, mentor, dan admin
+      roles: ['user', 'mentor', 'admin'], // User, mentor, dan admin
     },
-    { 
+    {
       id: 'presensi',
-      title: 'Presensi', 
-      icon: 'fileText', 
+      title: 'Presensi',
+      icon: 'fileText',
       href: '/dashboard/presensi',
-      roles: ['user', 'daplok', 'mentor', 'admin'] // Daplok, mentor, dan admin
+      roles: ['user', 'daplok', 'mentor', 'admin'], // Daplok, mentor, dan admin
     },
-    { 
+    {
       id: 'settings',
-      title: 'Settings', 
-      icon: 'settings', 
+      title: 'Settings',
+      icon: 'settings',
       href: '/dashboard/settings',
-      roles: ['admin'] // Hanya admin
+      roles: ['admin'], // Hanya admin
     },
   ];
 
   // Filter navigation items based on user role from AuthContext
-  const navItems = role ? allNavItems.filter(item => item.roles.includes(role)) : [];
+  const navItems = role
+    ? allNavItems.filter((item) => item.roles.includes(role))
+    : [];
 
   const handleNavClick = (href, itemId) => {
     try {
       if (isMobile && typeof setIsMobileMenuOpen === 'function') {
         setIsMobileMenuOpen(false);
       }
-      
+
       // Update activeId secara internal
       setActiveId(itemId);
-      
+
       // Kirim id item ke parent component jika callback tersedia
       if (typeof onNavItemClick === 'function') {
         onNavItemClick(itemId);
       }
-      
+
       // Tidak melakukan router.push(href) lagi
     } catch (error) {
       console.error('Navigation error:', error);
@@ -163,7 +165,7 @@ export default function NavbarDash({
       daplok: 'Pendamping Kelompok',
       mentor: 'Mentor',
       admin: 'Admin',
-      guest: 'Guest'
+      guest: 'Guest',
     };
     return roleNames[roleValue] || 'User';
   };
@@ -171,24 +173,26 @@ export default function NavbarDash({
   // Get user display name from email
   const getUserDisplayName = () => {
     if (!user?.email) return 'User';
-    
+
     // Ekstrak nama dari email (sebelum @)
     const emailName = user.email.split('@')[0];
-    
+
     // Ekstrak NIM jika ada (format: nama.nim@...)
     const match = emailName.match(/^(.+)\.(\d{9})$/);
     if (match) {
       // Kapitalisasi nama
-      const name = match[1].split('.').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-      ).join(' ');
+      const name = match[1]
+        .split('.')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
       return name;
     }
-    
+
     // Jika tidak ada NIM, capitalize email name
-    return emailName.split('.').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
+    return emailName
+      .split('.')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   };
 
   return (
@@ -240,7 +244,10 @@ export default function NavbarDash({
         {!isMobile && (
           <div className='h-16 flex items-center justify-between px-4 border-b border-[#5a5a3d]/20'>
             {!isMinimized && (
-              <div className='flex items-center gap-2'>
+              <div
+                onClick={() => router.replace('/')}
+                // onClick = {router.replace('/')}
+                className='flex items-center gap-2 cursor-pointer'>
                 <span className='text-xl font-bold text-[#5a5a3d] font-poppins'>
                   IGTTPB
                 </span>
@@ -403,11 +410,11 @@ export default function NavbarDash({
               `}
               type='button'
               aria-label='Logout'>
-              <LogOut
-                className={`w-5 h-5 flex-shrink-0 ${'text-[#5a5a3d]'}`}
-              />
+              <LogOut className={`w-5 h-5 flex-shrink-0 ${'text-[#5a5a3d]'}`} />
               {(!isMinimized || isMobile) && (
-                <span className='truncate font-medium font-poppins'>Logout</span>
+                <span className='truncate font-medium font-poppins'>
+                  Logout
+                </span>
               )}
             </button>
 
