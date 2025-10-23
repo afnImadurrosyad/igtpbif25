@@ -200,7 +200,9 @@ export default function NavbarDash({
       {/* Mobile Top Navbar */}
       {isMobile && (
         <div className='top-0 left-0 right-0 h-16 bg-[#F7F1E7] border-b border-[#5a5a3d]/20 shadow-sm flex items-center justify-between px-4'>
-          <div className='flex items-center gap-2'>
+          <div
+            onClick={() => router.replace('/')}
+            className='flex items-center gap-2'>
             <span className='text-lg font-bold text-[#5a5a3d] font-poppins'>
               IGTTPB
             </span>
