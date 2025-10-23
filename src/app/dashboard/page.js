@@ -7,7 +7,7 @@ export default function Page() {
   const { role } = useAuth();
   if (role == 'user') {
     return <DashPeserta />;
-  } else {
+  } else if (role == 'admin') {
     return <DashAdmin />;
   }
 }
