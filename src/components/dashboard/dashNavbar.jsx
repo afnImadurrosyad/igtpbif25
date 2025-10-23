@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Home, Users, Settings, FileText, Menu, X, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext'; // Sesuaikan path dengan struktur folder Anda
 
 const Icons = {
   home: Home,
@@ -15,13 +16,16 @@ export default function NavbarDash({
   setIsMinimized: propSetIsMinimized,
   isMobileMenuOpen: propIsMobileMenuOpen,
   setIsMobileMenuOpen: propSetIsMobileMenuOpen,
+  onNavItemClick, // Callback untuk mengirim id item yang diklik
 }) {
   const [isMobile, setIsMobile] = useState(false);
   const [internalMinimized, setInternalMinimized] = useState(false);
   const [internalMobileMenu, setInternalMobileMenu] = useState(false);
+  const [activeId, setActiveId] = useState(null); // State untuk active nav id
 
   const router = useRouter();
   const pathname = usePathname();
+  const { user, role } = useAuth(); // Ambil user dan role dari AuthContext
 
   // Use internal state as fallback if props are not provided
   const isMinimized =
@@ -43,21 +47,87 @@ export default function NavbarDash({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navItems = [
-    { title: 'Dashboard', icon: 'home', href: '/dashboard' },
-    { title: 'Profile', icon: 'users', href: '/dashboard/profile' },
-    { title: 'Peserta', icon: 'fileText', href: '/dashboard/peserta' },
-    { title: 'Kelompok', icon: 'users', href: '/dashboard/kelompok' },
-    { title: 'Tugas', icon: 'fileText', href: '/dashboard/tugas' },
-    { title: 'Presensi', icon: 'fileText', href: '/dashboard/presensi' },
+  // Set initial activeId berdasarkan pathname
+  useEffect(() => {
+    if (pathname && navItems.length > 0) {
+      const initialItem = navItems.find(item => item.href === pathname);
+      if (initialItem) {
+        setActiveId(initialItem.id);
+      }
+    }
+  }, [pathname, role]); // Dependensi pada pathname dan role (karena navItems bergantung pada role)
+
+  // Define all navigation items with role-based access
+  const allNavItems = [
+    { 
+      id: 'dashboard',
+      title: 'Dashboard', 
+      icon: 'home', 
+      href: '/dashboard',
+      roles: ['daplok', 'mentor', 'admin'] // Semua role bisa akses
+    },
+    { 
+      id: 'profile',
+      title: 'Profile', 
+      icon: 'users', 
+      href: '/dashboard/profile',
+      roles: ['user', 'daplok', 'mentor', 'admin'] // Semua role bisa akses
+    },
+    { 
+      id: 'peserta',
+      title: 'Peserta', 
+      icon: 'fileText', 
+      href: '/dashboard/peserta',
+      roles: ['daplok', 'mentor', 'admin'] // Hanya daplok, mentor, dan admin
+    },
+    { 
+      id: 'kelompok',
+      title: 'Kelompok', 
+      icon: 'users', 
+      href: '/dashboard/kelompok',
+      roles: ['daplok', 'mentor', 'admin'] // Hanya daplok, mentor, dan admin
+    },
+    { 
+      id: 'tugas',
+      title: 'Tugas', 
+      icon: 'fileText', 
+      href: '/dashboard/tugas',
+      roles: ['user', 'mentor', 'admin'] // User, mentor, dan admin
+    },
+    { 
+      id: 'presensi',
+      title: 'Presensi', 
+      icon: 'fileText', 
+      href: '/dashboard/presensi',
+      roles: ['daplok', 'mentor', 'admin'] // Daplok, mentor, dan admin
+    },
+    { 
+      id: 'settings',
+      title: 'Settings', 
+      icon: 'settings', 
+      href: '/dashboard/settings',
+      roles: ['admin'] // Hanya admin
+    },
   ];
 
-  const handleNavClick = (href) => {
+  // Filter navigation items based on user role from AuthContext
+  const navItems = role ? allNavItems.filter(item => item.roles.includes(role)) : [];
+
+  const handleNavClick = (href, itemId) => {
     try {
       if (isMobile && typeof setIsMobileMenuOpen === 'function') {
         setIsMobileMenuOpen(false);
       }
-      router.push(href);
+      
+      // Update activeId secara internal
+      setActiveId(itemId);
+      
+      // Kirim id item ke parent component jika callback tersedia
+      if (typeof onNavItemClick === 'function') {
+        onNavItemClick(itemId);
+      }
+      
+      // Tidak melakukan router.push(href) lagi
     } catch (error) {
       console.error('Navigation error:', error);
     }
@@ -84,6 +154,41 @@ export default function NavbarDash({
     } catch (error) {
       console.error('Logout navigation error:', error);
     }
+  };
+
+  // Get role display name
+  const getRoleDisplayName = (roleValue) => {
+    const roleNames = {
+      user: 'Peserta',
+      daplok: 'Pendamping Kelompok',
+      mentor: 'Mentor',
+      admin: 'Admin',
+      guest: 'Guest'
+    };
+    return roleNames[roleValue] || 'User';
+  };
+
+  // Get user display name from email
+  const getUserDisplayName = () => {
+    if (!user?.email) return 'User';
+    
+    // Ekstrak nama dari email (sebelum @)
+    const emailName = user.email.split('@')[0];
+    
+    // Ekstrak NIM jika ada (format: nama.nim@...)
+    const match = emailName.match(/^(.+)\.(\d{9})$/);
+    if (match) {
+      // Kapitalisasi nama
+      const name = match[1].split('.').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
+      return name;
+    }
+    
+    // Jika tidak ada NIM, capitalize email name
+    return emailName.split('.').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
   };
 
   return (
@@ -120,13 +225,13 @@ export default function NavbarDash({
       {/* Sidebar */}
       <div
         className={`
-        relative bg-[#F7F1E7] h-full transition-all duration-300 overflow-hidden shadow-sm
+        bg-[#F7F1E7] h-full transition-all duration-300 overflow-hidden shadow-sm
         ${
           isMobile
-            ? `border-l border-[#5a5a3d]/20 right-0 w-64 top-0 ${
+            ? `fixed border-l border-[#5a5a3d]/20 right-0 w-64 top-0 z-50 ${
                 isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
               }`
-            : `border-r border-[#5a5a3d]/20 left-0 top-0 ${
+            : `relative border-r border-[#5a5a3d]/20 left-0 top-0 ${
                 isMinimized ? 'w-16' : 'w-64'
               }`
         }
@@ -213,10 +318,10 @@ export default function NavbarDash({
               </div>
               <div className='min-w-0'>
                 <div className='text-sm font-medium text-[#5a5a3d] font-poppins truncate'>
-                  Jeremi
+                  {getUserDisplayName()}
                 </div>
                 <div className='text-xs text-[#5a5a3d]/70 font-semibold font-poppins'>
-                  Admin
+                  {role ? getRoleDisplayName(role) : 'Loading...'}
                 </div>
               </div>
             </div>
@@ -230,52 +335,59 @@ export default function NavbarDash({
             height: isMobile ? 'calc(100vh - 128px)' : 'calc(100vh - 196px)',
           }}>
           <nav className='space-y-1'>
-            {navItems.map((item, index) => {
-              const Icon = Icons[item.icon];
-              const isActive = pathname === item.href;
+            {navItems.length > 0 ? (
+              navItems.map((item, index) => {
+                const Icon = Icons[item.icon];
+                const isActive = activeId === item.id;
 
-              return (
-                <div
-                  key={`nav-${index}-${item.href}`}
-                  className='relative group'>
-                  <button
-                    onClick={() => handleNavClick(item.href)}
-                    className={`
-                      w-full flex items-center gap-3 rounded-lg py-3 px-4 text-sm font-medium transition-all duration-300
-                      ${
-                        isMinimized && !isMobile
-                          ? 'justify-center'
-                          : 'justify-start'
-                      }
-                      ${
-                        isActive
-                          ? 'bg-[#5a5a3d] text-white shadow-sm'
-                          : 'text-[#5a5a3d] hover:bg-[#5a5a3d]/10'
-                      }
-                    `}
-                    type='button'
-                    aria-label={item.title}>
-                    <Icon
-                      className={`w-5 h-5 flex-shrink-0 ${
-                        isActive ? 'text-white' : 'text-[#5a5a3d]'
-                      }`}
-                    />
-                    {(!isMinimized || isMobile) && (
-                      <span className='truncate font-medium font-poppins'>
+                return (
+                  <div
+                    key={`nav-${index}-${item.id}`}
+                    className='relative group'>
+                    <button
+                      onClick={() => handleNavClick(item.href, item.id)}
+                      className={`
+                        w-full flex items-center gap-3 rounded-lg py-3 px-4 text-sm font-medium transition-all duration-300
+                        ${
+                          isMinimized && !isMobile
+                            ? 'justify-center'
+                            : 'justify-start'
+                        }
+                        ${
+                          isActive
+                            ? 'bg-[#5a5a3d] text-white shadow-sm'
+                            : 'text-[#5a5a3d] hover:bg-[#5a5a3d]/10'
+                        }
+                      `}
+                      type='button'
+                      aria-label={item.title}
+                      data-nav-id={item.id}>
+                      <Icon
+                        className={`w-5 h-5 flex-shrink-0 ${
+                          isActive ? 'text-white' : 'text-[#5a5a3d]'
+                        }`}
+                      />
+                      {(!isMinimized || isMobile) && (
+                        <span className='truncate font-medium font-poppins'>
+                          {item.title}
+                        </span>
+                      )}
+                    </button>
+
+                    {/* Tooltip for minimized state - desktop only */}
+                    {isMinimized && !isMobile && (
+                      <div className='absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-[#5a5a3d] text-white text-sm rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 font-poppins shadow-lg'>
                         {item.title}
-                      </span>
+                      </div>
                     )}
-                  </button>
-
-                  {/* Tooltip for minimized state - desktop only */}
-                  {isMinimized && !isMobile && (
-                    <div className='absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-[#5a5a3d] text-white text-sm rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 font-poppins shadow-lg'>
-                      {item.title}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })
+            ) : (
+              <div className='text-center text-sm text-[#5a5a3d]/70 py-4'>
+                {role ? 'No menu available' : 'Loading menu...'}
+              </div>
+            )}
           </nav>
         </div>
 
