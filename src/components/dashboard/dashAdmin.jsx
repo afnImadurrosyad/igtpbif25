@@ -38,13 +38,8 @@ export default function Page() {
   // }
 
   return (
-<<<<<<< HEAD
-    <div className='m-0'>
+    <div className='m-0 '>
       <div className='flex'>
-=======
-    <div className="m-0">
-      <div className="flex">
->>>>>>> 72141516658b3ce72289d4f99086b79d943ea210
         <div>
           {/* Pastikan NavbarDash menerima prop onNavItemClick dan memanggilnya saat item diklik */}
           <NavbarDash onNavItemClick={handleNavItemClick} activeId={activeNavId} />
