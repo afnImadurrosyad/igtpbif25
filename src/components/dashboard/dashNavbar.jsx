@@ -47,14 +47,71 @@ export default function NavbarDash({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navItems = [
-    { title: 'Dashboard', icon: 'home', href: '/dashboard' },
-    { title: 'Profile', icon: 'users', href: '/dashboard/profile' },
-    { title: 'Peserta', icon: 'fileText', href: '/dashboard/peserta' },
-    { title: 'Kelompok', icon: 'users', href: '/dashboard/kelompok' },
-    { title: 'Tugas', icon: 'fileText', href: '/dashboard/tugas' },
-    { title: 'Presensi', icon: 'fileText', href: '/dashboard/presensi' },
+  // Set initial activeId berdasarkan pathname
+  useEffect(() => {
+    if (pathname && navItems.length > 0) {
+      const initialItem = navItems.find(item => item.href === pathname);
+      if (initialItem) {
+        setActiveId(initialItem.id);
+      }
+    }
+  }, [pathname, role]); // Dependensi pada pathname dan role (karena navItems bergantung pada role)
+
+  // Define all navigation items with role-based access
+  const allNavItems = [
+    { 
+      id: 'dashboard',
+      title: 'Dashboard', 
+      icon: 'home', 
+      href: '/dashboard',
+      roles: ['daplok', 'mentor', 'admin'] // Semua role bisa akses
+    },
+    { 
+      id: 'profile',
+      title: 'Profile', 
+      icon: 'users', 
+      href: '/dashboard/profile',
+      roles: ['user', 'daplok', 'mentor', 'admin'] // Semua role bisa akses
+    },
+    { 
+      id: 'peserta',
+      title: 'Peserta', 
+      icon: 'fileText', 
+      href: '/dashboard/peserta',
+      roles: ['daplok', 'mentor', 'admin'] // Hanya daplok, mentor, dan admin
+    },
+    { 
+      id: 'kelompok',
+      title: 'Kelompok', 
+      icon: 'users', 
+      href: '/dashboard/kelompok',
+      roles: ['daplok', 'mentor', 'admin'] // Hanya daplok, mentor, dan admin
+    },
+    { 
+      id: 'tugas',
+      title: 'Tugas', 
+      icon: 'fileText', 
+      href: '/dashboard/tugas',
+      roles: ['user', 'mentor', 'admin'] // User, mentor, dan admin
+    },
+    { 
+      id: 'presensi',
+      title: 'Presensi', 
+      icon: 'fileText', 
+      href: '/dashboard/presensi',
+      roles: ['daplok', 'mentor', 'admin'] // Daplok, mentor, dan admin
+    },
+    { 
+      id: 'settings',
+      title: 'Settings', 
+      icon: 'settings', 
+      href: '/dashboard/settings',
+      roles: ['admin'] // Hanya admin
+    },
   ];
+
+  // Filter navigation items based on user role from AuthContext
+  const navItems = role ? allNavItems.filter(item => item.roles.includes(role)) : [];
 
   const handleNavClick = (href, itemId) => {
     try {
