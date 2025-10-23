@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
+  const [nim, setNim] = useState(null);
 
   const checkRole = async (email) => {
     if (!email) return null;
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const nim = match[1];
+    setNim(nim);
     const { data, error } = await supabase
       .from('dataif25')
       .select('nama')
@@ -65,6 +67,10 @@ export const AuthProvider = ({ children }) => {
         setUser(data.user);
         const userRole = await checkRole(data.user.email);
         setRole(userRole);
+
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState({}, document.title, '/');
+        }
       }
     };
     getUser();
@@ -76,6 +82,10 @@ export const AuthProvider = ({ children }) => {
           setUser(session.user);
           const userRole = await checkRole(session.user.email);
           setRole(userRole);
+
+          if (window.location.hash.includes('access_token')) {
+            window.history.replaceState({}, document.title, '/');
+          }
         } else {
           setIsLogin(false);
           setUser(null);
@@ -88,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, role }}>
+    <AuthContext.Provider value={{ isLogin, user, role, nim }}>
       {children}
     </AuthContext.Provider>
   );
