@@ -3,6 +3,7 @@ import DashboardKehadiran from '@/components/dashboard/admin/dashKehadiran';
 import DashPeserta from '@/components/dashboard/admin/dashPeserta';
 import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/peserta/dashTugas';
+import PresensiAdmin from '@/components/presensi/presensiAdmin';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 
@@ -27,6 +28,8 @@ export default function Page() {
         return <DashboardProfil />;
       case 'tugas':
         return <DashTugas />;
+      case 'presensi':
+        return <PresensiAdmin />;
       default:
         return null; // Atau tampilkan loading/default content
     }

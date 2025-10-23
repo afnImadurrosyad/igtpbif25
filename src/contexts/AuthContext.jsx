@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
   const [nim, setNim] = useState(null);
+  const [namaPeserta, setNamaPeserta] = useState(null);
 
   const checkRole = async (email) => {
     if (!email) return null;
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }) => {
       .select('nama')
       .eq('nim', nim)
       .single();
+    setNamaPeserta(data)
 
     if (error && error.code !== 'PGRST116') {
       console.error('Error checking role:', error);
@@ -98,7 +100,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, role, nim }}>
+    <AuthContext.Provider value={{ isLogin, user, role, nim, namaPeserta }}>
       {children}
     </AuthContext.Provider>
   );

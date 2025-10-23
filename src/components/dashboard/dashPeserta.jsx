@@ -1,6 +1,7 @@
 import NavbarDash from '@/components/dashboard/dashNavbar';
 import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/peserta/dashTugas';
+import PresensiPeserta from '@/components/presensi/presensiPeserta2';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 
@@ -21,6 +22,8 @@ export default function Page() {
         return <DashboardProfil />;
       case 'tugas':
         return <DashTugas />;
+      case 'presensi':
+        return <PresensiPeserta />;
       default:
         return <DashboardProfil />; // Fallback ke profil jika id tidak dikenali
     }

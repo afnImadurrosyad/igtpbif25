@@ -99,7 +99,7 @@ export default function NavbarDash({
       title: 'Presensi', 
       icon: 'fileText', 
       href: '/dashboard/presensi',
-      roles: ['daplok', 'mentor', 'admin'] // Daplok, mentor, dan admin
+      roles: ['user', 'daplok', 'mentor', 'admin'] // Daplok, mentor, dan admin
     },
     { 
       id: 'settings',
