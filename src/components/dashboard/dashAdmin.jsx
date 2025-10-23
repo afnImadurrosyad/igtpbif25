@@ -38,15 +38,16 @@ export default function Page() {
   // }
 
   return (
-    <div className='m-0 '>
-      <div className='flex'>
+    <div className='m-0 min-h-screen bg-[#F7F1E7] '>
+      <div className='flex min-h-screen'>
         <div>
           {/* Pastikan NavbarDash menerima prop onNavItemClick dan memanggilnya saat item diklik */}
-          <NavbarDash onNavItemClick={handleNavItemClick} activeId={activeNavId} />
+          <NavbarDash
+            onNavItemClick={handleNavItemClick}
+            activeId={activeNavId}
+          />
         </div>
-        <div className="w-full">
-          {renderContent()}
-        </div>
+        <div className='w-full'>{renderContent()}</div>
       </div>
     </div>
   );

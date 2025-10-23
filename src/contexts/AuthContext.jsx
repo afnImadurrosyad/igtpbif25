@@ -67,6 +67,10 @@ export const AuthProvider = ({ children }) => {
         setUser(data.user);
         const userRole = await checkRole(data.user.email);
         setRole(userRole);
+
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState({}, document.title, '/');
+        }
       }
     };
     getUser();
@@ -78,6 +82,10 @@ export const AuthProvider = ({ children }) => {
           setUser(session.user);
           const userRole = await checkRole(session.user.email);
           setRole(userRole);
+
+          if (window.location.hash.includes('access_token')) {
+            window.history.replaceState({}, document.title, '/');
+          }
         } else {
           setIsLogin(false);
           setUser(null);

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function Navbar() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const { isLogin, user, role } = useAuth();
+  const { isLogin, user, role, nim } = useAuth();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   const toggleMenu = () => {
@@ -59,6 +59,13 @@ export default function Navbar() {
                 />
                 <span className='text-xl font-bold text-[#5a5a3d]'>IGTTPB</span>
               </div>
+
+              {console.log('AuthContext saat ini:', {
+                isLogin,
+                user,
+                nim,
+                role,
+              })}
 
               {/* Menu Items */}
               <div className='absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-8'>
