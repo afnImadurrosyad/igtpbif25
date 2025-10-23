@@ -51,9 +51,6 @@ export default function Page() {
           />
         </div>
         <div className='w-full'>{renderContent()}</div>
-        <div className='min-w-20 bg-slate-800'>
-          <h1>BUJANGGGG</h1>
-        </div>
       </div>
     </div>
   );
