@@ -1,7 +1,7 @@
 import NavbarDash from '@/components/dashboard/dashNavbar';
 import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/peserta/dashTugas';
-import PresensiPeserta from '@/components/presensi/presensiPeserta2';
+import PresensiPeserta from '@/components/presensi/presensiPeserta';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 
