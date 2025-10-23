@@ -42,7 +42,7 @@ export default function Page() {
 
   return (
     <div className='m-0 min-h-screen bg-[#F7F1E7] '>
-      <div className='flex min-h-screen'>
+      <div className='flex flex-col min-w-screen md:flex-row'>
         <div>
           {/* Pastikan NavbarDash menerima prop onNavItemClick dan memanggilnya saat item diklik */}
           <NavbarDash
@@ -51,6 +51,9 @@ export default function Page() {
           />
         </div>
         <div className='w-full'>{renderContent()}</div>
+        <div className='min-w-20 bg-slate-800'>
+          <h1>BUJANGGGG</h1>
+        </div>
       </div>
     </div>
   );

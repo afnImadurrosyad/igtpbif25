@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
 import { useAuth } from '@/contexts/AuthContext';
