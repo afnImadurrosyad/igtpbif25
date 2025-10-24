@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getSupabaseClient } from '@/utils/supabaseClient';
+import { supabase } from '@/utils/supabaseClient';
 
 ChartJS.register(
   CategoryScale,
@@ -23,7 +23,6 @@ ChartJS.register(
 );
 
 export default function DashboardKehadiran() {
-  const supabase = getSupabaseClient();
   const [dataKehadiran, setDataKehadiran] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,10 +31,7 @@ export default function DashboardKehadiran() {
       setLoading(true);
       try {
         const { data, error } = await supabase.from('presensi').select('*');
-        if (error) {
-          console.error('Error fetching presensi data:', error.message);
-          throw error;
-        }
+        if (error) throw error;
 
         const kelompokMap = {};
         data.forEach((item) => {
@@ -65,7 +61,7 @@ export default function DashboardKehadiran() {
     };
 
     ambilDataPresensi();
-  }, [supabase]);
+  }, []);
 
   if (loading) {
     return (

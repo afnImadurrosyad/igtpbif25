@@ -1,23 +1,21 @@
-'use client'; // jika pakai app router; di pages router tidak perlu
-import React from 'react';
-import { getSupabaseClient } from '../../utils/supabaseClient';
+"use client"; // jika pakai app router; di pages router tidak perlu
+import React from "react";
+import { supabase } from "../../utils/supabaseClient";
 
 export default function GoogleLoginButton() {
-  const supabase = getSupabaseClient();
-
   const handleLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: {
         // redirectTo defaultnya akan ke /api/auth/callback (auth-helpers sudah support)
         // tetapi bisa override:
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`
-      }
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+      },
     });
 
     if (error) {
-      console.error('OAuth signIn error', error);
-      alert('Login gagal: ' + error.message);
+      console.error("OAuth signIn error", error);
+      alert("Login gagal: " + error.message);
       return;
     }
 
@@ -28,9 +26,5 @@ export default function GoogleLoginButton() {
     }
   };
 
-  return (
-    <button onClick={handleLogin}>
-      Sign in with Google
-    </button>
-  );
+  return <button onClick={handleLogin}>Sign in with Google</button>;
 }
