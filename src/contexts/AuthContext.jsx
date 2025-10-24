@@ -11,88 +11,102 @@ export const AuthProvider = ({ children }) => {
   const [nim, setNim] = useState(null);
   const [namaPeserta, setNamaPeserta] = useState(null);
 
+  // 🔧 Fungsi utama: cek role pengguna
   const checkRole = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return setRole(null);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    const email = user.email;
+      if (!user) {
+        setRole(null);
+        return null;
+      }
 
-    const match = email.match(/\.(\d{9})@student\.itera\.ac\.id$/);
-    if (!match) {
-      console.log('Format email tidak sesuai pola NIM');
-      return 'guest';
-    }
+      const email = user.email;
+      const match = email.match(/\.(\d+)@student\.itera\.ac\.id$/);
 
-    const nim = match[1];
-    setNim(nim);
-    const { data, error } = await supabase
-      .from('dataif25')
-      .select('nama')
-      .eq('nim', nim)
-      .single();
-    setNamaPeserta(data);
+      if (!match) {
+        console.warn('Format email tidak sesuai pola NIM');
+        setRole('guest');
+        return 'guest';
+      }
 
-    if (error && error.code !== 'PGRST116') {
-      console.error('Error checking role:', error);
-      console.log('jadi guest karena error');
-      return 'guest';
-    }
+      const nimValue = match[1];
+      setNim(nimValue);
 
-    //ini buat ngecek
-    if (data) {
-      return 'user';
-    } else {
-      const { data, error } = await supabase
+      // 🔹 Cek apakah NIM ada di tabel dataif25
+      const { data: dataPeserta, error: errorPeserta } = await supabase
+        .from('dataif25')
+        .select('nama')
+        .eq('nim', String(nimValue))
+        .maybeSingle();
+
+      if (errorPeserta && errorPeserta.code !== 'PGRST116') {
+        console.error('Error checking role (peserta):', errorPeserta);
+        setRole('guest');
+        return 'guest';
+      }
+
+      // 🔹 Jika ada di dataif25 → user biasa
+      if (dataPeserta) {
+        setNamaPeserta(dataPeserta.nama);
+        setRole('user');
+        return 'user';
+      }
+
+      // 🔹 Jika tidak ada, cek di tabel users (admin/mentor/daplok)
+      const { data: dataUser, error: errorUser } = await supabase
         .from('users')
         .select('role')
-        .eq('nim', nim)
-        .single();
+        .eq('nim', String(nimValue))
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error checking role:', error);
-        console.log('jadi guest karena error');
+      if (errorUser && errorUser.code !== 'PGRST116') {
+        console.error('Error checking role (users):', errorUser);
+        setRole('guest');
         return 'guest';
       }
 
-      if (data) {
-        console.log('aku ' + data.role + ' kamu user :v');
-        return data.role;
-      } else {
-        console.log('jadi guest karena gaada di kedua tabel');
-        return 'guest';
+      if (dataUser) {
+        setRole(dataUser.role);
+        return dataUser.role;
       }
+
+      console.warn('NIM tidak ditemukan di kedua tabel');
+      setRole('guest');
+      return 'guest';
+    } catch (error) {
+      console.error('Fatal error in checkRole:', error);
+      setRole('guest');
+      return 'guest';
     }
   };
 
+  // Jalankan sekali saat startup
   useEffect(() => {
-    const getUser = async () => {
+    const init = async () => {
       const { data } = await supabase.auth.getUser();
       if (data?.user) {
         setIsLogin(true);
         setUser(data.user);
-        const userRole = await checkRole(data.user.email);
-        setRole(userRole);
+        await checkRole(); // otomatis setRole di dalamnya
+      }
 
-        if (window.location.hash.includes('access_token')) {
-          window.history.replaceState({}, document.title, '/');
-        }
+      // Hilangkan access_token hash
+      if (window.location.hash.includes('access_token')) {
+        window.history.replaceState({}, document.title, '/');
       }
     };
-    getUser();
+    init();
 
+    // Listener perubahan session Supabase
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session?.user) {
           setIsLogin(true);
           setUser(session.user);
-          const userRole = await checkRole(session.user.email);
-          setRole(userRole);
-
-          if (window.location.hash.includes('access_token')) {
-            window.history.replaceState({}, document.title, '/');
-          }
+          await checkRole();
         } else {
           setIsLogin(false);
           setUser(null);
@@ -106,7 +120,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLogin, user, role, nim, namaPeserta, checkRole }}>
+      value={{
+        isLogin,
+        user,
+        role,
+        nim,
+        namaPeserta,
+        checkRole,
+      }}>
       {children}
     </AuthContext.Provider>
   );

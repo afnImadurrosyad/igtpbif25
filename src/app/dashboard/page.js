@@ -1,37 +1,25 @@
 'use client';
+import { useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
-import { useAuth } from '@/contexts/AuthContext';
-import { useEffect, useState } from 'react';
 
 export default function Page() {
-  const { role, checkRole } = useAuth(); // pastikan AuthContext ada fungsi refreshRole
-  const checking = false;
+  const { role, checkRole } = useAuth();
 
-  const loopCheck = () => {
-    console.log('loopcek jalan');
-    setInterval(async () => {
-      await checkRole(); // ambil ulang role dari Supabase
-      console.log('masih ngecek role dari lop cek = ' + role + 'ini hasil nya');
-    }, 1000); // cek tiap 2 detik
-  };
-
-  // Cek ulang role jika masih null
   useEffect(() => {
-    if (!checking) {
+    if (!role) {
       const interval = setInterval(async () => {
-        await checkRole(); // ambil ulang role dari Supabase
-        console.log('masih ngecek role = ' + role + 'ini hasil nya');
-      }, 1000); // cek tiap 2 detik
+        console.log('⏳ Mengecek role ulang...');
+        await checkRole();
+      }, 2000);
 
-      return () => clearInterval(interval);
+      return () => clearInterval(interval); // bersihkan interval saat unmount
     }
-  }, [role, checking, checkRole]);
+  }, [role, checkRole]);
 
-  // Jika role belum siap
   if (!role) {
-    loopCheck();
-    console.log('gaada role = ' + role);
+    console.log('🚫 Belum ada role');
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <p className='text-gray-600'>Menentukan role pengguna...</p>
@@ -39,16 +27,16 @@ export default function Page() {
     );
   }
 
-  // Role user → peserta
   if (role === 'user') {
-    console.log('ada user = ' + role);
+    console.log('✅ Role user terdeteksi');
     return <DashPeserta />;
-  } else {
-    console.log('gaada user = ' + role);
+  }
+
+  if (['admin', 'mentor', 'daplok'].includes(role)) {
+    console.log('✅ Role admin/mentor/daplok terdeteksi');
     return <DashAdmin />;
   }
 
-  // Fallback jika role tidak dikenali
   return (
     <div className='flex justify-center items-center min-h-screen'>
       <p className='text-red-600'>Unauthorized: Role tidak dikenali.</p>
