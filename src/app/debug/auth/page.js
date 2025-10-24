@@ -8,9 +8,26 @@ export default function AuthDebugPage() {
   const [session, setSession] = useState(null);
   const [lsKeys, setLsKeys] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [envVars, setEnvVars] = useState({ url: null, keyPresent: false });
 
   useEffect(() => {
     const run = async () => {
+      // Check env vars first
+      try {
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        setEnvVars({ url, keyPresent: !!key });
+
+        if (!url || !key) {
+          setErrors((e) => [
+            ...e,
+            "CRITICAL: Environment variables missing in production!",
+          ]);
+        }
+      } catch (e) {
+        setErrors((prev) => [...prev, `Env check error: ${e?.message}`]);
+      }
+
       try {
         const { data, error } = await supabase.auth.getSession();
         if (error)
@@ -38,7 +55,27 @@ export default function AuthDebugPage() {
 
   return (
     <div className="min-h-screen p-6 font-mono">
-      <h1 className="text-xl font-bold mb-4">Auth Debug</h1>
+      <h1 className="text-xl font-bold mb-4">Auth Debug (Production)</h1>
+
+      {/* Environment Variables Check */}
+      <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
+        <div className="font-bold mb-2">Environment Variables:</div>
+        <div>
+          NEXT_PUBLIC_SUPABASE_URL:{" "}
+          <b>{envVars.url ? "✅ Set" : "❌ MISSING"}</b>
+        </div>
+        <div>
+          NEXT_PUBLIC_SUPABASE_ANON_KEY:{" "}
+          <b>{envVars.keyPresent ? "✅ Set" : "❌ MISSING"}</b>
+        </div>
+        {(!envVars.url || !envVars.keyPresent) && (
+          <div className="mt-2 text-red-600 font-bold">
+            ⚠️ Variables missing! Check Vercel Settings → Environment Variables
+            → Production
+          </div>
+        )}
+      </div>
+
       <div className="space-y-2 mb-6">
         <div>
           isLoading: <b>{String(isLoading)}</b>
