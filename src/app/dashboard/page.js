@@ -18,13 +18,13 @@ export default function Page() {
       console.log('user saat ini');
       console.log(user);
       await checkRoleOnce(user, setRole);
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [user, role]);
 
   if (!role) {
-    console.log('AuthContext saat ini:', nim, role);
+    console.log(' saat ini:', nim, role);
     console.log(user);
     return (
       <div className='flex justify-center items-center min-h-screen'>
@@ -45,6 +45,7 @@ export default function Page() {
 
 async function checkRoleOnce(user, setRole) {
   try {
+    console.log('mulai');
     const email = user.email;
     const match = email.match(/\.(\d+)@student\.itera\.ac\.id$/);
     if (!match) {
@@ -60,8 +61,10 @@ async function checkRoleOnce(user, setRole) {
       .select('nama')
       .eq('nim', String(nimValue))
       .maybeSingle();
+    console.log('berhasil di tabel 1');
 
     if (dataPeserta) {
+      console.log('ada di peserta');
       setRole('user');
       return;
     }
@@ -71,8 +74,11 @@ async function checkRoleOnce(user, setRole) {
       .select('role')
       .eq('nim', String(nimValue))
       .maybeSingle();
+    console.log('berhasil di tabel 2');
 
     if (dataUser) {
+      console.log('ada di user');
+
       setRole(dataUser.role);
       return;
     }
