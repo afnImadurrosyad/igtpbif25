@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { User, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { saveRoleToLocal } from '@/utils/localRole';
 
 export default function Navbar() {
   const router = useRouter();
@@ -66,6 +67,7 @@ export default function Navbar() {
                 nim,
                 role,
               })}
+              {role != null && saveRoleToLocal(role)}
 
               {/* Menu Items */}
               <div className='absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-8'>
