@@ -5,6 +5,21 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabaseClient";
 import { clearRoleFromLocal } from "@/utils/localRole";
 
+// Fallback: clear Supabase auth storage keys manually
+function clearSupabaseAuthStorage() {
+  if (typeof window === "undefined") return;
+  try {
+    const keys = Object.keys(localStorage);
+    keys.forEach((k) => {
+      if (k.startsWith("sb-") && k.includes("auth")) {
+        localStorage.removeItem(k);
+      }
+    });
+  } catch (e) {
+    // ignore
+  }
+}
+
 export default function Logout() {
   const router = useRouter();
 
@@ -13,6 +28,7 @@ export default function Logout() {
       try {
         // Clear localStorage first
         clearRoleFromLocal();
+        clearSupabaseAuthStorage();
 
         // Sign out from Supabase
         const { error } = await supabase.auth.signOut({
@@ -24,12 +40,20 @@ export default function Logout() {
           // Even if there's an error, redirect to home
         }
 
-        // Redirect to home page
-        router.replace("/");
+        // Redirect to home page with hard reload to ensure fresh state
+        if (typeof window !== "undefined") {
+          window.location.replace("/");
+        } else {
+          router.replace("/");
+        }
       } catch (err) {
         console.error("Unexpected error during logout:", err);
-        // Even if there's an error, try to redirect
-        router.replace("/");
+        // Even if there's an error, try to force redirect
+        if (typeof window !== "undefined") {
+          window.location.replace("/");
+        } else {
+          router.replace("/");
+        }
       }
     };
 

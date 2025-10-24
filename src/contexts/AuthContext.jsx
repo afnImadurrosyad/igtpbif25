@@ -158,17 +158,9 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         }
 
-        // Hilangkan access_token hash
-        if (
-          typeof window !== "undefined" &&
-          window.location.hash.includes("access_token")
-        ) {
-          window.history.replaceState(
-            {},
-            document.title,
-            window.location.pathname
-          );
-        }
+        // Catatan: Jangan menghapus hash OAuth secara manual di sini.
+        // Supabase akan memproses hash saat inisialisasi (detectSessionInUrl: true).
+        // Menghapus terlalu dini dapat menggagalkan set sesi.
       } catch (error) {
         console.error("Error during auth initialization:", error);
       } finally {
@@ -215,6 +207,25 @@ export const AuthProvider = ({ children }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only run once
+
+  // Retry safety net: jika sudah login tapi role belum terisi, coba ulang cek role beberapa kali
+  const roleRetryCount = useRef(0);
+  useEffect(() => {
+    if (!isLogin) {
+      roleRetryCount.current = 0;
+      return;
+    }
+
+    if (isLogin && role == null && !checkRoleInProgress.current) {
+      if (roleRetryCount.current < 3) {
+        const t = setTimeout(() => {
+          roleRetryCount.current += 1;
+          checkRole();
+        }, 1000 * (roleRetryCount.current + 1)); // backoff ringan 1s,2s,3s
+        return () => clearTimeout(t);
+      }
+    }
+  }, [isLogin, role, checkRole]);
 
   return (
     <AuthContext.Provider
