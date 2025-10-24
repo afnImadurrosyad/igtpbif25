@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }) => {
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log("Auth state changed:", event, session?.user?.email);
-        
+
         if (!isMounted.current) return;
 
         if (event === "SIGNED_OUT") {
