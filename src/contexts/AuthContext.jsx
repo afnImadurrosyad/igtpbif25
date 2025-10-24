@@ -11,8 +11,13 @@ export const AuthProvider = ({ children }) => {
   const [nim, setNim] = useState(null);
   const [namaPeserta, setNamaPeserta] = useState(null);
 
-  const checkRole = async (email) => {
-    if (!email) return null;
+  const checkRole = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return setRole(null);
+
+    const email = user.email;
 
     const match = email.match(/\.(\d{9})@student\.itera\.ac\.id$/);
     if (!match) {
@@ -100,7 +105,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, role, nim, namaPeserta }}>
+    <AuthContext.Provider
+      value={{ isLogin, user, role, nim, namaPeserta, checkRole }}>
       {children}
     </AuthContext.Provider>
   );

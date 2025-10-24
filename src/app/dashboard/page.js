@@ -5,12 +5,22 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 
 export default function Page() {
-  const { role } = useAuth();
-  const [roles, setRole] = useState(null);
+  const { role, checkRole } = useAuth(); // pastikan AuthContext ada fungsi refreshRole
+  const [checking, setChecking] = useState(false);
 
-  console.log(role);
+  // Cek ulang role jika masih null
+  useEffect(() => {
+    if (!role && !checking) {
+      setChecking(true);
+      const interval = setInterval(async () => {
+        await checkRole(); // ambil ulang role dari Supabase
+      }, 2000); // cek tiap 2 detik
 
-  // Jika role belum siap (undefined/null), tampilkan placeholder ringan
+      return () => clearInterval(interval);
+    }
+  }, [role, checking, checkRole]);
+
+  // Jika role belum siap
   if (!role) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
@@ -20,14 +30,10 @@ export default function Page() {
   }
 
   // Role user → peserta
-  if (role === 'user') {
-    return <DashPeserta />;
-  }
+  if (role === 'user') return <DashPeserta />;
 
   // Role admin / mentor / daplok → admin dashboard
-  if (['admin', 'mentor', 'daplok'].includes(role)) {
-    return <DashAdmin />;
-  }
+  if (['admin', 'mentor', 'daplok'].includes(role)) return <DashAdmin />;
 
   // Fallback jika role tidak dikenali
   return (
