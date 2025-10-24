@@ -1,33 +1,18 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/utils/supabaseClient';
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
 
 export default function Page() {
   const [role, setRole] = useState(null);
-  const { user, nim } = useAuth();
 
-  // useEffect(() => {
-  //   if (!user) return;
-  //   if (role) return;
-
-  //   const interval = setInterval(async () => {
-  //     console.log('⏳ Mengecek role ulang... role saat ini =', role);
-  //     console.log('user saat ini');
-  //     console.log(user);
-  //     await checkRoleOnce(user, setRole);
-  //   }, 5000);
-
-  //   return () => clearInterval(interval);
-  // }, [user, role]);
+  useEffect(() => {
+    if (!role) checkRoleOnce(setRole); // cek langsung tanpa loop
+  }, [role]);
 
   if (!role) {
-    checkRoleOnce(user, setRole);
-    console.log(' saat ini:', nim, role);
-    console.log(user);
-
+    console.log('Menentukan role pengguna...');
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <p className='text-gray-600'>Menentukan role pengguna...</p>
@@ -45,11 +30,23 @@ export default function Page() {
   );
 }
 
-async function checkRoleOnce(user, setRole) {
+async function checkRoleOnce(setRole) {
   try {
-    console.log('mulai');
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      console.warn('Belum login');
+      setRole(null);
+      return;
+    }
+
+    console.log('Cek role untuk:', user.email);
+
     const email = user.email;
     const match = email.match(/\.(\d+)@student\.itera\.ac\.id$/);
+
     if (!match) {
       console.log('Format email tidak sesuai pola NIM');
       setRole('guest');
@@ -57,34 +54,38 @@ async function checkRoleOnce(user, setRole) {
     }
 
     const nimValue = match[1];
-    console.log(nimValue);
-    const { data: dataPeserta } = await supabase
+
+    // 🔹 Cek di tabel dataif25
+    const { data: dataPeserta, error: err1 } = await supabase
       .from('dataif25')
       .select('nama')
       .eq('nim', String(nimValue))
       .maybeSingle();
-    console.log('berhasil di tabel 1');
+
+    if (err1) console.error('Error di dataif25:', err1);
 
     if (dataPeserta) {
-      console.log('ada di peserta');
+      console.log('Ditemukan di dataif25 sebagai peserta');
       setRole('user');
       return;
     }
 
-    const { data: dataUser } = await supabase
+    // 🔹 Jika tidak ada di dataif25, cek di tabel users
+    const { data: dataUser, error: err2 } = await supabase
       .from('users')
       .select('role')
       .eq('nim', String(nimValue))
       .maybeSingle();
-    console.log('berhasil di tabel 2');
+
+    if (err2) console.error('Error di users:', err2);
 
     if (dataUser) {
-      console.log('ada di user');
-
+      console.log('Ditemukan di users dengan role:', dataUser.role);
       setRole(dataUser.role);
       return;
     }
 
+    console.warn('Tidak ditemukan di kedua tabel');
     setRole('guest');
   } catch (err) {
     console.error('Fatal error in checkRoleOnce:', err);
