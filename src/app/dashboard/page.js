@@ -10,12 +10,12 @@ export default function Page() {
 
   // Cek ulang role jika masih null
   useEffect(() => {
-    if (!role && !checking) {
+    if (!checking) {
       setChecking(true);
       const interval = setInterval(async () => {
         await checkRole(); // ambil ulang role dari Supabase
         console.log('masih ngecek role = ' + role + 'ini hasil nya');
-      }, 2000); // cek tiap 2 detik
+      }, 1000); // cek tiap 2 detik
 
       return () => clearInterval(interval);
     }
