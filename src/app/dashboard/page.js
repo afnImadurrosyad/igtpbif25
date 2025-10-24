@@ -14,6 +14,7 @@ export default function Page() {
       setChecking(true);
       const interval = setInterval(async () => {
         await checkRole(); // ambil ulang role dari Supabase
+        console.log('masih ngecek role = ' + role + 'ini hasil nya');
       }, 2000); // cek tiap 2 detik
 
       return () => clearInterval(interval);
@@ -22,6 +23,7 @@ export default function Page() {
 
   // Jika role belum siap
   if (!role) {
+    console.log('gaada role = ' + role);
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <p className='text-gray-600'>Menentukan role pengguna...</p>
@@ -30,10 +32,13 @@ export default function Page() {
   }
 
   // Role user → peserta
-  if (role === 'user') return <DashPeserta />;
-
-  // Role admin / mentor / daplok → admin dashboard
-  if (['admin', 'mentor', 'daplok'].includes(role)) return <DashAdmin />;
+  if (role === 'user') {
+    console.log('ada user = ' + role);
+    return <DashPeserta />;
+  } else {
+    console.log('gaada user = ' + role);
+    return <DashAdmin />;
+  }
 
   // Fallback jika role tidak dikenali
   return (
