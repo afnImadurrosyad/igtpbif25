@@ -145,6 +145,41 @@ export const AuthProvider = ({ children }) => {
     const init = async () => {
       try {
         setIsLoading(true);
+        // 1) Attempt to exchange OAuth code/hash for a session if present (PKCE fallback)
+        if (typeof window !== "undefined") {
+          const hasCode = window.location.search.includes("code=");
+          const hasAccessToken =
+            window.location.hash.includes("access_token=") ||
+            window.location.search.includes("access_token=");
+
+          if (hasCode || hasAccessToken) {
+            try {
+              const { data: exData, error: exErr } =
+                await supabase.auth.exchangeCodeForSession(
+                  window.location.href
+                );
+              if (exErr) {
+                console.error("exchangeCodeForSession error:", exErr.message);
+              } else {
+                console.log(
+                  "exchangeCodeForSession success",
+                  !!exData?.session
+                );
+              }
+            } catch (ex) {
+              console.error("exchangeCodeForSession fatal:", ex?.message);
+            } finally {
+              // Bersihkan query/hash agar URL rapi setelah proses OAuth
+              try {
+                const cleanUrl =
+                  window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+              } catch {}
+            }
+          }
+        }
+
+        // 2) Lanjutkan cek user
         const { data } = await supabase.auth.getUser();
 
         if (!isMounted.current) return;
