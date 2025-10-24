@@ -1,26 +1,25 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
 
 export default function Page() {
-  const [roles, setRoles] = useState(null);
-  const { role, checkRole } = useAuth();
+  const { role, checkRole, user, nim } = useAuth();
 
   useEffect(() => {
-    if (!roles || !role) {
+    if (!role) {
       const interval = setInterval(async () => {
         console.log('⏳ Mengecek role ulang...... role saat ini' + role);
         await checkRole();
-        setRoles(role);
       }, 1000);
 
       return () => clearInterval(interval); // bersihkan interval saat unmount
     }
-  }, [role, checkRole, roles]);
+  }, [role, checkRole]);
 
-  if (!roles) {
+  if (!role) {
+    console.log('AuthContext saat ini:' + user + nim + role);
     console.log('🚫 Belum ada role');
     return (
       <div className='flex justify-center items-center min-h-screen'>
@@ -29,12 +28,12 @@ export default function Page() {
     );
   }
 
-  if (roles === 'user') {
+  if (role === 'user') {
     console.log('✅ Role user terdeteksi');
     return <DashPeserta />;
   }
 
-  if (['admin', 'mentor', 'daplok'].includes(roles)) {
+  if (['admin', 'mentor', 'daplok'].includes(role)) {
     console.log('✅ Role admin/mentor/daplok terdeteksi');
     return <DashAdmin />;
   }
