@@ -6,7 +6,7 @@ let supabaseInstance = null;
 const getSupabaseInstance = () => {
   if (!supabaseInstance) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON;
 
     // Debug logging in development/production to catch missing env vars
     if (typeof window !== "undefined") {
@@ -18,7 +18,7 @@ const getSupabaseInstance = () => {
 
     if (!supabaseUrl || !supabaseAnonKey) {
       const msg =
-        "CRITICAL: Supabase environment variables missing. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel.";
+        "CRITICAL: Supabase environment variables missing. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON in Vercel.";
       console.error(msg);
       throw new Error(msg);
     }
