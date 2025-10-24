@@ -1,16 +1,31 @@
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-let supabaseClient = null;
+// Singleton pattern - only create one instance
+let supabaseInstance = null;
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
-export const getSupabaseClient = () => {
-  if (!supabaseClient) {
-    supabaseClient = createBrowserSupabaseClient();
+const getSupabaseInstance = () => {
+  if (!supabaseInstance) {
+    supabaseInstance = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          storage:
+            typeof window !== "undefined" ? window.localStorage : undefined,
+        },
+      }
+    );
   }
-  return supabaseClient;
+  return supabaseInstance;
+};
+
+// Export the same instance for all uses
+export const supabase = getSupabaseInstance();
+
+// Deprecated: Use supabase directly instead
+export const getSupabaseClient = () => {
+  return getSupabaseInstance();
 };
