@@ -6,7 +6,15 @@ import { useEffect, useState } from 'react';
 
 export default function Page() {
   const { role, checkRole } = useAuth(); // pastikan AuthContext ada fungsi refreshRole
-  const [checking, setChecking] = useState(false);
+  const checking = false;
+
+  const loopCheck = () => {
+    console.log('loopcek jalan');
+    setInterval(async () => {
+      await checkRole(); // ambil ulang role dari Supabase
+      console.log('masih ngecek role dari lop cek = ' + role + 'ini hasil nya');
+    }, 1000); // cek tiap 2 detik
+  };
 
   // Cek ulang role jika masih null
   useEffect(() => {
@@ -22,7 +30,7 @@ export default function Page() {
 
   // Jika role belum siap
   if (!role) {
-    checkRole();
+    loopCheck();
     console.log('gaada role = ' + role);
     return (
       <div className='flex justify-center items-center min-h-screen'>
