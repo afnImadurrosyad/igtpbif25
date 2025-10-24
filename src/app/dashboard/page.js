@@ -2,9 +2,13 @@
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
   const { role } = useAuth();
+  const [roles, setRole] = useState(null);
+
+  console.log(role);
 
   // Jika role belum siap (undefined/null), tampilkan placeholder ringan
   if (!role) {
