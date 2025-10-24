@@ -36,8 +36,10 @@ async function checkRoleOnce(setRole) {
       data: { user },
     } = await supabase.auth.getUser();
 
+    console.log(user);
+
     if (!user) {
-      console.warn('Belum login');
+      console.log('Belum login');
       setRole(null);
       return;
     }
@@ -85,10 +87,10 @@ async function checkRoleOnce(setRole) {
       return;
     }
 
-    console.warn('Tidak ditemukan di kedua tabel');
+    console.log('Tidak ditemukan di kedua tabel');
     setRole('guest');
   } catch (err) {
-    console.error('Fatal error in checkRoleOnce:', err);
+    console.log('Fatal error in checkRoleOnce:', err);
     setRole('guest');
   }
 }
