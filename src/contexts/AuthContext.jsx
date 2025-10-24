@@ -28,7 +28,8 @@ export const AuthProvider = ({ children }) => {
   const checkRole = useCallback(async () => {
     // Prevent concurrent calls
     if (checkRoleInProgress.current) {
-      return role;
+      console.log("checkRole already in progress, skipping...");
+      return;
     }
 
     checkRoleInProgress.current = true;
@@ -41,10 +42,12 @@ export const AuthProvider = ({ children }) => {
       if (!isMounted.current) return null;
 
       if (!user) {
-        setRole(null);
-        setNim(null);
-        setNamaPeserta(null);
-        clearRoleFromLocal();
+        if (isMounted.current) {
+          setRole(null);
+          setNim(null);
+          setNamaPeserta(null);
+          clearRoleFromLocal();
+        }
         return null;
       }
 
@@ -53,8 +56,10 @@ export const AuthProvider = ({ children }) => {
 
       if (!match) {
         console.warn("Format email tidak sesuai pola NIM");
-        setRole("guest");
-        saveRoleToLocal("guest");
+        if (isMounted.current) {
+          setRole("guest");
+          saveRoleToLocal("guest");
+        }
         return "guest";
       }
 
@@ -72,8 +77,10 @@ export const AuthProvider = ({ children }) => {
 
       if (errorPeserta && errorPeserta.code !== "PGRST116") {
         console.error("Error checking role (peserta):", errorPeserta);
-        setRole("guest");
-        saveRoleToLocal("guest");
+        if (isMounted.current) {
+          setRole("guest");
+          saveRoleToLocal("guest");
+        }
         return "guest";
       }
 
@@ -98,8 +105,10 @@ export const AuthProvider = ({ children }) => {
 
       if (errorUser && errorUser.code !== "PGRST116") {
         console.error("Error checking role (users):", errorUser);
-        setRole("guest");
-        saveRoleToLocal("guest");
+        if (isMounted.current) {
+          setRole("guest");
+          saveRoleToLocal("guest");
+        }
         return "guest";
       }
 
@@ -127,7 +136,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       checkRoleInProgress.current = false;
     }
-  }, [role]);
+  }, []); // REMOVED role dependency to prevent infinite loop
 
   // Jalankan sekali saat startup
   useEffect(() => {
@@ -144,6 +153,9 @@ export const AuthProvider = ({ children }) => {
           setIsLogin(true);
           setUser(data.user);
           await checkRole();
+        } else {
+          // No user, set loading to false immediately
+          setIsLoading(false);
         }
 
         // Hilangkan access_token hash
@@ -169,6 +181,8 @@ export const AuthProvider = ({ children }) => {
     // Listener perubahan session Supabase
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.email);
+        
         if (!isMounted.current) return;
 
         if (event === "SIGNED_OUT") {
@@ -178,6 +192,7 @@ export const AuthProvider = ({ children }) => {
           setNim(null);
           setNamaPeserta(null);
           clearRoleFromLocal();
+          setIsLoading(false);
         } else if (session?.user) {
           setIsLogin(true);
           setUser(session.user);
@@ -189,6 +204,7 @@ export const AuthProvider = ({ children }) => {
           setNim(null);
           setNamaPeserta(null);
           clearRoleFromLocal();
+          setIsLoading(false);
         }
       }
     );
@@ -197,7 +213,8 @@ export const AuthProvider = ({ children }) => {
       isMounted.current = false;
       listener.subscription.unsubscribe();
     };
-  }, [checkRole]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run once
 
   return (
     <AuthContext.Provider
