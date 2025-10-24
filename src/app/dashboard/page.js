@@ -49,13 +49,13 @@ async function checkRoleOnce(user, setRole) {
     const email = user.email;
     const match = email.match(/\.(\d+)@student\.itera\.ac\.id$/);
     if (!match) {
-      console.warn('Format email tidak sesuai pola NIM');
+      console.log('Format email tidak sesuai pola NIM');
       setRole('guest');
       return;
     }
 
     const nimValue = match[1];
-
+    console.log(nimValue);
     const { data: dataPeserta } = await supabase
       .from('dataif25')
       .select('nama')
