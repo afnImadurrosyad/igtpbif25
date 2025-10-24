@@ -15,7 +15,7 @@ export default function AuthDebugPage() {
       // Check env vars first
       try {
         const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON;
         setEnvVars({ url, keyPresent: !!key });
 
         if (!url || !key) {
