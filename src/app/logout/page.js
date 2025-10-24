@@ -11,7 +11,7 @@ export default function Logout() {
     (async () => {
       try {
         await supabase.auth.signOut();
-        router.replace('/');
+        router.push('/');
       } catch (error) {
         console.error('Error:', error);
       }

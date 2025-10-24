@@ -7,7 +7,7 @@ export default function Page() {
   const { role, loading } = useAuth();
 
   // Tampilkan loading dulu sampai data user siap
-  if (loading || role === undefined || role === null) {
+  if (role === undefined || role === null) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <p className='text-gray-600'>Memuat data pengguna...</p>

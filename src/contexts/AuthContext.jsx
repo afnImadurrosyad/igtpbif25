@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       if (data) {
-        console.log('aku ' + role + ' kamu user :v');
+        console.log('aku ' + data.role + ' kamu user :v');
         return data.role;
       } else {
         console.log('jadi guest karena gaada di kedua tabel');
