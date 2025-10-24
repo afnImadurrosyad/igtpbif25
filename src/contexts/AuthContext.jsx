@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       .select('nama')
       .eq('nim', nim)
       .single();
-    setNamaPeserta(data)
+    setNamaPeserta(data);
 
     if (error && error.code !== 'PGRST116') {
       console.error('Error checking role:', error);
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       if (data) {
-        console.log('aku admin kamu user :v');
+        console.log('aku ' + role + ' kamu user :v');
         return data.role;
       } else {
         console.log('jadi guest karena gaada di kedua tabel');
