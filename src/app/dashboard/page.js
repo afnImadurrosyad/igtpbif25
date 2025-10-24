@@ -10,9 +10,9 @@ export default function Page() {
   useEffect(() => {
     if (!role) {
       const interval = setInterval(async () => {
-        console.log('⏳ Mengecek role ulang...');
+        console.log('⏳ Mengecek role ulang...... role saat ini' + role);
         await checkRole();
-      }, 2000);
+      }, 1000);
 
       return () => clearInterval(interval); // bersihkan interval saat unmount
     }
