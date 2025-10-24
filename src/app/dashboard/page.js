@@ -11,7 +11,6 @@ export default function Page() {
   // Cek ulang role jika masih null
   useEffect(() => {
     if (!checking) {
-      setChecking(true);
       const interval = setInterval(async () => {
         await checkRole(); // ambil ulang role dari Supabase
         console.log('masih ngecek role = ' + role + 'ini hasil nya');
@@ -23,6 +22,7 @@ export default function Page() {
 
   // Jika role belum siap
   if (!role) {
+    checkRole();
     console.log('gaada role = ' + role);
     return (
       <div className='flex justify-center items-center min-h-screen'>
