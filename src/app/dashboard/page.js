@@ -4,27 +4,28 @@ import DashPeserta from '@/components/dashboard/dashPeserta';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Page() {
-  const { role, loading } = useAuth();
+  const { role } = useAuth();
 
-  // Tampilkan loading dulu sampai data user siap
-  if (role === undefined || role === null) {
+  // Jika role belum siap (undefined/null), tampilkan placeholder ringan
+  if (!role) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
-        <p className='text-gray-600'>Memuat data pengguna...</p>
+        <p className='text-gray-600'>Menentukan role pengguna...</p>
       </div>
     );
   }
 
-  // Render berdasarkan role
+  // Role user → peserta
   if (role === 'user') {
     return <DashPeserta />;
   }
 
-  if (role === 'admin') {
+  // Role admin / mentor / daplok → admin dashboard
+  if (['admin', 'mentor', 'daplok'].includes(role)) {
     return <DashAdmin />;
   }
 
-  // fallback jika role tidak dikenal
+  // Fallback jika role tidak dikenali
   return (
     <div className='flex justify-center items-center min-h-screen'>
       <p className='text-red-600'>Unauthorized: Role tidak dikenali.</p>
