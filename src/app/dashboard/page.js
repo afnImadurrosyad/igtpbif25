@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
 
