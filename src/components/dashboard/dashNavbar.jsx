@@ -256,14 +256,12 @@ export default function NavbarDash({
         {!isMobile && (
           <div className="h-16 flex items-center justify-between px-4 border-b border-[#5a5a3d]/20">
             {!isMinimized && (
-              <div
-                onClick={() => router.replace("/")}
-                // onClick = {router.replace('/')}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <span className="text-xl font-bold text-[#5a5a3d] font-poppins">
-                  IGTTPB
-                </span>
+              <div className="flex items-center gap-2 cursor-pointer">
+                <a href={"/"}>
+                  <span className="text-xl font-bold text-[#5a5a3d] font-poppins">
+                    IGTTPB
+                  </span>
+                </a>
               </div>
             )}
             <button
