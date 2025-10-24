@@ -5,7 +5,7 @@ import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
 
 export default function Page() {
-  const { role, checkRole, user, nim } = useAuth();
+  const { role, checkRole, nim, user } = useAuth();
 
   useEffect(() => {
     if (!role) {
@@ -19,7 +19,8 @@ export default function Page() {
   }, [role, checkRole]);
 
   if (!role) {
-    console.log('AuthContext saat ini:' + user + nim + role);
+    console.log('AuthContext saat ini:' + nim + role);
+    console.log(user);
     console.log('🚫 Belum ada role');
     return (
       <div className='flex justify-center items-center min-h-screen'>
