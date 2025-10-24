@@ -32,7 +32,10 @@ export default function DashboardKehadiran() {
       setLoading(true);
       try {
         const { data, error } = await supabase.from('presensi').select('*');
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching presensi data:', error.message);
+          throw error;
+        }
 
         const kelompokMap = {};
         data.forEach((item) => {
