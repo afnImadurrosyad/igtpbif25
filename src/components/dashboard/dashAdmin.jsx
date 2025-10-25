@@ -6,35 +6,47 @@ import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/admin/dashTugasAdmin';
 import PresensiAdmin from '@/components/presensi/presensiAdmin';
 import { useState, useEffect } from 'react';
-import {
-  ambilDataPresensi,
-  getAllPeserta,
-  getTugasPeserta,
-} from '@/api/pesertaApi2';
+// import {
+//   ambilDataPresensi,
+//   getAllPeserta,
+//   getTugasPeserta,
+// } from '@/api/pesertaApi2';
 
-export default function Page() {
+const DashAdmin = ({ dataHadir, dataPeserta, dataTugas }) => {
   const [activeNavId, setActiveNavId] = useState('dashboard');
   const [kehadiran, setKehadiran] = useState([]);
   const [peserta, setPeserta] = useState([]);
   const [tugas, setTugas] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await ambilDataPresensi();
+  //     setKehadiran(data);
+  //   };
+  //   fetchData();
+  //   const fetchPeserta = async () => {
+  //     const data = await getAllPeserta();
+  //     setPeserta(data);
+  //   };
+  //   fetchPeserta();
+  //   const fetchTugas = async () => {
+  //     const data = await getTugasPeserta();
+  //     setTugas(data);
+  //   };
+  //   fetchTugas();
+  // }, []);
+
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await ambilDataPresensi();
-      setKehadiran(data);
-    };
-    fetchData();
-    const fetchPeserta = async () => {
-      const data = await getAllPeserta();
-      setPeserta(data);
-    };
-    fetchPeserta();
-    const fetchTugas = async () => {
-      const data = await getTugasPeserta();
-      setTugas(data);
-    };
-    fetchTugas();
-  }, []);
+    if (dataHadir && Array.isArray(dataHadir)) {
+      setKehadiran(dataHadir);
+    }
+    if (dataPeserta && Array.isArray(dataPeserta)) {
+      setPeserta(dataPeserta);
+    }
+    if (dataTugas && Array.isArray(dataTugas)) {
+      setTugas(dataTugas);
+    }
+  }, [dataHadir, dataTugas, dataPeserta]);
 
   // console.log('Peserta data:', peserta);
   // console.log('kehadiran data:', kehadiran);
@@ -71,4 +83,6 @@ export default function Page() {
       </div>
     </div>
   );
-}
+};
+
+export default DashAdmin;

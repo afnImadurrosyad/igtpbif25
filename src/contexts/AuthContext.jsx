@@ -93,6 +93,7 @@ export const AuthProvider = ({ children }) => {
             window.history.replaceState({}, document.title, '/');
           }
         } else {
+          console.log('User logged out');
           setIsLogin(false);
           setUser(null);
           setRole(null);
