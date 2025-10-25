@@ -21,7 +21,7 @@ export default function Logout() {
   }, [router]);
 
   return (
-    <div className=' bg-gray-200 flex flex-col items-center justify-center min-h-screen text-center'>
+    <div className=' bg-gray-200 text-gray-800 flex flex-col items-center justify-center min-h-screen text-center'>
       <h1 className='text-xl font-semibold mb-4'>Logging out...</h1>
       <p>Please wait while we sign you out.</p>
     </div>
