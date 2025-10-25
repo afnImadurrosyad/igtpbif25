@@ -1,10 +1,12 @@
-'use client'
+'use client';
 import DashAdmin from '@/components/dashboard/dashAdmin';
 import DashPeserta from '@/components/dashboard/dashPeserta';
-import { useAuth } from '@/contexts/AuthContext';
+import { getRoleFromLocal } from '@/utils/localRole';
+import { useState } from 'react';
 
 export default function Page() {
-  const { role } = useAuth();
+  const [role, setRole] = useState();
+  setRole(getRoleFromLocal());
   if (role == 'user') {
     return <DashPeserta />;
   } else if (role == 'admin') {
