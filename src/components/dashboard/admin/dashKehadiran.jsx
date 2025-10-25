@@ -1,5 +1,5 @@
 'use client';
-
+import { getSupabaseClient } from '@/utils/supabaseClient';
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getSupabaseClient } from '@/utils/supabaseClient';
 
 ChartJS.register(
   CategoryScale,
@@ -22,49 +21,16 @@ ChartJS.register(
   Legend
 );
 
-export default function DashboardKehadiran() {
-  const supabase = getSupabaseClient();
+const DashboardKehadiran = ({ data }) => {
   const [dataKehadiran, setDataKehadiran] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const ambilDataPresensi = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase.from('presensi').select('*');
-        if (error) throw error;
+    if (data && Array.isArray(data)) {
+      setDataKehadiran(data);
+    }
+  }, [data]);
 
-        const kelompokMap = {};
-        data.forEach((item) => {
-          const kelompok = item.kelompok || 'Tidak diketahui';
-          if (!kelompokMap[kelompok]) {
-            kelompokMap[kelompok] = { total: 0, hadir: 0 };
-          }
-          kelompokMap[kelompok].total += 1;
-          if (item.isHadir === true) kelompokMap[kelompok].hadir += 1;
-        });
-
-        const kelompokArray = Object.entries(kelompokMap).map(
-          ([kelompok, d]) => ({
-            kelompok,
-            total: d.total,
-            hadir: d.hadir,
-            persentase: ((d.hadir / d.total) * 100).toFixed(1),
-          })
-        );
-
-        setDataKehadiran(kelompokArray);
-      } catch (err) {
-        console.error('Gagal mengambil data presensi:', err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    ambilDataPresensi();
-  }, [supabase]);
-
-  if (loading) {
+  if (!dataKehadiran || dataKehadiran.length === 0) {
     return (
       <div className='p-8 text-center text-gray-600 font-semibold'>
         Memuat data kehadiran...
@@ -72,7 +38,6 @@ export default function DashboardKehadiran() {
     );
   }
 
-  // Data untuk grafik keseluruhan (opsional)
   const dataGrafik = {
     labels: dataKehadiran.map((d) => `Kelompok ${d.kelompok}`),
     datasets: [
@@ -117,7 +82,6 @@ export default function DashboardKehadiran() {
           Rekap Kehadiran Peserta per Kelompok
         </h1>
 
-        {/* Grid Card per Kelompok */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           {dataKehadiran.map((item) => (
             <div
@@ -136,9 +100,7 @@ export default function DashboardKehadiran() {
                 <div className='w-full bg-gray-200 rounded-full h-2.5'>
                   <div
                     className='bg-[#DCE2B7] h-2.5 rounded-full'
-                    style={{
-                      width: `${item.persentase}%`,
-                    }}></div>
+                    style={{ width: `${item.persentase}%` }}></div>
                 </div>
                 <p className='text-right text-sm text-gray-600 mt-1'>
                   {item.persentase}%
@@ -147,10 +109,13 @@ export default function DashboardKehadiran() {
             </div>
           ))}
         </div>
+
         <div className='bg-white rounded-lg shadow-md p-4 h-[400px]'>
           <Bar options={opsiGrafik} data={dataGrafik} />
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default DashboardKehadiran;

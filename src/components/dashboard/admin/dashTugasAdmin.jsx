@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { getSupabaseClient } from '@/utils/supabaseClient';
 
-export default function DashTugasAdmin() {
+const DashTugasAdmin = ({ data }) => {
   const supabase = getSupabaseClient();
   const theme = {
     primary: '#DCE2B7',
@@ -12,36 +12,15 @@ export default function DashTugasAdmin() {
   };
 
   const [presensi, setPresensi] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState(null);
   const [error, setError] = useState(null);
 
-  const getPresensi = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { data, error: err } = await supabase
-        .from('presensi')
-        .select('nim, nama, kelompok, tugas_1, submitted_at, valid')
-        .order('kelompok', { ascending: true })
-        .order('nama', { ascending: true });
-
-      if (err) throw err;
-
-      const sorted = data.sort((a, b) => {
-        if (a.tugas_1 && !b.tugas_1) return -1;
-        if (!a.tugas_1 && b.tugas_1) return 1;
-        return 0;
-      });
-
-      setPresensi(sorted || []);
-    } catch (err) {
-      console.error('getPresensi error', err);
-      setError('Gagal memuat data dari Supabase');
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setPresensi(data);
     }
-  }, [supabase]);
+  }, [data]);
 
   const setValidStatus = async (nim, valid) => {
     setBusyId(nim);
@@ -56,16 +35,12 @@ export default function DashTugasAdmin() {
       alert('Status validasi berhasil diperbarui!');
       // window.location.reload();
     } catch (err) {
-      console.error('setValidStatus error', err);
+      console.log('setValidStatus error', err);
       alert('Gagal memperbarui status validasi.');
     } finally {
       setBusyId(null);
     }
   };
-
-  useEffect(() => {
-    getPresensi();
-  }, [getPresensi]);
 
   useEffect(() => {
     const channel = supabase
@@ -257,4 +232,6 @@ export default function DashTugasAdmin() {
       </div>
     </div>
   );
-}
+};
+
+export default DashTugasAdmin;

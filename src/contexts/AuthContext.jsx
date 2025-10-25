@@ -1,5 +1,6 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
+import { saveRoleToLocal, saveNimToLocal } from '@/utils/localRole';
 import { supabase } from '../utils/supabaseClient';
 
 const AuthContext = createContext();
@@ -22,12 +23,13 @@ export const AuthProvider = ({ children }) => {
 
     const nim = match[1];
     setNim(nim);
+    saveNimToLocal(nim);
     const { data, error } = await supabase
       .from('dataif25')
       .select('nama')
       .eq('nim', nim)
       .single();
-    setNamaPeserta(data)
+    setNamaPeserta(data);
 
     if (error && error.code !== 'PGRST116') {
       console.error('Error checking role:', error);
@@ -69,6 +71,7 @@ export const AuthProvider = ({ children }) => {
         setUser(data.user);
         const userRole = await checkRole(data.user.email);
         setRole(userRole);
+        saveRoleToLocal(userRole);
 
         if (window.location.hash.includes('access_token')) {
           window.history.replaceState({}, document.title, '/');
@@ -84,6 +87,7 @@ export const AuthProvider = ({ children }) => {
           setUser(session.user);
           const userRole = await checkRole(session.user.email);
           setRole(userRole);
+          saveRoleToLocal(userRole);
 
           if (window.location.hash.includes('access_token')) {
             window.history.replaceState({}, document.title, '/');
@@ -97,7 +101,7 @@ export const AuthProvider = ({ children }) => {
     );
 
     return () => listener.subscription.unsubscribe();
-  }, []);
+  }, [nim]);
 
   return (
     <AuthContext.Provider value={{ isLogin, user, role, nim, namaPeserta }}>

@@ -80,11 +80,6 @@ export default function Navbar() {
                   Pengumuman
                 </a>
                 <a
-                  href='#dresscode'
-                  className='text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300'>
-                  Dress Code
-                </a>
-                <a
                   href='#faq'
                   className='text-[#5a5a3d] hover:text-[#5a5a3d]/70 transition-colors duration-300'>
                   FAQ

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../utils/supabaseClient';
+import { clearRoleFromLocal } from '@/utils/localRole';
 
 export default function Logout() {
   const router = useRouter();
@@ -11,7 +12,8 @@ export default function Logout() {
     (async () => {
       try {
         await supabase.auth.signOut();
-        router.replace('/');
+        clearRoleFromLocal();
+        router.push('/');
       } catch (error) {
         console.error('Error:', error);
       }
