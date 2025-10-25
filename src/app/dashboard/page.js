@@ -49,7 +49,8 @@ export default function Page() {
     console.log('role pasti null =', role);
     return (
       <div className='min-h-screen flex items-center justify-center text-gray-700'>
-        Memuat dashboard...
+        <div>Memuat Dashboard</div>
+        <button onClick={handleHome}>Kembali ke beranda</button>
       </div>
     );
   }
