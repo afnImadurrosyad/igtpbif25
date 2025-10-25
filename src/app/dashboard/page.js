@@ -10,6 +10,8 @@ import { getRoleFromLocal } from '@/utils/localRole';
 export default function Page() {
   const { isLogin, isLoading } = useAuth();
   const [role, setRole] = useState(getRoleFromLocal());
+
+  console.log('ini role nya' + role);
   const router = useRouter();
 
   // Redirect to login if not authenticated
