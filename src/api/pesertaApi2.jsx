@@ -62,33 +62,55 @@ export async function getAllPeserta() {
 
 export async function ambilDataPresensi() {
   try {
-    const { data, error } = await supabase.from('presensi').select('*');
-    if (data) {
-      console.log('Data presensi berhasil diambil:', data);
-    }
-    if (error) throw error;
+    const { data, error } = await supabase
+      .from('presensi')
+      .select('nim, nama, kelompok, isHadir');
 
+    if (error) throw error;
+    if (!data) return [];
+
+    console.log('Data presensi berhasil diambil:', data);
+
+    // Buat map per kelompok
     const kelompokMap = {};
+
     data.forEach((item) => {
       const kelompok = item.kelompok || 'Tidak diketahui';
       if (!kelompokMap[kelompok]) {
-        kelompokMap[kelompok] = { total: 0, hadir: 0 };
+        kelompokMap[kelompok] = {
+          total: 0,
+          hadir: 0,
+          tidakHadir: 0,
+          listHadir: [],
+          listTidakHadir: [],
+        };
       }
+
       kelompokMap[kelompok].total += 1;
-      if (item.isHadir === true) kelompokMap[kelompok].hadir += 1;
+      if (item.isHadir === true) {
+        kelompokMap[kelompok].hadir += 1;
+        kelompokMap[kelompok].listHadir.push(item.nama || item.nim);
+      } else {
+        kelompokMap[kelompok].tidakHadir += 1;
+        kelompokMap[kelompok].listTidakHadir.push(item.nama || item.nim);
+      }
     });
 
+    // Ubah menjadi array siap pakai untuk UI
     const kelompokArray = Object.entries(kelompokMap).map(([kelompok, d]) => ({
       kelompok,
       total: d.total,
       hadir: d.hadir,
+      tidakHadir: d.tidakHadir,
       persentase: ((d.hadir / d.total) * 100).toFixed(1),
+      listHadir: d.listHadir,
+      listTidakHadir: d.listTidakHadir,
     }));
 
     return kelompokArray;
   } catch (err) {
-    console.log('Gagal mengambil data presensi:', err.message);
-    return null;
+    console.error('Gagal mengambil data presensi:', err.message);
+    return [];
   }
 }
 
