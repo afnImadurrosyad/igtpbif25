@@ -150,7 +150,7 @@ export async function getResumePeserta() {
     if (data) {
       console.log('Data tugas berhasil diambil:', data);
     }
-
+    console.log(data);
     if (err) throw err;
 
     const sorted = data.sort((a, b) => {
