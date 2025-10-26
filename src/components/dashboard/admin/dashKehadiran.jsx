@@ -1,5 +1,4 @@
 'use client';
-import { getSupabaseClient } from '@/utils/supabaseClient';
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -25,9 +24,7 @@ const DashboardKehadiran = ({ data }) => {
   const [dataKehadiran, setDataKehadiran] = useState([]);
 
   useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setDataKehadiran(data);
-    }
+    if (data && Array.isArray(data)) setDataKehadiran(data);
   }, [data]);
 
   if (!dataKehadiran || dataKehadiran.length === 0) {
@@ -45,13 +42,11 @@ const DashboardKehadiran = ({ data }) => {
         label: 'Peserta Hadir',
         data: dataKehadiran.map((d) => d.hadir),
         backgroundColor: 'rgb(220, 226, 183)',
-        borderColor: 'rgb(220, 226, 183)',
       },
       {
         label: 'Tidak Hadir',
         data: dataKehadiran.map((d) => d.total - d.hadir),
         backgroundColor: 'rgb(104, 98, 50)',
-        borderColor: 'rgb(104, 98, 50)',
       },
     ],
   };
@@ -82,6 +77,7 @@ const DashboardKehadiran = ({ data }) => {
           Rekap Kehadiran Peserta per Kelompok
         </h1>
 
+        {/* Kartu per kelompok */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           {dataKehadiran.map((item) => (
             <div
@@ -96,20 +92,54 @@ const DashboardKehadiran = ({ data }) => {
                 </p>
               </div>
 
+              {/* Progress bar */}
               <div className='mt-4'>
                 <div className='w-full bg-gray-200 rounded-full h-2.5'>
                   <div
                     className='bg-[#DCE2B7] h-2.5 rounded-full'
-                    style={{ width: `${item.persentase}%` }}></div>
+                    style={{ width: `${item.persentase}%` }}
+                  />
                 </div>
                 <p className='text-right text-sm text-gray-600 mt-1'>
                   {item.persentase}%
                 </p>
               </div>
+
+              {/* Daftar peserta hadir & tidak hadir */}
+              <div className='mt-5 text-sm'>
+                <div className='mb-3'>
+                  <h3 className='font-semibold text-green-700'>
+                    ✅ Hadir ({item.listHadir.length})
+                  </h3>
+                  <ul className='list-disc list-inside text-gray-700 max-h-32 overflow-y-auto'>
+                    {item.listHadir.length > 0 ? (
+                      item.listHadir.map((nama, i) => <li key={i}>{nama}</li>)
+                    ) : (
+                      <p className='text-gray-400 italic'>Tidak ada</p>
+                    )}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className='font-semibold text-red-700'>
+                    ❌ Tidak Hadir ({item.listTidakHadir.length})
+                  </h3>
+                  <ul className='list-disc list-inside text-gray-700 max-h-32 overflow-y-auto'>
+                    {item.listTidakHadir.length > 0 ? (
+                      item.listTidakHadir.map((nama, i) => (
+                        <li key={i}>{nama}</li>
+                      ))
+                    ) : (
+                      <p className='text-gray-400 italic'>Tidak ada</p>
+                    )}
+                  </ul>
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
+        {/* Grafik ringkasan */}
         <div className='bg-white rounded-lg shadow-md p-4 h-[400px]'>
           <Bar options={opsiGrafik} data={dataGrafik} />
         </div>
