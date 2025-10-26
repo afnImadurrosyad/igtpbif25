@@ -2,7 +2,7 @@ import NavbarDash from '@/components/dashboard/dashNavbar';
 import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/peserta/dashTugas';
 import PresensiPeserta from '@/components/presensi/presensiPeserta';
-import DashTugas2 from '@/components/dashboard/peserta/dashTugas2';
+import DashTugas2 from '@/components/dashboard/peserta/dashTugas2-pdf'; // bisa pake dashTugas2-link.jsx juga
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 
