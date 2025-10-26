@@ -10,6 +10,19 @@ export function saveNimToLocal(nim) {
   }
 }
 
+export function saveNamaToLocal(nama) {
+  if (typeof window !== 'undefined' && nama) {
+    localStorage.setItem('user_nama', nama);
+  }
+}
+
+export function getNamaFromLocal() {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('user_nama');
+  }
+  return null;
+}
+
 export function getRoleFromLocal() {
   if (typeof window !== 'undefined') {
     return localStorage.getItem('user_role');

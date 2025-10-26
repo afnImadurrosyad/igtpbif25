@@ -1,6 +1,10 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
-import { saveRoleToLocal, saveNimToLocal } from '@/utils/localRole';
+import {
+  saveRoleToLocal,
+  saveNimToLocal,
+  saveNamaToLocal,
+} from '@/utils/localRole';
 import { supabase } from '../utils/supabaseClient';
 
 const AuthContext = createContext();
@@ -29,12 +33,10 @@ export const AuthProvider = ({ children }) => {
       .select('nama')
       .eq('nim', nim)
       .single();
-    setNamaPeserta(data);
-
-    if (error && error.code !== 'PGRST116') {
-      console.error('Error checking role:', error);
-      console.log('jadi guest karena error');
-      return 'guest';
+    if (data) {
+      setNamaPeserta(data);
+      saveNamaToLocal(data.nama);
+      console.log('Nama peserta diset:', data.nama);
     }
 
     //ini buat ngecek

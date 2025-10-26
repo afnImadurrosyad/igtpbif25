@@ -4,37 +4,16 @@ import DashboardKehadiran from '@/components/dashboard/admin/dashKehadiran';
 import DashPeserta from '@/components/dashboard/admin/dashPeserta';
 import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/admin/dashTugasAdmin';
+import DashTugas2 from '@/components/dashboard/admin/dashTugasAdmin2';
 import PresensiAdmin from '@/components/presensi/presensiAdmin';
 import { useState, useEffect } from 'react';
-// import {
-//   ambilDataPresensi,
-//   getAllPeserta,
-//   getTugasPeserta,
-// } from '@/api/pesertaApi2';
 
-const DashAdmin = ({ dataHadir, dataPeserta, dataTugas }) => {
+const DashAdmin = ({ dataHadir, dataPeserta, dataTugas, dataTugas2 }) => {
   const [activeNavId, setActiveNavId] = useState('dashboard');
   const [kehadiran, setKehadiran] = useState([]);
   const [peserta, setPeserta] = useState([]);
   const [tugas, setTugas] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await ambilDataPresensi();
-  //     setKehadiran(data);
-  //   };
-  //   fetchData();
-  //   const fetchPeserta = async () => {
-  //     const data = await getAllPeserta();
-  //     setPeserta(data);
-  //   };
-  //   fetchPeserta();
-  //   const fetchTugas = async () => {
-  //     const data = await getTugasPeserta();
-  //     setTugas(data);
-  //   };
-  //   fetchTugas();
-  // }, []);
+  const [tugas2, setTugas2] = useState([]);
 
   useEffect(() => {
     if (dataHadir && Array.isArray(dataHadir)) {
@@ -46,7 +25,10 @@ const DashAdmin = ({ dataHadir, dataPeserta, dataTugas }) => {
     if (dataTugas && Array.isArray(dataTugas)) {
       setTugas(dataTugas);
     }
-  }, [dataHadir, dataTugas, dataPeserta]);
+    if (dataTugas2 && Array.isArray(dataTugas2)) {
+      setTugas2(dataTugas2);
+    }
+  }, [dataHadir, dataTugas, dataPeserta, dataTugas2]);
 
   // console.log('Peserta data:', peserta);
   // console.log('kehadiran data:', kehadiran);
@@ -65,6 +47,8 @@ const DashAdmin = ({ dataHadir, dataPeserta, dataTugas }) => {
         return <DashboardProfil />;
       case 'tugas':
         return <DashTugas data={tugas} />;
+      case 'tugas_2':
+        return <DashTugas2 data={tugas2} />;
       case 'presensi':
         return <PresensiAdmin />;
       default:

@@ -139,3 +139,29 @@ export async function getTugasPeserta() {
     setError('Gagal memuat data dari Supabase');
   }
 }
+
+export async function getResumePeserta() {
+  try {
+    const { data, error: err } = await supabase
+      .from('presensi')
+      .select('nim, nama, kelompok, tugas_2, submitted_at, valid_2')
+      .order('kelompok', { ascending: true })
+      .order('nama', { ascending: true });
+    if (data) {
+      console.log('Data tugas berhasil diambil:', data);
+    }
+
+    if (err) throw err;
+
+    const sorted = data.sort((a, b) => {
+      if (a.tugas_2 && !b.tugas_2) return -1;
+      if (!a.tugas_2 && b.tugas_2) return 1;
+      return 0;
+    });
+
+    return sorted || [];
+  } catch (err) {
+    console.error('getPresensi error', err);
+    setError('Gagal memuat data dari Supabase');
+  }
+}

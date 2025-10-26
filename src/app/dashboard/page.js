@@ -8,6 +8,7 @@ import {
   ambilDataPresensi,
   getAllPeserta,
   getTugasPeserta,
+  getResumePeserta,
 } from '@/api/pesertaApi2';
 
 export default function Page() {
@@ -16,6 +17,7 @@ export default function Page() {
   const [kehadiran, setKehadiran] = useState([]);
   const [peserta, setPeserta] = useState([]);
   const [tugas, setTugas] = useState([]);
+  const [tugas2, setTugas2] = useState([]);
 
   useEffect(() => {
     const storedRole = getRoleFromLocal();
@@ -43,6 +45,12 @@ export default function Page() {
       setTugas(data);
     };
     fetchTugas();
+    const fetchTugas2 = async () => {
+      console.log('mulai fetch 4');
+      const data = await getResumePeserta();
+      setTugas2(data);
+    };
+    fetchTugas2();
   }, []);
 
   const handleHome = () => {
@@ -72,6 +80,7 @@ export default function Page() {
         dataHadir={kehadiran}
         dataPeserta={peserta}
         dataTugas={tugas}
+        dataTugas2={tugas2}
       />
     );
   } else {
