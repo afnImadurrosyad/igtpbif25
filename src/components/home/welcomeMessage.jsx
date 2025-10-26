@@ -134,7 +134,7 @@ export default function IgttpbDesc() {
               <a
                 ref={btnFindGroup}
                 href='https://ngl.link/informatics.goestpb12573'
-                target='blank'
+                target='_blank'
                 className='flex items-center'>
                 <button className='group bg-[#F7F1E7] text-[#5a5a3d] px-6 py-3 font-bold rounded-lg hover:bg-[#5a5a3d] hover:text-[#F7F1E7] border-2 border-[#5a5a3d] hover:border-[#5a5a3d] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105'>
                   NGL IGTTPB
