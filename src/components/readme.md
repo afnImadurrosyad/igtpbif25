@@ -1,7 +1,7 @@
-ini untuk tempat komponen
+NEXT_PUBLIC_SUPABASE_URL=https://pzipuuirlnkasnofmdpg.supabase.co/
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6aXB1dWlybG5rYXNub2ZtZHBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNDA0ODEsImV4cCI6MjA3NDgxNjQ4MX0.6iWL93cWGBrijf7psV7BHH5uCC551aefAvmZBTNjiNI
 
-1# 2
-3 4#
-5# 6
-7 8#
-9# 10
+# NEXTAUTH_URL=http://localhost:3000
+
+HOST=0.0.0.0
+PORT=3000
