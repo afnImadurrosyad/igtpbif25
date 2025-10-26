@@ -11,24 +11,34 @@ import {
 } from '@/api/pesertaApi2';
 
 export default function Page() {
+  const router = useRouter();
+  const [role, setRole] = useState(null);
   const [kehadiran, setKehadiran] = useState([]);
   const [peserta, setPeserta] = useState([]);
   const [tugas, setTugas] = useState([]);
-  const router = useRouter();
-  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const storedRole = getRoleFromLocal();
+    setRole(storedRole);
+  }, []);
+
+  console.log('ini role sudah = ', role);
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log('mulai fetch');
       const data = await ambilDataPresensi();
       setKehadiran(data);
     };
     fetchData();
     const fetchPeserta = async () => {
+      console.log('mulai fetch 2');
       const data = await getAllPeserta();
       setPeserta(data);
     };
     fetchPeserta();
     const fetchTugas = async () => {
+      console.log('mulai fetch 3');
       const data = await getTugasPeserta();
       setTugas(data);
     };
@@ -39,10 +49,6 @@ export default function Page() {
     router.push('/');
   };
   // ambil role dari localStorage hanya sekali saat komponen mount
-  useEffect(() => {
-    const storedRole = getRoleFromLocal();
-    setRole(storedRole);
-  }, []);
 
   // tampilkan loading sementara role belum terambil
   if (!role) {
