@@ -2,6 +2,7 @@ import NavbarDash from '@/components/dashboard/dashNavbar';
 import DashboardProfil from '@/components/dashProfilePeserta';
 import DashTugas from '@/components/dashboard/peserta/dashTugas';
 import PresensiPeserta from '@/components/presensi/presensiPeserta';
+import DashTugas2 from '@/components/dashboard/peserta/dashTugas2';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 
@@ -22,6 +23,8 @@ export default function Page() {
         return <DashboardProfil />;
       case 'tugas':
         return <DashTugas />;
+      case 'tugas_2':
+        return <DashTugas2 />;
       case 'presensi':
         return <PresensiPeserta />;
       default:
@@ -35,15 +38,16 @@ export default function Page() {
   // }
 
   return (
-    <div className="m-0">
-      <div className="flex">
+    <div className='m-0'>
+      <div className='flex'>
         <div>
           {/* Pastikan NavbarDash menerima prop onNavItemClick dan memanggilnya saat item diklik */}
-          <NavbarDash onNavItemClick={handleNavItemClick} activeId={activeNavId} />
+          <NavbarDash
+            onNavItemClick={handleNavItemClick}
+            activeId={activeNavId}
+          />
         </div>
-        <div className="w-full">
-          {renderContent()}
-        </div>
+        <div className='w-full'>{renderContent()}</div>
       </div>
     </div>
   );

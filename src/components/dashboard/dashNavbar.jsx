@@ -89,7 +89,14 @@ export default function NavbarDash({
     },
     {
       id: 'tugas',
-      title: 'Tugas',
+      title: 'Tugas 1',
+      icon: 'fileText',
+      href: '/dashboard/tugas',
+      roles: ['user', 'mentor', 'admin'], // User, mentor, dan admin
+    },
+    {
+      id: 'tugas_2',
+      title: 'Tugas 2',
       icon: 'fileText',
       href: '/dashboard/tugas',
       roles: ['user', 'mentor', 'admin'], // User, mentor, dan admin
