@@ -69,19 +69,99 @@ export async function findPesertaByNim(nim) {
 export async function getAllPeserta() {
   try {
     const { data, error } = await supabase
-      .from("dataif25")
-      .select("*")
-      .order("kelompok", { ascending: true })
-      .order("nama", { ascending: true });
-
+      .from('dataif25')
+      .select('*')
+      .order('kelompok', { ascending: true }); // Urut berdasarkan kelompok.
+    if (data) {
+      console.log('Data peserta berhasil diambil:', data);
+    }
     if (error) {
-      console.error("Error fetching all peserta:", error);
-      throw new Error("Gagal mengambil data peserta.");
+      throw error;
     }
 
-    return data || [];
+    return data;
   } catch (err) {
-    console.error("Error in getAllPeserta:", err);
+    console.error('Error fetching all peserta:', err);
     throw err;
+  }
+}
+
+export async function ambilDataPresensi() {
+  try {
+    const { data, error } = await supabase
+      .from('presensi')
+      .select('nim, nama, kelompok, isHadir');
+
+    if (error) throw error;
+    if (!data) return [];
+
+    console.log('Data presensi berhasil diambil:', data);
+
+    // Buat map per kelompok
+    const kelompokMap = {};
+
+    data.forEach((item) => {
+      const kelompok = item.kelompok || 'Tidak diketahui';
+      if (!kelompokMap[kelompok]) {
+        kelompokMap[kelompok] = {
+          total: 0,
+          hadir: 0,
+          tidakHadir: 0,
+          listHadir: [],
+          listTidakHadir: [],
+        };
+      }
+
+      kelompokMap[kelompok].total += 1;
+      if (item.isHadir === true) {
+        kelompokMap[kelompok].hadir += 1;
+        kelompokMap[kelompok].listHadir.push(item.nama || item.nim);
+      } else {
+        kelompokMap[kelompok].tidakHadir += 1;
+        kelompokMap[kelompok].listTidakHadir.push(item.nama || item.nim);
+      }
+    });
+
+    // Ubah menjadi array siap pakai untuk UI
+    const kelompokArray = Object.entries(kelompokMap).map(([kelompok, d]) => ({
+      kelompok,
+      total: d.total,
+      hadir: d.hadir,
+      tidakHadir: d.tidakHadir,
+      persentase: ((d.hadir / d.total) * 100).toFixed(1),
+      listHadir: d.listHadir,
+      listTidakHadir: d.listTidakHadir,
+    }));
+
+    return kelompokArray;
+  } catch (err) {
+    console.error('Gagal mengambil data presensi:', err.message);
+    return [];
+  }
+}
+
+export async function getTugasPeserta() {
+  try {
+    const { data, error: err } = await supabase
+      .from('presensi')
+      .select('nim, nama, kelompok, tugas_1, submitted_at, valid')
+      .order('kelompok', { ascending: true })
+      .order('nama', { ascending: true });
+    if (data) {
+      console.log('Data tugas berhasil diambil:', data);
+    }
+
+    if (err) throw err;
+
+    const sorted = data.sort((a, b) => {
+      if (a.tugas_1 && !b.tugas_1) return -1;
+      if (!a.tugas_1 && b.tugas_1) return 1;
+      return 0;
+    });
+
+    return sorted || [];
+  } catch (err) {
+    console.error('getPresensi error', err);
+    setError('Gagal memuat data dari Supabase');
   }
 }

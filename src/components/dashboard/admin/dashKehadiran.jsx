@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -11,7 +10,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { supabase } from '@/utils/supabaseClient';
 
 ChartJS.register(
   CategoryScale,
@@ -22,48 +20,14 @@ ChartJS.register(
   Legend
 );
 
-export default function DashboardKehadiran() {
+const DashboardKehadiran = ({ data }) => {
   const [dataKehadiran, setDataKehadiran] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const ambilDataPresensi = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase.from('presensi').select('*');
-        if (error) throw error;
+    if (data && Array.isArray(data)) setDataKehadiran(data);
+  }, [data]);
 
-        const kelompokMap = {};
-        data.forEach((item) => {
-          const kelompok = item.kelompok || 'Tidak diketahui';
-          if (!kelompokMap[kelompok]) {
-            kelompokMap[kelompok] = { total: 0, hadir: 0 };
-          }
-          kelompokMap[kelompok].total += 1;
-          if (item.isHadir === true) kelompokMap[kelompok].hadir += 1;
-        });
-
-        const kelompokArray = Object.entries(kelompokMap).map(
-          ([kelompok, d]) => ({
-            kelompok,
-            total: d.total,
-            hadir: d.hadir,
-            persentase: ((d.hadir / d.total) * 100).toFixed(1),
-          })
-        );
-
-        setDataKehadiran(kelompokArray);
-      } catch (err) {
-        console.error('Gagal mengambil data presensi:', err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    ambilDataPresensi();
-  }, []);
-
-  if (loading) {
+  if (!dataKehadiran || dataKehadiran.length === 0) {
     return (
       <div className='p-8 text-center text-gray-600 font-semibold'>
         Memuat data kehadiran...
@@ -71,7 +35,6 @@ export default function DashboardKehadiran() {
     );
   }
 
-  // Data untuk grafik keseluruhan (opsional)
   const dataGrafik = {
     labels: dataKehadiran.map((d) => `Kelompok ${d.kelompok}`),
     datasets: [
@@ -79,13 +42,11 @@ export default function DashboardKehadiran() {
         label: 'Peserta Hadir',
         data: dataKehadiran.map((d) => d.hadir),
         backgroundColor: 'rgb(220, 226, 183)',
-        borderColor: 'rgb(220, 226, 183)',
       },
       {
         label: 'Tidak Hadir',
         data: dataKehadiran.map((d) => d.total - d.hadir),
         backgroundColor: 'rgb(104, 98, 50)',
-        borderColor: 'rgb(104, 98, 50)',
       },
     ],
   };
@@ -116,7 +77,7 @@ export default function DashboardKehadiran() {
           Rekap Kehadiran Peserta per Kelompok
         </h1>
 
-        {/* Grid Card per Kelompok */}
+        {/* Kartu per kelompok */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           {dataKehadiran.map((item) => (
             <div
@@ -131,25 +92,60 @@ export default function DashboardKehadiran() {
                 </p>
               </div>
 
+              {/* Progress bar */}
               <div className='mt-4'>
                 <div className='w-full bg-gray-200 rounded-full h-2.5'>
                   <div
                     className='bg-[#DCE2B7] h-2.5 rounded-full'
-                    style={{
-                      width: `${item.persentase}%`,
-                    }}></div>
+                    style={{ width: `${item.persentase}%` }}
+                  />
                 </div>
                 <p className='text-right text-sm text-gray-600 mt-1'>
                   {item.persentase}%
                 </p>
               </div>
+
+              {/* Daftar peserta hadir & tidak hadir */}
+              <div className='mt-5 text-sm'>
+                <div className='mb-3'>
+                  <h3 className='font-semibold text-green-700'>
+                    ✅ Hadir ({item.listHadir.length})
+                  </h3>
+                  <ul className='list-disc list-inside text-gray-700 max-h-32 overflow-y-auto'>
+                    {item.listHadir.length > 0 ? (
+                      item.listHadir.map((nama, i) => <li key={i}>{nama}</li>)
+                    ) : (
+                      <p className='text-gray-400 italic'>Tidak ada</p>
+                    )}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className='font-semibold text-red-700'>
+                    ❌ Tidak Hadir ({item.listTidakHadir.length})
+                  </h3>
+                  <ul className='list-disc list-inside text-gray-700 max-h-32 overflow-y-auto'>
+                    {item.listTidakHadir.length > 0 ? (
+                      item.listTidakHadir.map((nama, i) => (
+                        <li key={i}>{nama}</li>
+                      ))
+                    ) : (
+                      <p className='text-gray-400 italic'>Tidak ada</p>
+                    )}
+                  </ul>
+                </div>
+              </div>
             </div>
           ))}
         </div>
+
+        {/* Grafik ringkasan */}
         <div className='bg-white rounded-lg shadow-md p-4 h-[400px]'>
           <Bar options={opsiGrafik} data={dataGrafik} />
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default DashboardKehadiran;

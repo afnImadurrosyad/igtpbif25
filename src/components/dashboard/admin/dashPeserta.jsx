@@ -1,8 +1,6 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { Users, Search } from "lucide-react";
-import { getAllPeserta } from "@/api/pesertaApi2";
+'use client';
+import React, { useState, useEffect } from 'react';
+import { Users, Search } from 'lucide-react';
 
 const getStyleByIndex = (index) => {
   const isEven = index % 2 === 0;
@@ -12,29 +10,20 @@ const getStyleByIndex = (index) => {
   };
 };
 
-const DashPeserta = () => {
+const DashPeserta = ({ data }) => {
   const [allPeserta, setAllPeserta] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const articlesPerPage = 10; // Tampilkan 10 peserta per halaman
 
   useEffect(() => {
-    const fetchPeserta = async () => {
-      try {
-        const data = await getAllPeserta();
-        setAllPeserta(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPeserta();
-  }, []);
+    if (data && Array.isArray(data)) {
+      setAllPeserta(data);
+    }
+  }, [data]);
 
+  console.log('allPeserta data:', allPeserta);
   const filteredPeserta = allPeserta.filter((peserta) =>
     peserta.nama.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -49,21 +38,6 @@ const DashPeserta = () => {
       setCurrentPage(newPage);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="text-center p-10 font-semibold">
-        Memuat daftar peserta...
-      </div>
-    );
-  }
-  if (error) {
-    return (
-      <div className="text-center p-10 text-red-500 font-semibold">
-        Error: {error}
-      </div>
-    );
-  }
 
   return (
     <div className="bg-[#F7F1E7] min-h-screen p-4 sm:p-8 font-sans">

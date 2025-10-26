@@ -1,14 +1,7 @@
-"use client";
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
-import { supabase } from "../utils/supabaseClient";
-import { saveRoleToLocal, clearRoleFromLocal } from "../utils/localRole";
+'use client';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { saveRoleToLocal, saveNimToLocal } from '@/utils/localRole';
+import { supabase } from '../utils/supabaseClient';
 
 const AuthContext = createContext();
 
@@ -32,7 +25,15 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    checkRoleInProgress.current = true;
+    const nim = match[1];
+    setNim(nim);
+    saveNimToLocal(nim);
+    const { data, error } = await supabase
+      .from('dataif25')
+      .select('nama')
+      .eq('nim', nim)
+      .single();
+    setNamaPeserta(data);
 
     try {
       const {
@@ -41,12 +42,34 @@ export const AuthProvider = ({ children }) => {
 
       if (!isMounted.current) return null;
 
-      if (!user) {
-        if (isMounted.current) {
-          setRole(null);
-          setNim(null);
-          setNamaPeserta(null);
-          clearRoleFromLocal();
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking role:', error);
+        console.log('jadi guest karena error');
+        return 'guest';
+      }
+
+      if (data) {
+        console.log('aku admin kamu user :v');
+        return data.role;
+      } else {
+        console.log('jadi guest karena gaada di kedua tabel');
+        return 'guest';
+      }
+    }
+  };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setIsLogin(true);
+        setUser(data.user);
+        const userRole = await checkRole(data.user.email);
+        setRole(userRole);
+        saveRoleToLocal(userRole);
+
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState({}, document.title, '/');
         }
         return null;
       }
@@ -223,8 +246,15 @@ export const AuthProvider = ({ children }) => {
         } else if (session?.user) {
           setIsLogin(true);
           setUser(session.user);
-          await checkRole();
+          const userRole = await checkRole(session.user.email);
+          setRole(userRole);
+          saveRoleToLocal(userRole);
+
+          if (window.location.hash.includes('access_token')) {
+            window.history.replaceState({}, document.title, '/');
+          }
         } else {
+          console.log('User logged out');
           setIsLogin(false);
           setUser(null);
           setRole(null);
@@ -236,31 +266,8 @@ export const AuthProvider = ({ children }) => {
       }
     );
 
-    return () => {
-      isMounted.current = false;
-      listener.subscription.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array - only run once
-
-  // Retry safety net: jika sudah login tapi role belum terisi, coba ulang cek role beberapa kali
-  const roleRetryCount = useRef(0);
-  useEffect(() => {
-    if (!isLogin) {
-      roleRetryCount.current = 0;
-      return;
-    }
-
-    if (isLogin && role == null && !checkRoleInProgress.current) {
-      if (roleRetryCount.current < 3) {
-        const t = setTimeout(() => {
-          roleRetryCount.current += 1;
-          checkRole();
-        }, 1000 * (roleRetryCount.current + 1)); // backoff ringan 1s,2s,3s
-        return () => clearTimeout(t);
-      }
-    }
-  }, [isLogin, role, checkRole]);
+    return () => listener.subscription.unsubscribe();
+  }, [nim]);
 
   return (
     <AuthContext.Provider
