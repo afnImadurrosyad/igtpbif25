@@ -17,6 +17,13 @@ export function getRoleFromLocal() {
   return null;
 }
 
+export function getNimFromLocal() {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('user_nim');
+  }
+  return null;
+}
+
 export function clearRoleFromLocal() {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('user_role');
