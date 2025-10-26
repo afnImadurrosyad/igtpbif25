@@ -46,7 +46,9 @@ export async function getAllPeserta() {
       .from('dataif25')
       .select('*')
       .order('kelompok', { ascending: true }); // Urut berdasarkan kelompok.
-
+    if (data) {
+      console.log('Data peserta berhasil diambil:', data);
+    }
     if (error) {
       throw error;
     }
@@ -61,6 +63,9 @@ export async function getAllPeserta() {
 export async function ambilDataPresensi() {
   try {
     const { data, error } = await supabase.from('presensi').select('*');
+    if (data) {
+      console.log('Data presensi berhasil diambil:', data);
+    }
     if (error) throw error;
 
     const kelompokMap = {};
@@ -94,6 +99,9 @@ export async function getTugasPeserta() {
       .select('nim, nama, kelompok, tugas_1, submitted_at, valid')
       .order('kelompok', { ascending: true })
       .order('nama', { ascending: true });
+    if (data) {
+      console.log('Data tugas berhasil diambil:', data);
+    }
 
     if (err) throw err;
 
