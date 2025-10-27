@@ -41,5 +41,6 @@ export function clearRoleFromLocal() {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('user_role');
     localStorage.removeItem('user_nim');
+    localStorage.removeItem('user_nama');
   }
 }
